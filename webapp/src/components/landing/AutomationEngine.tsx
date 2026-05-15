@@ -1,0 +1,179 @@
+import { ArrowRight, CheckCircle2, Cog, Mail, Send, Webhook, Zap } from "lucide-react";
+import SectionLabel from "./effects/SectionLabel";
+
+const nodes = [
+  { icon: Mail, label: "Inbound lead", tone: "ice" },
+  { icon: Cog, label: "Enrich + score", tone: "ember" },
+  { icon: Webhook, label: "Route", tone: "ember" },
+  { icon: Send, label: "Draft outreach", tone: "ember" },
+  { icon: CheckCircle2, label: "Booked", tone: "ice" },
+] as const;
+
+const AutomationEngine = () => {
+  return (
+    <section id="automation" className="relative isolate overflow-hidden py-32 sm:py-40">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 mask-radial bg-grid opacity-50"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 100% 50%, hsl(22 95% 58% / 0.1), transparent 60%)",
+        }}
+      />
+
+      <div className="container relative">
+        <div className="grid items-center gap-16 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <SectionLabel index="04" label="Automation engine" tone="ember" />
+            <h2 className="mt-6 text-balance text-4xl font-medium leading-[1.05] tracking-[-0.03em] sm:text-5xl md:text-6xl">
+              The boring work,{" "}
+              <span className="font-display italic text-ember">on rails.</span>
+            </h2>
+            <p className="mt-6 max-w-md text-base text-muted-foreground sm:text-lg">
+              Compose multi-step workflows visually. Trigger on signals from
+              email, CRM, calendar, billing, or any tool you already use.
+              Observability and rollback built in — like git for your ops.
+            </p>
+
+            <ul className="mt-8 space-y-3">
+              {[
+                "Drag-and-drop graph editor with type-safe branches",
+                "Replay any execution from any step",
+                "Approve-before-send gates for high-risk actions",
+                "Versioned workflows with diff & rollback",
+              ].map((line) => (
+                <li key={line} className="flex items-start gap-3 text-sm text-foreground/85">
+                  <span className="mt-1 flex h-4 w-4 flex-none items-center justify-center rounded-full border border-ember/40 bg-ember/10">
+                    <Zap className="h-2.5 w-2.5 text-ember" />
+                  </span>
+                  {line}
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href="#"
+              className="group mt-10 inline-flex items-center gap-1.5 text-sm text-ember transition-colors hover:text-foreground"
+            >
+              See the workflow library
+              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+            </a>
+          </div>
+
+          <div className="lg:col-span-7">
+            <div className="glass relative overflow-hidden rounded-2xl p-6 lg:p-8">
+              <div className="flex items-center justify-between pb-4">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                  workflow / inbound-to-meeting · v4.2
+                </span>
+                <span className="rounded-full border border-border bg-background/60 px-2 py-0.5 font-mono text-[10px] text-[hsl(140_70%_60%)]">
+                  running
+                </span>
+              </div>
+
+              {/* Node graph */}
+              <div className="relative">
+                <svg
+                  aria-hidden
+                  className="absolute inset-0 h-full w-full"
+                  preserveAspectRatio="none"
+                >
+                  <defs>
+                    <linearGradient id="conn" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="hsl(22 95% 58%)" stopOpacity="0" />
+                      <stop offset="50%" stopColor="hsl(22 95% 58%)" stopOpacity="0.7" />
+                      <stop offset="100%" stopColor="hsl(192 90% 70%)" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+
+                <div className="relative grid gap-3 sm:grid-cols-5">
+                  {nodes.map((n, i) => {
+                    const isEmber = n.tone === "ember";
+                    return (
+                      <div key={n.label} className="relative">
+                        <div
+                          className={`group relative flex flex-col items-center gap-2 rounded-xl border bg-background/60 p-3 transition-all duration-300 ${
+                            isEmber
+                              ? "border-ember/40 hover:ring-ember"
+                              : "border-ice/40 hover:ring-ice"
+                          }`}
+                        >
+                          <div
+                            className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                              isEmber
+                                ? "bg-ember/10 text-ember"
+                                : "bg-ice/10 text-ice"
+                            }`}
+                          >
+                            <n.icon className="h-4 w-4" />
+                          </div>
+                          <span className="text-center text-[11px] leading-tight text-foreground/85">
+                            {n.label}
+                          </span>
+                          <span className="font-mono text-[9px] text-muted-foreground">
+                            step.{i + 1}
+                          </span>
+                        </div>
+                        {i < nodes.length - 1 ? (
+                          <div className="absolute right-0 top-1/2 hidden h-px w-3 -translate-y-1/2 translate-x-full sm:block">
+                            <div className="ember-line h-full w-full" />
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Run log */}
+              <div className="mt-6 rounded-xl border border-border/60 bg-background/40 p-3">
+                <p className="px-1 pb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
+                  Last run · 11:42:08 UTC
+                </p>
+                <div className="space-y-1.5 font-mono text-[11px]">
+                  {[
+                    { tag: "trigger", line: "lead.created · source=website", color: "text-ice" },
+                    { tag: "step.1", line: "enriched company → Atlas Group (Series B)", color: "text-foreground/80" },
+                    { tag: "step.2", line: "scored ICP fit · 92/100 · routed → Atlas (Sales)", color: "text-foreground/80" },
+                    { tag: "step.3", line: "drafted outreach · approved by lana@", color: "text-foreground/80" },
+                    { tag: "step.4", line: "meeting booked · Thu 10:00 PT ✓", color: "text-ember" },
+                  ].map((r) => (
+                    <div key={r.tag} className="flex items-start gap-3">
+                      <span className="w-14 flex-none text-muted-foreground/60">
+                        {r.tag}
+                      </span>
+                      <span className={r.color}>{r.line}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Metrics ribbon */}
+              <div className="mt-4 grid grid-cols-3 gap-3 text-center">
+                {[
+                  { v: "1,284", l: "Runs / 30d" },
+                  { v: "99.94%", l: "Success rate" },
+                  { v: "8.2s", l: "p95 latency" },
+                ].map((m) => (
+                  <div key={m.l} className="rounded-lg border border-border/60 bg-background/40 px-3 py-2">
+                    <p className="text-base font-medium">{m.v}</p>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/70">
+                      {m.l}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default AutomationEngine;
