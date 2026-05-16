@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const links = [
-  { label: "Platform", href: "#solution" },
-  { label: "Automation", href: "#automation" },
-  { label: "AI", href: "#ai" },
-  { label: "Pipeline", href: "#pipeline" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Platform", to: "/platform" },
+  { label: "Automation", to: "/automation" },
+  { label: "AI", to: "/ai" },
+  { label: "Pipeline", to: "/pipeline" },
+  { label: "Pricing", to: "/pricing" },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState<boolean>(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -26,7 +28,7 @@ const Navbar = () => {
           scrolled ? "glass-strong" : "border border-transparent bg-transparent"
         }`}
       >
-        <a href="#" className="flex items-center gap-2.5">
+        <Link to="/" className="flex items-center gap-2.5">
           <div className="relative h-7 w-7">
             <div className="absolute inset-0 rounded-md bg-gradient-to-br from-ember to-ember-deep" />
             <div className="absolute inset-[2px] rounded-[5px] bg-background flex items-center justify-center">
@@ -37,35 +39,40 @@ const Navbar = () => {
             <span>Momentum</span>
             <span className="text-muted-foreground">.OS</span>
           </div>
-        </a>
+        </Link>
 
         <ul className="hidden items-center gap-1 md:flex">
-          {links.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
-                className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground"
-              >
-                {l.label}
-              </a>
-            </li>
-          ))}
+          {links.map((l) => {
+            const active = location.pathname === l.to;
+            return (
+              <li key={l.to}>
+                <Link
+                  to={l.to}
+                  className={`rounded-md px-3 py-1.5 text-sm transition-colors hover:bg-secondary/60 hover:text-foreground ${
+                    active ? "bg-secondary/60 text-foreground" : "text-muted-foreground"
+                  }`}
+                >
+                  {l.label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="flex items-center gap-2">
-          <a
-            href="#login"
+          <Link
+            to="/"
             className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:block"
           >
             Sign in
-          </a>
-          <a
-            href="#cta"
+          </Link>
+          <Link
+            to="/pricing"
             className="group inline-flex items-center gap-1.5 rounded-full bg-foreground px-3.5 py-1.5 text-sm font-medium text-background transition-all hover:bg-foreground/90"
           >
             Request access
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
+          </Link>
         </div>
       </nav>
     </header>
