@@ -3,6 +3,7 @@ import Hero from "@/components/landing/Hero";
 import Problem from "@/components/landing/Problem";
 import Solution from "@/components/landing/Solution";
 import DashboardPreview from "@/components/landing/DashboardPreview";
+import OrchestrationFlow from "@/components/landing/OrchestrationFlow";
 import AutomationEngine from "@/components/landing/AutomationEngine";
 import AIAssistant from "@/components/landing/AIAssistant";
 import CRMPipeline from "@/components/landing/CRMPipeline";
@@ -26,6 +27,7 @@ const Index = () => {
         <Problem />
         <Solution />
         <DashboardPreview />
+        <OrchestrationFlow />
         <AutomationEngine />
         <AIAssistant />
         <CRMPipeline />
