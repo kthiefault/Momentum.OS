@@ -1,6 +1,11 @@
+import { useRef } from "react";
 import SectionLabel from "./effects/SectionLabel";
+import { useCountUp } from "@/hooks/use-count-up";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect } from "react";
 
-const outcomes = [
+const rawOutcomes = [
   { metric: "41h", label: "reclaimed per operator, per week", note: "boring work, automated" },
   { metric: "2.4×", label: "lift in pipeline velocity", note: "AI-prioritized next actions" },
   { metric: "94%", label: "forecast accuracy at quarter-end", note: "vs. ~62% pre-Momentum" },
@@ -13,9 +18,53 @@ const quote = {
   role: "COO, Atlas Group",
 };
 
-const Outcomes = () => {
+function OutcomeMetric({ metric, label, note }: { metric: string; label: string; note: string }) {
+  const { display, ref } = useCountUp(metric, 1600);
+
   return (
-    <section id="outcomes" className="relative isolate overflow-hidden py-32 sm:py-40">
+    <div className="group relative bg-background p-8 transition-colors hover:bg-card/60">
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        style={{ background: "linear-gradient(90deg, transparent, hsl(22 95% 58%), transparent)" }}
+      />
+      <p
+        ref={ref as React.RefObject<HTMLParagraphElement>}
+        className="font-display text-5xl text-ember sm:text-6xl"
+      >
+        {display}
+      </p>
+      <p className="mt-4 text-sm font-medium text-foreground/90">{label}</p>
+      <p className="mt-1 text-xs text-muted-foreground">{note}</p>
+    </div>
+  );
+}
+
+const Outcomes = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+    const ctx = gsap.context(() => {
+      gsap.from(".outcomes-header", {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 78%", once: true },
+        opacity: 0, y: 40, duration: 0.9, ease: "power2.out",
+      });
+      gsap.from(".outcomes-grid", {
+        scrollTrigger: { trigger: ".outcomes-grid", start: "top 82%", once: true },
+        opacity: 0, y: 30, duration: 0.8, ease: "power2.out",
+      });
+      gsap.from(".outcomes-quote", {
+        scrollTrigger: { trigger: ".outcomes-quote", start: "top 86%", once: true },
+        opacity: 0, y: 30, duration: 0.9, ease: "power2.out",
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={sectionRef} id="outcomes" className="relative isolate overflow-hidden py-32 sm:py-40">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -26,7 +75,7 @@ const Outcomes = () => {
       />
 
       <div className="container relative">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="outcomes-header mx-auto max-w-3xl text-center">
           <div className="flex justify-center">
             <SectionLabel index="07" label="The transformation" tone="ember" />
           </div>
@@ -41,32 +90,13 @@ const Outcomes = () => {
           </p>
         </div>
 
-        <div className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border/60 bg-border/60 md:grid-cols-4">
-          {outcomes.map((o) => (
-            <div
-              key={o.label}
-              className="group relative bg-background p-8 transition-colors hover:bg-card/60"
-            >
-              <div
-                aria-hidden
-                className="absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                style={{
-                  background:
-                    "linear-gradient(90deg, transparent, hsl(22 95% 58%), transparent)",
-                }}
-              />
-              <p className="font-display text-5xl text-ember sm:text-6xl">
-                {o.metric}
-              </p>
-              <p className="mt-4 text-sm font-medium text-foreground/90">
-                {o.label}
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">{o.note}</p>
-            </div>
+        <div className="outcomes-grid mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border/60 bg-border/60 md:grid-cols-4">
+          {rawOutcomes.map((o) => (
+            <OutcomeMetric key={o.metric} {...o} />
           ))}
         </div>
 
-        <figure className="mx-auto mt-20 max-w-3xl text-center">
+        <figure className="outcomes-quote mx-auto mt-20 max-w-3xl text-center">
           <blockquote className="text-balance font-display text-2xl italic leading-snug text-foreground/95 sm:text-3xl md:text-4xl">
             &ldquo;{quote.body}&rdquo;
           </blockquote>

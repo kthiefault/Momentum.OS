@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Activity, ArrowUpRight, Bot, Circle, DollarSign, Sparkles, TrendingUp, Users, Workflow, Zap } from "lucide-react";
 import SectionLabel from "./effects/SectionLabel";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const tabs = [
   { id: "command", label: "Command", icon: Activity },
@@ -22,38 +24,85 @@ const sparklinePath = (values: number[], w: number, h: number) => {
     .join(" ");
 };
 
+const kpis = [
+  { label: "Pipeline value", val: "$1.84M", delta: "+12.4%", icon: DollarSign },
+  { label: "Win rate", val: "38.2%", delta: "+4.1pt", icon: TrendingUp },
+  { label: "Active deals", val: "127", delta: "+8", icon: Users },
+  { label: "Hours reclaimed", val: "412", delta: "this wk", icon: Zap },
+];
+
+const activity = [
+  { dot: "ember", text: "Atlas closed Helix Capital · $48K", t: "now" },
+  { dot: "ice", text: "Workflow ‹Onboarding-v3› auto-fired", t: "1m" },
+  { dot: "green", text: "Renewal signal · NORTHWIND high", t: "4m" },
+  { dot: "ember", text: "Vesta drafted Q3 forecast", t: "8m" },
+  { dot: "ice", text: "Mercury cleared 14 ops tickets", t: "12m" },
+];
+
+const pipeline = [
+  { stage: "Discover", value: "$420K", count: 38, fill: 70 },
+  { stage: "Qualify", value: "$310K", count: 21, fill: 55 },
+  { stage: "Propose", value: "$280K", count: 14, fill: 42 },
+  { stage: "Negotiate", value: "$210K", count: 9, fill: 30 },
+  { stage: "Close", value: "$118K", count: 5, fill: 18 },
+];
+
 const DashboardPreview = () => {
   const [tab, setTab] = useState<string>("command");
-  const [revealed, setRevealed] = useState<boolean>(false);
-  const ref = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            setRevealed(true);
-            obs.disconnect();
-          }
-        }
-      },
-      { threshold: 0.15 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+  const [phase, setPhase] = useState<number>(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const dashRef = useRef<HTMLDivElement>(null);
 
   const trend = [12, 18, 15, 22, 28, 24, 35, 32, 40, 38, 47, 52, 49, 58, 64];
   const trendPath = sparklinePath(trend, 220, 60);
 
+  useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const el = dashRef.current;
+    if (!el) return;
+
+    if (prefersReduced) {
+      setPhase(6);
+      return;
+    }
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        obs.disconnect();
+
+        const delays = [0, 180, 350, 550, 750, 950];
+        delays.forEach((d, i) => {
+          setTimeout(() => setPhase(i + 1), d);
+        });
+      },
+      { threshold: 0.18 }
+    );
+    obs.observe(el);
+
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+    const ctx = gsap.context(() => {
+      gsap.from(".dash-header", {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 78%", once: true },
+        opacity: 0, y: 36, duration: 0.9, ease: "power2.out",
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
+  const visible = (minPhase: number) =>
+    phase >= minPhase
+      ? "opacity-100 translate-y-0"
+      : "opacity-0 translate-y-3 pointer-events-none";
+
   return (
-    <section id="preview" className="relative isolate overflow-hidden py-32 sm:py-40">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 mask-radial bg-grid-fine opacity-60"
-      />
+    <section ref={sectionRef} id="preview" className="relative isolate overflow-hidden py-32 sm:py-40">
+      <div aria-hidden className="pointer-events-none absolute inset-0 mask-radial bg-grid-fine opacity-60" />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -64,7 +113,7 @@ const DashboardPreview = () => {
       />
 
       <div className="container relative">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="dash-header mx-auto max-w-3xl text-center">
           <div className="flex justify-center">
             <SectionLabel index="03" label="Live preview" tone="ice" />
           </div>
@@ -78,14 +127,7 @@ const DashboardPreview = () => {
           </p>
         </div>
 
-        <div
-          ref={ref}
-          className={`relative mx-auto mt-16 max-w-6xl transition-all duration-1000 ${
-            revealed
-              ? "translate-y-0 opacity-100"
-              : "translate-y-12 opacity-0"
-          }`}
-        >
+        <div ref={dashRef} className="relative mx-auto mt-16 max-w-6xl">
           {/* Outer glow */}
           <div
             aria-hidden
@@ -97,9 +139,13 @@ const DashboardPreview = () => {
             }}
           />
 
-          <div className="glass-strong relative overflow-hidden rounded-2xl">
+          <div
+            className={`glass-strong relative overflow-hidden rounded-2xl transition-all duration-700 ${
+              phase >= 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
             {/* Window chrome */}
-            <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
+            <div className={`flex items-center justify-between border-b border-border/60 px-4 py-3 transition-all duration-500 ${visible(1)}`}>
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-[hsl(0_80%_55%)]/70" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[hsl(40_90%_55%)]/70" />
@@ -117,7 +163,7 @@ const DashboardPreview = () => {
             </div>
 
             {/* Tabs */}
-            <div className="flex items-center gap-1 border-b border-border/60 px-3 py-2">
+            <div className={`flex items-center gap-1 border-b border-border/60 px-3 py-2 transition-all duration-500 delay-[100ms] ${visible(2)}`}>
               {tabs.map((t) => {
                 const active = tab === t.id;
                 return (
@@ -147,52 +193,49 @@ const DashboardPreview = () => {
             {/* Body */}
             <div className="grid grid-cols-12 gap-4 p-4 lg:p-6">
               {/* Sidebar */}
-              <aside className="col-span-12 lg:col-span-3">
+              <aside className={`col-span-12 lg:col-span-3 transition-all duration-500 delay-[150ms] ${visible(2)}`}>
                 <div className="rounded-xl border border-border/60 bg-background/40 p-3">
-                  <p className="px-2 pb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
-                    Today
-                  </p>
+                  <p className="px-2 pb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">Today</p>
                   {[
                     { label: "Inbox triage", count: 24, dot: "bg-ember" },
                     { label: "Pipeline review", count: 7, dot: "bg-ice" },
                     { label: "Renewals due", count: 3, dot: "bg-[hsl(140_70%_55%)]" },
                     { label: "Agent escalations", count: 1, dot: "bg-[hsl(0_80%_60%)]" },
-                  ].map((i) => (
+                  ].map((item, idx) => (
                     <button
-                      key={i.label}
-                      className="flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-xs text-foreground/80 transition-colors hover:bg-secondary/60"
+                      key={item.label}
+                      className={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-xs text-foreground/80 transition-all duration-300 hover:bg-secondary/60 ${
+                        phase >= 3 ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-3"
+                      }`}
+                      style={{ transitionDelay: `${idx * 60}ms` }}
                     >
                       <span className="flex items-center gap-2">
-                        <span className={`h-1.5 w-1.5 rounded-full ${i.dot}`} />
-                        {i.label}
+                        <span className={`h-1.5 w-1.5 rounded-full ${item.dot}`} />
+                        {item.label}
                       </span>
-                      <span className="font-mono text-muted-foreground">
-                        {i.count}
-                      </span>
+                      <span className="font-mono text-muted-foreground">{item.count}</span>
                     </button>
                   ))}
                 </div>
-
                 <div className="mt-3 rounded-xl border border-border/60 bg-background/40 p-3">
-                  <p className="px-2 pb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
-                    Agents online
-                  </p>
+                  <p className="px-2 pb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">Agents online</p>
                   {[
                     { name: "Atlas / Sales", status: "running" },
                     { name: "Mercury / Ops", status: "running" },
                     { name: "Vesta / Finance", status: "idle" },
-                  ].map((a) => (
+                  ].map((a, idx) => (
                     <div
                       key={a.name}
-                      className="flex items-center justify-between rounded-md px-2 py-1.5 text-xs"
+                      className={`flex items-center justify-between rounded-md px-2 py-1.5 text-xs transition-all duration-300 ${
+                        phase >= 3 ? "opacity-100" : "opacity-0"
+                      }`}
+                      style={{ transitionDelay: `${240 + idx * 60}ms` }}
                     >
                       <span className="flex items-center gap-2 text-foreground/80">
                         <Bot className="h-3.5 w-3.5 text-muted-foreground" />
                         {a.name}
                       </span>
-                      <span className="font-mono text-[10px] text-muted-foreground">
-                        {a.status}
-                      </span>
+                      <span className="font-mono text-[10px] text-muted-foreground">{a.status}</span>
                     </div>
                   ))}
                 </div>
@@ -202,36 +245,28 @@ const DashboardPreview = () => {
               <main className="col-span-12 space-y-4 lg:col-span-9">
                 {/* KPI row */}
                 <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                  {[
-                    { label: "Pipeline value", val: "$1.84M", delta: "+12.4%", icon: DollarSign },
-                    { label: "Win rate", val: "38.2%", delta: "+4.1pt", icon: TrendingUp },
-                    { label: "Active deals", val: "127", delta: "+8", icon: Users },
-                    { label: "Hours reclaimed", val: "412", delta: "this wk", icon: Zap },
-                  ].map((k) => (
+                  {kpis.map((k, idx) => (
                     <div
                       key={k.label}
-                      className="rounded-xl border border-border/60 bg-background/40 p-3"
+                      className={`rounded-xl border border-border/60 bg-background/40 p-3 transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_hsl(0_0%_0%/0.3)] ${
+                        phase >= 4 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                      }`}
+                      style={{ transitionDelay: `${idx * 70}ms` }}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/70">
-                          {k.label}
-                        </span>
+                        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/70">{k.label}</span>
                         <k.icon className="h-3.5 w-3.5 text-muted-foreground" />
                       </div>
                       <div className="mt-2 flex items-baseline gap-2">
-                        <p className="text-xl font-medium tracking-tight">
-                          {k.val}
-                        </p>
-                        <span className="font-mono text-[10px] text-[hsl(140_70%_60%)]">
-                          {k.delta}
-                        </span>
+                        <p className="text-xl font-medium tracking-tight">{k.val}</p>
+                        <span className="font-mono text-[10px] text-[hsl(140_70%_60%)]">{k.delta}</span>
                       </div>
                     </div>
                   ))}
                 </div>
 
                 {/* Chart + activity */}
-                <div className="grid grid-cols-1 gap-3 lg:grid-cols-5">
+                <div className={`grid grid-cols-1 gap-3 lg:grid-cols-5 transition-all duration-[600ms] delay-[200ms] ${visible(4)}`}>
                   <div className="col-span-1 rounded-xl border border-border/60 bg-background/40 p-4 lg:col-span-3">
                     <div className="flex items-center justify-between">
                       <div>
@@ -246,13 +281,8 @@ const DashboardPreview = () => {
                         Drill in
                       </button>
                     </div>
-
                     <div className="relative mt-4 h-[88px] w-full overflow-hidden">
-                      <svg
-                        viewBox="0 0 220 60"
-                        preserveAspectRatio="none"
-                        className="h-full w-full"
-                      >
+                      <svg viewBox="0 0 220 60" preserveAspectRatio="none" className="h-full w-full">
                         <defs>
                           <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
                             <stop offset="0%" stopColor="hsl(22 95% 58%)" stopOpacity="0.5" />
@@ -263,7 +293,11 @@ const DashboardPreview = () => {
                             <stop offset="100%" stopColor="hsl(192 90% 70%)" />
                           </linearGradient>
                         </defs>
-                        <path d={`${trendPath} L 220,60 L 0,60 Z`} fill="url(#g1)" />
+                        <path
+                          d={`${trendPath} L 220,60 L 0,60 Z`}
+                          fill="url(#g1)"
+                          className={`transition-all duration-1000 origin-left ${phase >= 5 ? "scale-x-100" : "scale-x-0"}`}
+                        />
                         <path
                           d={trendPath}
                           fill="none"
@@ -271,41 +305,40 @@ const DashboardPreview = () => {
                           strokeWidth="1.6"
                           strokeLinecap="round"
                           strokeLinejoin="round"
+                          strokeDasharray="400"
+                          strokeDashoffset={phase >= 5 ? "0" : "400"}
+                          className="transition-all duration-[1200ms] ease-out"
+                          style={{ transitionDelay: "200ms" }}
                         />
                         <circle
                           cx="220"
                           cy={60 - ((trend[trend.length - 1] - Math.min(...trend)) / (Math.max(...trend) - Math.min(...trend))) * 60}
                           r="3"
                           fill="hsl(22 95% 58%)"
+                          className={`transition-opacity duration-300 ${phase >= 5 ? "opacity-100" : "opacity-0"}`}
                         >
                           <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
                         </circle>
                       </svg>
                     </div>
-
                     <div className="mt-3 flex items-center justify-between font-mono text-[10px] text-muted-foreground/70">
-                      <span>w-30</span>
-                      <span>w-28</span>
-                      <span>w-26</span>
-                      <span>w-24</span>
-                      <span>w-22</span>
-                      <span>now</span>
+                      {["w-30", "w-28", "w-26", "w-24", "w-22", "now"].map((l) => (
+                        <span key={l}>{l}</span>
+                      ))}
                     </div>
                   </div>
 
                   <div className="col-span-1 rounded-xl border border-border/60 bg-background/40 p-4 lg:col-span-2">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
-                      Live activity
-                    </p>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">Live activity</p>
                     <ul className="mt-3 space-y-2.5">
-                      {[
-                        { dot: "ember", text: "Atlas closed Helix Capital · $48K", t: "now" },
-                        { dot: "ice", text: "Workflow ‹Onboarding-v3› auto-fired", t: "1m" },
-                        { dot: "green", text: "Renewal signal · NORTHWIND high", t: "4m" },
-                        { dot: "ember", text: "Vesta drafted Q3 forecast", t: "8m" },
-                        { dot: "ice", text: "Mercury cleared 14 ops tickets", t: "12m" },
-                      ].map((row, i) => (
-                        <li key={i} className="flex items-start gap-2.5 text-xs">
+                      {activity.map((row, i) => (
+                        <li
+                          key={i}
+                          className={`flex items-start gap-2.5 text-xs transition-all duration-300 ${
+                            phase >= 5 ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
+                          }`}
+                          style={{ transitionDelay: `${i * 80}ms` }}
+                        >
                           <span
                             className={`mt-1 h-1.5 w-1.5 flex-none rounded-full ${
                               row.dot === "ember"
@@ -316,9 +349,7 @@ const DashboardPreview = () => {
                             }`}
                           />
                           <span className="flex-1 text-foreground/85">{row.text}</span>
-                          <span className="font-mono text-[10px] text-muted-foreground/70">
-                            {row.t}
-                          </span>
+                          <span className="font-mono text-[10px] text-muted-foreground/70">{row.t}</span>
                         </li>
                       ))}
                     </ul>
@@ -326,48 +357,34 @@ const DashboardPreview = () => {
                 </div>
 
                 {/* Pipeline lane */}
-                <div className="rounded-xl border border-border/60 bg-background/40 p-4">
+                <div className={`rounded-xl border border-border/60 bg-background/40 p-4 transition-all duration-[600ms] delay-[300ms] ${visible(5)}`}>
                   <div className="flex items-center justify-between">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
-                      Pipeline · weighted
-                    </p>
-                    <span className="font-mono text-[10px] text-muted-foreground">
-                      AI-prioritized
-                    </span>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">Pipeline · weighted</p>
+                    <span className="font-mono text-[10px] text-muted-foreground">AI-prioritized</span>
                   </div>
                   <div className="mt-3 grid grid-cols-5 gap-2">
-                    {[
-                      { stage: "Discover", value: "$420K", count: 38, fill: 70 },
-                      { stage: "Qualify", value: "$310K", count: 21, fill: 55 },
-                      { stage: "Propose", value: "$280K", count: 14, fill: 42 },
-                      { stage: "Negotiate", value: "$210K", count: 9, fill: 30 },
-                      { stage: "Close", value: "$118K", count: 5, fill: 18 },
-                    ].map((s) => (
+                    {pipeline.map((s, idx) => (
                       <div key={s.stage} className="space-y-2">
                         <div className="flex items-center justify-between text-[10px]">
-                          <span className="font-mono uppercase tracking-[0.18em] text-muted-foreground/70">
-                            {s.stage}
-                          </span>
-                          <span className="font-mono text-muted-foreground">
-                            {s.count}
-                          </span>
+                          <span className="font-mono uppercase tracking-[0.18em] text-muted-foreground/70">{s.stage}</span>
+                          <span className="font-mono text-muted-foreground">{s.count}</span>
                         </div>
                         <div className="relative h-16 overflow-hidden rounded-md border border-border bg-secondary/40">
                           <div
                             className="absolute inset-x-0 bottom-0 transition-all duration-700"
                             style={{
-                              height: `${s.fill}%`,
-                              background:
-                                "linear-gradient(180deg, hsl(22 95% 58% / 0.5), hsl(22 95% 58% / 0.15))",
+                              height: phase >= 6 ? `${s.fill}%` : "0%",
+                              transitionDelay: `${idx * 80}ms`,
+                              background: "linear-gradient(180deg, hsl(22 95% 58% / 0.5), hsl(22 95% 58% / 0.15))",
                             }}
                           />
                           <div
                             aria-hidden
-                            className="absolute inset-x-0 top-0 h-px"
+                            className="absolute inset-x-0 top-0 h-px transition-all duration-700"
                             style={{
-                              top: `${100 - s.fill}%`,
-                              background:
-                                "linear-gradient(90deg, transparent, hsl(22 95% 58%), transparent)",
+                              top: phase >= 6 ? `${100 - s.fill}%` : "100%",
+                              transitionDelay: `${idx * 80}ms`,
+                              background: "linear-gradient(90deg, transparent, hsl(22 95% 58%), transparent)",
                             }}
                           />
                         </div>
@@ -380,7 +397,7 @@ const DashboardPreview = () => {
             </div>
 
             {/* Footer command bar */}
-            <div className="flex items-center justify-between border-t border-border/60 px-4 py-2.5">
+            <div className={`flex items-center justify-between border-t border-border/60 px-4 py-2.5 transition-all duration-500 delay-[400ms] ${visible(6)}`}>
               <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <Circle className="h-2 w-2 fill-[hsl(140_70%_55%)] text-[hsl(140_70%_55%)]" />
@@ -397,17 +414,11 @@ const DashboardPreview = () => {
               </div>
             </div>
 
-            {/* Soft scan line */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl"
-            >
+            {/* Scan line */}
+            <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
               <div
                 className="absolute inset-x-0 h-32 animate-scan opacity-[0.06]"
-                style={{
-                  background:
-                    "linear-gradient(180deg, transparent, hsl(192 90% 70%), transparent)",
-                }}
+                style={{ background: "linear-gradient(180deg, transparent, hsl(192 90% 70%), transparent)" }}
               />
             </div>
           </div>

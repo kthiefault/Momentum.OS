@@ -1,40 +1,67 @@
+import { useEffect, useRef } from "react";
 import { Bot, GitBranch, LineChart, Workflow } from "lucide-react";
 import SectionLabel from "./effects/SectionLabel";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const pillars = [
   {
     icon: Workflow,
     badge: "Workflows",
     title: "Composable execution graphs",
-    body:
-      "Every recurring process — onboarding, follow-up, renewal — becomes a versioned, observable workflow. No more tribal knowledge.",
+    body: "Every recurring process — onboarding, follow-up, renewal — becomes a versioned, observable workflow. No more tribal knowledge.",
   },
   {
     icon: Bot,
     badge: "AI agents",
     title: "Specialist agents on rails",
-    body:
-      "Drop-in copilots for sales, ops, and advisory. Trained on your data, constrained by your rules, accountable to your KPIs.",
+    body: "Drop-in copilots for sales, ops, and advisory. Trained on your data, constrained by your rules, accountable to your KPIs.",
   },
   {
     icon: GitBranch,
     badge: "CRM intelligence",
     title: "A pipeline that thinks",
-    body:
-      "Auto-enrichment, deal scoring, and prescriptive next-actions baked into the core. Forecast like a CFO without one.",
+    body: "Auto-enrichment, deal scoring, and prescriptive next-actions baked into the core. Forecast like a CFO without one.",
   },
   {
     icon: LineChart,
     badge: "Signal layer",
     title: "Real-time business OS",
-    body:
-      "A single canvas for cashflow, capacity, and conversion. Drill from KPI to the workflow that moved it in two clicks.",
+    body: "A single canvas for cashflow, capacity, and conversion. Drill from KPI to the workflow that moved it in two clicks.",
   },
 ];
 
 const Solution = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+    const ctx = gsap.context(() => {
+      gsap.from(".solution-header", {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 78%", once: true },
+        opacity: 0, y: 40, duration: 0.9, ease: "power2.out",
+      });
+      gsap.from(".solution-card", {
+        scrollTrigger: { trigger: ".solution-grid", start: "top 82%", once: true },
+        opacity: 0, y: 30, stagger: 0.1, duration: 0.75, ease: "power2.out",
+      });
+      gsap.from(".solution-tags span", {
+        scrollTrigger: { trigger: ".solution-tags", start: "top 88%", once: true },
+        opacity: 0, y: 12, scale: 0.9, stagger: 0.06, duration: 0.5, ease: "back.out(2)",
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty("--y", `${e.clientY - rect.top}px`);
+  };
+
   return (
-    <section id="solution" className="relative isolate overflow-hidden py-32 sm:py-40">
+    <section ref={sectionRef} id="solution" className="relative isolate overflow-hidden py-32 sm:py-40">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -46,7 +73,7 @@ const Solution = () => {
 
       <div className="container relative">
         <div className="grid gap-12 md:grid-cols-12">
-          <div className="md:col-span-5">
+          <div className="solution-header md:col-span-5">
             <SectionLabel index="02" label="The system" tone="ember" />
             <h2 className="mt-6 text-balance text-4xl font-medium leading-[1.05] tracking-[-0.03em] sm:text-5xl md:text-6xl">
               The{" "}
@@ -59,11 +86,11 @@ const Solution = () => {
               boring parts run themselves and you get back to deciding.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-2">
+            <div className="solution-tags mt-8 flex flex-wrap gap-2">
               {["Workflows", "Agents", "CRM", "Signals"].map((t) => (
                 <span
                   key={t}
-                  className="rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground"
+                  className="rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition-all duration-300 hover:border-ember/40 hover:text-ember"
                 >
                   {t}
                 </span>
@@ -72,13 +99,23 @@ const Solution = () => {
           </div>
 
           <div className="md:col-span-7">
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="solution-grid grid gap-3 sm:grid-cols-2">
               {pillars.map((p, i) => (
                 <div
                   key={p.title}
-                  className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/40 p-6 transition-all duration-500 hover:border-ember/50 hover:bg-card/70"
+                  onMouseMove={handleMouseMove}
+                  className="solution-card group relative overflow-hidden rounded-2xl border border-border/70 bg-card/40 p-6 transition-all duration-500 hover:border-ember/50 hover:bg-card/70 hover:-translate-y-1 hover:shadow-[0_16px_48px_hsl(0_0%_0%/0.4)]"
                   style={{ minHeight: 220 }}
                 >
+                  <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    <div
+                      className="absolute inset-0 rounded-2xl"
+                      style={{
+                        background:
+                          "radial-gradient(360px circle at var(--x, 50%) var(--y, 50%), hsl(22 95% 58% / 0.1), transparent 40%)",
+                      }}
+                    />
+                  </div>
                   <div className="pointer-events-none absolute -top-20 -right-20 h-44 w-44 rounded-full bg-ember/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
                   <div className="relative flex items-center justify-between">
                     <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground/70">
@@ -86,12 +123,8 @@ const Solution = () => {
                     </span>
                     <p.icon className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-ember" />
                   </div>
-                  <h3 className="relative mt-6 text-lg font-medium tracking-tight">
-                    {p.title}
-                  </h3>
-                  <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {p.body}
-                  </p>
+                  <h3 className="relative mt-6 text-lg font-medium tracking-tight">{p.title}</h3>
+                  <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
                 </div>
               ))}
             </div>

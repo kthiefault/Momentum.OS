@@ -11,10 +11,14 @@ import Pricing from "@/components/landing/Pricing";
 import FinalCTA from "@/components/landing/FinalCTA";
 import Footer from "@/components/landing/Footer";
 import NoiseOverlay from "@/components/landing/effects/NoiseOverlay";
+import CustomCursor from "@/components/landing/effects/CustomCursor";
+import GradientMesh from "@/components/landing/effects/GradientMesh";
 
 const Index = () => {
   return (
     <div className="relative min-h-screen bg-background text-foreground antialiased">
+      <CustomCursor />
+      <GradientMesh />
       <NoiseOverlay />
       <Navbar />
       <main>

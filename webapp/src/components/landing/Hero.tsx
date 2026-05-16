@@ -1,12 +1,42 @@
+import { useEffect, useRef } from "react";
 import { ArrowRight, Play, Sparkles } from "lucide-react";
 import AmbientOrbs from "./effects/AmbientOrbs";
 import GridBackdrop from "./effects/GridBackdrop";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const Hero = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+    const ctx = gsap.context(() => {
+      // Background layers drift upward slower than scroll → depth
+      gsap.to(bgRef.current, {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.8,
+        },
+        y: -140,
+        ease: "none",
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative isolate flex min-h-[100svh] items-center overflow-hidden pt-28 pb-24">
-      <GridBackdrop />
-      <AmbientOrbs />
+    <section
+      ref={sectionRef}
+      className="relative isolate flex min-h-[100svh] items-center overflow-hidden pt-28 pb-24"
+    >
+      <div ref={bgRef} className="absolute inset-0 will-change-transform">
+        <GridBackdrop />
+        <AmbientOrbs />
+      </div>
 
       <div
         aria-hidden
@@ -54,16 +84,18 @@ const Hero = () => {
           >
             <a
               href="#cta"
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition-all hover:scale-[1.02]"
+              data-magnetic
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition-all duration-300 hover:scale-[1.04] hover:shadow-[0_8px_32px_hsl(22_95%_58%/0.3)]"
+              style={{ willChange: "transform" }}
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-ember/0 via-ember/30 to-ember/0 opacity-0 transition-opacity group-hover:opacity-100" />
+              <span className="absolute inset-0 bg-gradient-to-r from-ember/0 via-ember/25 to-ember/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <Sparkles className="relative h-4 w-4" />
               <span className="relative">Get early access</span>
               <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
             <a
               href="#preview"
-              className="group inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/40 px-5 py-3 text-sm text-foreground backdrop-blur transition-all hover:bg-card/80"
+              className="group inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/40 px-5 py-3 text-sm text-foreground backdrop-blur transition-all duration-300 hover:bg-card/80 hover:shadow-[0_4px_20px_hsl(0_0%_0%/0.3)]"
             >
               <span className="flex h-6 w-6 items-center justify-center rounded-full border border-border bg-background">
                 <Play className="h-3 w-3 fill-foreground text-foreground" />
