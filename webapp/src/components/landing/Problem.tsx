@@ -5,12 +5,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const chaos = [
-  { icon: Inbox, title: "Lead chaos", line: "Spreadsheets, sticky notes, and a CRM no one updates." },
-  { icon: Clock, title: "Time hemorrhage", line: "Operators trapped doing $40/hour tasks all week." },
-  { icon: Network, title: "Disconnected tools", line: "Twelve tabs, zero source of truth, infinite context-switching." },
-  { icon: Receipt, title: "Invisible cashflow", line: "Pipeline gut-feel. No forecast. No early-warning signals." },
-  { icon: Layers, title: "Manual handoffs", line: "Sales → ops → finance. Every transition leaks revenue." },
-  { icon: AlertTriangle, title: "Founder bottleneck", line: "Nothing happens unless you personally push it through." },
+  { icon: Inbox, title: "Leads falling through", line: "Contacts live in three different places and nobody's following up." },
+  { icon: Clock, title: "Hours wasted on low-value work", line: "You're spending your week on $20/hour tasks instead of $200/hour ones." },
+  { icon: Network, title: "Too many tabs open", line: "Email, Slack, your CRM, your spreadsheet — and none of them talk to each other." },
+  { icon: Receipt, title: "No idea what's coming in", line: "Your revenue forecast is basically a guess. You find out too late when things go wrong." },
+  { icon: Layers, title: "Things fall through the cracks", line: "Sales passes to ops, ops passes to finance — and something always gets lost in the handoff." },
+  { icon: AlertTriangle, title: "Everything depends on you", line: "If you're not pushing it, it doesn't happen. You're the bottleneck in your own business." },
 ];
 
 const Problem = () => {
@@ -57,15 +57,11 @@ const Problem = () => {
         <div className="problem-header mx-auto max-w-3xl">
           <SectionLabel index="01" label="The problem" tone="ember" />
           <h2 className="mt-6 text-balance text-4xl font-medium leading-[1.05] tracking-[-0.03em] sm:text-5xl md:text-6xl">
-            Running a business today feels like{" "}
-            <span className="font-display italic text-muted-foreground">
-              orchestrating a fire
-            </span>{" "}
-            with wet matches.
+            Running a business feels like this:
           </h2>
           <p className="mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            You didn't start your company to drown in ops. But every operator
-            we meet is running the same six fires at the same time.
+            You didn't start this to become an admin. But here you are, buried
+            in tasks that someone — or something — else should be doing.
           </p>
         </div>
 
@@ -100,12 +96,8 @@ const Problem = () => {
         </div>
 
         <div className="problem-footer mt-16 flex flex-col items-start justify-between gap-4 border-t border-border/60 pt-8 md:flex-row md:items-center">
-          <p className="max-w-xl text-sm text-muted-foreground">
-            The cost isn't your tools. The cost is the friction between them —
-            the thousand invisible handoffs where momentum dies.
-          </p>
           <p className="font-display text-3xl italic text-ember">
-            That's what we built Momentum.OS to fix.
+            That's what Momentum was built to fix.
           </p>
         </div>
       </div>

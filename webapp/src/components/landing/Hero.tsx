@@ -55,7 +55,7 @@ const Hero = () => {
           >
             <span className="flex h-1.5 w-1.5 rounded-full bg-ember shadow-[0_0_10px_2px_hsl(22_95%_58%/0.8)]" />
             <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-              v1.0 — Now in private preview
+              Now in early access
             </span>
           </div>
 
@@ -63,19 +63,16 @@ const Hero = () => {
             className="reveal-up text-balance text-[44px] font-medium leading-[1.02] tracking-[-0.035em] sm:text-6xl md:text-7xl lg:text-[88px]"
             style={{ animationDelay: "0.15s" }}
           >
-            Build Momentum.
-            <br />
-            <span className="font-display italic text-ember">Automate</span>{" "}
-            everything else.
+            Your business,{" "}
+            <span className="font-display italic text-ember">on autopilot.</span>
           </h1>
 
           <p
             className="reveal-up mx-auto mt-7 max-w-2xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg"
             style={{ animationDelay: "0.3s" }}
           >
-            The AI-powered execution operating system for entrepreneurs,
-            advisors, and operators. Turn chaotic businesses into structured,
-            compounding systems.
+            Stop drowning in tasks. Momentum connects your tools, automates the
+            routine work, and keeps you focused on what actually moves the needle.
           </p>
 
           <div
@@ -90,7 +87,7 @@ const Hero = () => {
             >
               <span className="absolute inset-0 bg-gradient-to-r from-ember/0 via-ember/25 to-ember/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <Sparkles className="relative h-4 w-4" />
-              <span className="relative">Get early access</span>
+              <span className="relative">Start for free</span>
               <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
             <a
@@ -100,7 +97,7 @@ const Hero = () => {
               <span className="flex h-6 w-6 items-center justify-center rounded-full border border-border bg-background">
                 <Play className="h-3 w-3 fill-foreground text-foreground" />
               </span>
-              Watch the product film
+              See how it works
               <span className="text-muted-foreground">2:14</span>
             </a>
           </div>

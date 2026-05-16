@@ -7,27 +7,27 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 const pillars = [
   {
     icon: Workflow,
-    badge: "Workflows",
-    title: "Composable execution graphs",
-    body: "Every recurring process — onboarding, follow-up, renewal — becomes a versioned, observable workflow. No more tribal knowledge.",
+    badge: "Automations",
+    title: "Your processes, on rails",
+    body: "Every recurring task — welcome emails, follow-ups, check-ins — runs automatically. Set it up once and forget it.",
   },
   {
     icon: Bot,
-    badge: "AI agents",
-    title: "Specialist agents on rails",
-    body: "Drop-in copilots for sales, ops, and advisory. Trained on your data, constrained by your rules, accountable to your KPIs.",
+    badge: "AI Assistants",
+    title: "Help that actually helps",
+    body: "AI trained on your business handles emails, writes summaries, and flags what needs your attention. No prompts needed.",
   },
   {
     icon: GitBranch,
-    badge: "CRM intelligence",
-    title: "A pipeline that thinks",
-    body: "Auto-enrichment, deal scoring, and prescriptive next-actions baked into the core. Forecast like a CFO without one.",
+    badge: "Smart CRM",
+    title: "Never lose a lead again",
+    body: "Contacts are automatically enriched, deals are scored, and you always know who to call next. No manual updates.",
   },
   {
     icon: LineChart,
-    badge: "Signal layer",
-    title: "Real-time business OS",
-    body: "A single canvas for cashflow, capacity, and conversion. Drill from KPI to the workflow that moved it in two clicks.",
+    badge: "Live Dashboard",
+    title: "Your whole business in one view",
+    body: "See your pipeline, revenue, and team activity in real time. Drill into any number to understand exactly what's driving it.",
   },
 ];
 
@@ -76,18 +76,15 @@ const Solution = () => {
           <div className="solution-header md:col-span-5">
             <SectionLabel index="02" label="The system" tone="ember" />
             <h2 className="mt-6 text-balance text-4xl font-medium leading-[1.05] tracking-[-0.03em] sm:text-5xl md:text-6xl">
-              The{" "}
-              <span className="font-display italic text-ember">operating system</span>{" "}
-              for operators.
+              One app. Everything handled.
             </h2>
             <p className="mt-6 max-w-md text-base text-muted-foreground sm:text-lg">
-              One canvas. Four primitives. Infinite leverage. Momentum.OS
-              installs an execution layer on top of your business — so the
-              boring parts run themselves and you get back to deciding.
+              Momentum plugs into your business and quietly takes care of the
+              parts that shouldn't need you. Here's what's under the hood.
             </p>
 
             <div className="solution-tags mt-8 flex flex-wrap gap-2">
-              {["Workflows", "Agents", "CRM", "Signals"].map((t) => (
+              {["Automations", "AI Help", "CRM", "Dashboard"].map((t) => (
                 <span
                   key={t}
                   className="rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition-all duration-300 hover:border-ember/40 hover:text-ember"

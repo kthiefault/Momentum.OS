@@ -2,6 +2,7 @@ import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
 import Problem from "@/components/landing/Problem";
 import Solution from "@/components/landing/Solution";
+import Phases from "@/components/landing/Phases";
 import DashboardPreview from "@/components/landing/DashboardPreview";
 import OrchestrationFlow from "@/components/landing/OrchestrationFlow";
 import AutomationEngine from "@/components/landing/AutomationEngine";
@@ -26,6 +27,7 @@ const Index = () => {
         <Hero />
         <Problem />
         <Solution />
+        <Phases />
         <DashboardPreview />
         <OrchestrationFlow />
         <AutomationEngine />
