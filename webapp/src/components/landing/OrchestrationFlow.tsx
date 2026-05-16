@@ -1,66 +1,121 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Database, Cpu, GitBranch, ChevronDown } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ─── Layout ──────────────────────────────────────────────────────────────────
-const VW = 900;
+// ─── SVG layout (left panel is HTML, so SVG starts at x=0) ──────────────────
+const VW = 700;
 const VH = 460;
-const HUB = { x: 445, y: 230 };
-const PROX = 130;   // px radius where proximity glow activates
-const SAMPLES = 64; // samples per path for proximity math
+const HUB = { x: 332, y: 230 };
+const PROX = 130;
+const SAMPLES = 64;
 
-// ─── Data ────────────────────────────────────────────────────────────────────
-const INPUT_NODES = [
-  { id: "in0", cx: 65, cy: 90,  label: "SOURCES",      sub: "CRM · ERP · Files" },
-  { id: "in1", cx: 65, cy: 230, label: "SYSTEMS",      sub: "APIs · Webhooks" },
-  { id: "in2", cx: 65, cy: 370, label: "INTEGRATIONS", sub: "150+ connectors" },
-] as const;
-
-const OUTPUT_NODES = [
-  { id: "out0", cx: 815, cy: 85,  label: "Enrich" },
-  { id: "out1", cx: 815, cy: 170, label: "Route"  },
-  { id: "out2", cx: 815, cy: 292, label: "Draft"  },
-  { id: "out3", cx: 815, cy: 375, label: "Book"   },
-] as const;
-
-// Circuit-board paths: sharp segments with 16 px quadratic rounded corners
+// Paths now start at x=0 (left edge of SVG, adjacent to HTML panel)
 const PATHS = [
-  // Inputs → hub
-  { id: "pi0", d: `M 113,90 H 193 Q 209,90 209,106 V 214 Q 209,230 225,230 H 431` },
-  { id: "pi1", d: `M 113,230 H 431` },
-  { id: "pi2", d: `M 113,370 H 193 Q 209,370 209,354 V 246 Q 209,230 225,230 H 431` },
-  // Hub → outputs
-  { id: "po0", d: `M 459,230 H 631 Q 647,230 647,214 V 101 Q 647,85 663,85 H 815` },
-  { id: "po1", d: `M 459,230 H 595 Q 611,230 611,214 V 186 Q 611,170 627,170 H 815` },
-  { id: "po2", d: `M 459,230 H 595 Q 611,230 611,246 V 276 Q 611,292 627,292 H 815` },
-  { id: "po3", d: `M 459,230 H 631 Q 647,230 647,246 V 359 Q 647,375 663,375 H 815` },
+  { id: "pi0", d: `M 0,90 H 80 Q 96,90 96,106 V 214 Q 96,230 112,230 H 318` },
+  { id: "pi1", d: `M 0,230 H 318` },
+  { id: "pi2", d: `M 0,370 H 80 Q 96,370 96,354 V 246 Q 96,230 112,230 H 318` },
+  { id: "po0", d: `M 346,230 H 518 Q 534,230 534,214 V 101 Q 534,85 550,85 H 700` },
+  { id: "po1", d: `M 346,230 H 482 Q 498,230 498,214 V 186 Q 498,170 514,170 H 700` },
+  { id: "po2", d: `M 346,230 H 482 Q 498,230 498,246 V 276 Q 498,292 514,292 H 700` },
+  { id: "po3", d: `M 346,230 H 518 Q 534,230 534,246 V 359 Q 534,375 550,375 H 700` },
 ] as const;
 
-// Dots at path bends / junctions
 const JUNCTION_DOTS = [
-  { x: 209, y: 90  }, { x: 209, y: 230 }, { x: 209, y: 370 },
-  { x: 340, y: 230 }, { x: 550, y: 230 },
-  { x: 647, y: 85  }, { x: 611, y: 170 }, { x: 611, y: 292 }, { x: 647, y: 375 },
+  { x: 96,  y: 90  }, { x: 96,  y: 230 }, { x: 96,  y: 370 },
+  { x: 227, y: 230 }, { x: 437, y: 230 },
+  { x: 534, y: 85  }, { x: 498, y: 170 }, { x: 498, y: 292 }, { x: 534, y: 375 },
 ];
 
-// Subtle ambient star-field coordinates
+const OUTPUT_NODES = [
+  { id: "out0", cx: 700, cy: 85,  label: "Enrich" },
+  { id: "out1", cx: 700, cy: 170, label: "Route"  },
+  { id: "out2", cx: 700, cy: 292, label: "Draft"  },
+  { id: "out3", cx: 700, cy: 375, label: "Book"   },
+] as const;
+
 const STARS = [
-  [140,45],[355,28],[590,70],[762,40],[868,174],
-  [125,188],[278,158],[498,128],[728,196],[876,118],
-  [158,318],[348,386],[548,338],[718,406],[836,288],
-  [422,54],[672,148],[312,446],[758,362],[190,408],
-  [530,400],[680,320],[820,230],[100,300],[450,50],
+  [60,40],[200,22],[380,65],[540,38],[660,168],
+  [30,185],[155,152],[310,122],[520,190],[660,112],
+  [80,315],[240,382],[420,332],[580,402],[640,282],
+  [310,50],[480,148],[160,440],[540,358],[100,298],
 ];
 
 const PHASES = ["Phase 1", "Phase 2", "Phase 3"];
 
+// ─── Source node data ─────────────────────────────────────────────────────────
+interface ExampleItem {
+  name: string;
+  tag: string;
+  status: "live" | "connected" | "available";
+}
+
+interface InputNodeDef {
+  id: string;
+  icon: React.ElementType;
+  label: string;
+  sub: string;
+  yPct: number;   // vertical center as % of SVG height (matches path y)
+  examples: ExampleItem[];
+}
+
+const INPUT_NODES: InputNodeDef[] = [
+  {
+    id: "in0",
+    icon: Database,
+    label: "Sources",
+    sub: "CRM · ERP · Files",
+    yPct: 90 / VH,
+    examples: [
+      { name: "Salesforce", tag: "CRM",    status: "live"      },
+      { name: "HubSpot",    tag: "CRM",    status: "live"      },
+      { name: "Notion",     tag: "Docs",   status: "connected" },
+      { name: "Airtable",   tag: "DB",     status: "connected" },
+      { name: "Google Sheets", tag: "Sheets", status: "available" },
+    ],
+  },
+  {
+    id: "in1",
+    icon: Cpu,
+    label: "Systems",
+    sub: "APIs · Webhooks",
+    yPct: 230 / VH,
+    examples: [
+      { name: "REST API",    tag: "HTTP",    status: "live"      },
+      { name: "Slack",       tag: "Webhook", status: "live"      },
+      { name: "Jira",        tag: "Tickets", status: "connected" },
+      { name: "GitHub",      tag: "Events",  status: "connected" },
+      { name: "Linear",      tag: "Issues",  status: "available" },
+    ],
+  },
+  {
+    id: "in2",
+    icon: GitBranch,
+    label: "Integrations",
+    sub: "150+ connectors",
+    yPct: 370 / VH,
+    examples: [
+      { name: "Gmail",    tag: "Email",   status: "live"      },
+      { name: "Stripe",   tag: "Billing", status: "live"      },
+      { name: "Twilio",   tag: "SMS",     status: "connected" },
+      { name: "Shopify",  tag: "Commerce",status: "connected" },
+      { name: "PostgreSQL", tag: "DB",    status: "available" },
+    ],
+  },
+];
+
+const STATUS_DOT: Record<ExampleItem["status"], string> = {
+  live:      "bg-emerald-400",
+  connected: "bg-white/40",
+  available: "bg-white/15",
+};
+
 // ─── Pulse particle ───────────────────────────────────────────────────────────
-// Travels along a static SVG path via rAF + getPointAtLength
 function Pulse({ pathId, startOffset }: { pathId: string; startOffset: number }) {
   const ref = useRef<SVGCircleElement>(null);
-  const t = useRef(startOffset);
+  const t   = useRef(startOffset);
 
   useEffect(() => {
     const el = document.getElementById(pathId) as SVGPathElement | null;
@@ -80,34 +135,140 @@ function Pulse({ pathId, startOffset }: { pathId: string; startOffset: number })
     return () => cancelAnimationFrame(raf);
   }, [pathId]);
 
+  return <circle ref={ref} r={2.2} fill="white" opacity={0.82} filter="url(#dot-glow)" />;
+}
+
+// ─── Expandable source card ───────────────────────────────────────────────────
+function SourceCard({
+  node,
+  isExpanded,
+  onToggle,
+}: {
+  node: InputNodeDef;
+  isExpanded: boolean;
+  onToggle: () => void;
+}) {
+  const Icon = node.icon;
+
   return (
-    <circle ref={ref} r={2.2} fill="white" opacity={0.82} filter="url(#dot-glow)" />
+    <div
+      className="absolute left-0 right-0"
+      style={{
+        top: `calc(${node.yPct * 100}% - 36px)`,
+        zIndex: isExpanded ? 10 : 1,
+      }}
+    >
+      {/* Card */}
+      <div
+        className="relative overflow-hidden rounded-xl transition-all duration-500"
+        style={{
+          background: isExpanded
+            ? "rgba(255,255,255,0.07)"
+            : "rgba(255,255,255,0.04)",
+          border: isExpanded
+            ? "1px solid rgba(255,255,255,0.14)"
+            : "1px solid rgba(255,255,255,0.08)",
+          boxShadow: isExpanded
+            ? "0 8px 32px rgba(0,0,0,0.4)"
+            : "none",
+        }}
+      >
+        {/* Header row — always visible */}
+        <button
+          onClick={onToggle}
+          className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left cursor-pointer"
+          style={{ background: "transparent", border: "none" }}
+        >
+          <div
+            className="flex h-8 w-8 flex-none items-center justify-center rounded-lg"
+            style={{ background: "rgba(255,255,255,0.07)" }}
+          >
+            <Icon className="h-3.5 w-3.5 text-white/50" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-white/45 leading-none">
+              {node.label}
+            </p>
+            <p className="mt-0.5 text-[9px] text-white/22 truncate">{node.sub}</p>
+          </div>
+          <ChevronDown
+            className="h-3 w-3 flex-none text-white/25 transition-transform duration-300"
+            style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)" }}
+          />
+        </button>
+
+        {/* Expanded examples */}
+        <div
+          className="overflow-hidden transition-all duration-500"
+          style={{
+            maxHeight: isExpanded ? "240px" : "0px",
+            opacity: isExpanded ? 1 : 0,
+          }}
+        >
+          <div
+            className="px-3 pb-3 pt-0 space-y-0.5"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+          >
+            {node.examples.map((item) => (
+              <div
+                key={item.name}
+                className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors duration-150"
+                style={{ background: "rgba(255,255,255,0.02)" }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.05)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)"; }}
+              >
+                <div className={`h-1.5 w-1.5 flex-none rounded-full ${STATUS_DOT[item.status]}`} />
+                <span className="flex-1 text-[10px] text-white/50 truncate">{item.name}</span>
+                <span
+                  className="text-[8px] text-white/20 rounded px-1 py-0.5"
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+                >
+                  {item.tag}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Connector dot — right edge, at vertical center of header */}
+      <div
+        className="absolute right-0 top-[36px] -translate-y-1/2 translate-x-1/2 h-2 w-2 rounded-full"
+        style={{
+          background: isExpanded ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.22)",
+          border: "1px solid rgba(255,255,255,0.3)",
+          transition: "background 0.3s ease",
+          zIndex: 2,
+        }}
+      />
+    </div>
   );
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
 export default function OrchestrationFlow() {
-  const svgRef      = useRef<SVGSVGElement>(null);
-  const baseRefs    = useRef<(SVGPathElement | null)[]>([]);
-  const glowRefs    = useRef<(SVGPathElement | null)[]>([]);
-  const hubRing1    = useRef<SVGCircleElement>(null);
-  const hubRing2    = useRef<SVGCircleElement>(null);
-  const hubCore     = useRef<SVGCircleElement>(null);
-  const hubDot      = useRef<SVGCircleElement>(null);
-  const hubLineH    = useRef<SVGLineElement>(null);
-  const hubLineV    = useRef<SVGLineElement>(null);
+  const svgRef    = useRef<SVGSVGElement>(null);
+  const baseRefs  = useRef<(SVGPathElement | null)[]>([]);
+  const glowRefs  = useRef<(SVGPathElement | null)[]>([]);
+  const hubRing1  = useRef<SVGCircleElement>(null);
+  const hubRing2  = useRef<SVGCircleElement>(null);
+  const hubCore   = useRef<SVGCircleElement>(null);
+  const hubDot    = useRef<SVGCircleElement>(null);
+  const hubLineH  = useRef<SVGLineElement>(null);
+  const hubLineV  = useRef<SVGLineElement>(null);
 
-  const mouseRef    = useRef({ x: -9999, y: -9999 });
-  const samplesRef  = useRef<{ x: number; y: number }[][]>([]);
-  const headerRef   = useRef<HTMLDivElement>(null);
-  const windowRef   = useRef<HTMLDivElement>(null);
-  const [phase, setPhase] = useState(1);
-  const [mounted, setMounted] = useState(false);
+  const mouseRef   = useRef({ x: -9999, y: -9999 });
+  const samplesRef = useRef<{ x: number; y: number }[][]>([]);
+  const headerRef  = useRef<HTMLDivElement>(null);
+  const windowRef  = useRef<HTMLDivElement>(null);
 
-  // Delay pulse render until paths are in the DOM
+  const [phase,    setPhase]    = useState<number>(1);
+  const [expanded, setExpanded] = useState<number | null>(null);
+  const [mounted,  setMounted]  = useState<boolean>(false);
+
   useEffect(() => setMounted(true), []);
 
-  // Scroll-triggered entrance animations (GSAP, consistent with other sections)
+  // GSAP scroll entrance
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(headerRef.current, {
@@ -122,7 +283,7 @@ export default function OrchestrationFlow() {
     return () => ctx.revert();
   }, []);
 
-  // Pre-cache path sample points so the rAF loop avoids DOM reads
+  // Cache path sample points once mounted
   useEffect(() => {
     if (!mounted) return;
     samplesRef.current = baseRefs.current.map(el => {
@@ -134,7 +295,7 @@ export default function OrchestrationFlow() {
     });
   }, [mounted]);
 
-  // Convert window mouse → SVG coordinate space
+  // Mouse → SVG coordinate tracking
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       const svg = svgRef.current;
@@ -149,13 +310,12 @@ export default function OrchestrationFlow() {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
-  // Proximity glow — direct DOM attribute writes keep React out of the hot path
+  // Proximity glow loop — direct DOM writes, no React re-renders
   useEffect(() => {
     let raf: number;
     const tick = () => {
       const { x: mx, y: my } = mouseRef.current;
 
-      // Update each glow path
       glowRefs.current.forEach((el, i) => {
         if (!el) return;
         const pts = samplesRef.current[i] ?? [];
@@ -170,7 +330,6 @@ export default function OrchestrationFlow() {
         else          el.removeAttribute("filter");
       });
 
-      // Hub glow
       const hd = Math.hypot(mx - HUB.x, my - HUB.y);
       const hg = Math.max(0, 1 - hd / 90);
 
@@ -187,10 +346,13 @@ export default function OrchestrationFlow() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  const toggleExpand = (i: number) => {
+    setExpanded(prev => (prev === i ? null : i));
+  };
+
   return (
     <section className="relative isolate overflow-hidden py-28 sm:py-36">
 
-      {/* Section background */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -206,7 +368,7 @@ export default function OrchestrationFlow() {
 
       <div className="container relative">
 
-        {/* ── Header ── */}
+        {/* Header */}
         <div ref={headerRef} className="mb-14 text-center">
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
             Orchestration layer
@@ -222,7 +384,7 @@ export default function OrchestrationFlow() {
           </p>
         </div>
 
-        {/* ── Product window ── */}
+        {/* Product window */}
         <div
           ref={windowRef}
           className="relative mx-auto max-w-5xl overflow-hidden rounded-2xl"
@@ -230,7 +392,7 @@ export default function OrchestrationFlow() {
             border: "1px solid rgba(255,255,255,0.07)",
             background: "hsl(230 22% 4.5%)",
             boxShadow:
-              "0 0 0 1px rgba(255,255,255,0.03) inset, 0 52px 130px rgba(0,0,0,0.7), 0 0 80px rgba(0,0,0,0.4)",
+              "0 0 0 1px rgba(255,255,255,0.03) inset, 0 52px 130px rgba(0,0,0,0.7)",
           }}
         >
 
@@ -256,175 +418,146 @@ export default function OrchestrationFlow() {
             </span>
           </div>
 
-          {/* ── SVG canvas ── */}
-          <svg
-            ref={svgRef}
-            viewBox={`0 0 ${VW} ${VH}`}
-            className="block w-full"
-          >
-            <defs>
-              {/* Hub glow: large soft bloom */}
-              <filter id="hub-glow" x="-250%" y="-250%" width="600%" height="600%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="22" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              {/* Path glow: tight horizontal spread */}
-              <filter id="path-glow" x="-6%" y="-400%" width="112%" height="900%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              {/* Pulse dot glow */}
-              <filter id="dot-glow" x="-600%" y="-600%" width="1300%" height="1300%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
+          {/* Split canvas: HTML left panel + SVG right */}
+          <div className="flex items-stretch">
 
-            {/* ── Ambient star-field ── */}
-            {STARS.map(([cx, cy], i) => (
-              <circle key={i} cx={cx} cy={cy} r={0.7} fill="white" opacity={0.07} />
-            ))}
-
-            {/* ── Base paths — always visible at low opacity ── */}
-            {PATHS.map((p, i) => (
-              <path
-                key={p.id}
-                id={p.id}
-                ref={el => { baseRefs.current[i] = el; }}
-                d={p.d}
-                fill="none"
-                stroke="rgb(200,206,218)"
-                strokeWidth={0.85}
-                strokeOpacity={0.13}
-              />
-            ))}
-
-            {/* ── Glow paths — brightness driven by cursor proximity ── */}
-            {PATHS.map((p, i) => (
-              <path
-                key={`glow-${p.id}`}
-                ref={el => { glowRefs.current[i] = el; }}
-                d={p.d}
-                fill="none"
-                stroke="rgb(230,233,242)"
-                strokeWidth={1.6}
-                strokeOpacity={0.06}
-              />
-            ))}
-
-            {/* ── Energy pulses — one dot per path ── */}
-            {mounted && PATHS.map((p, i) => (
-              <Pulse key={p.id} pathId={p.id} startOffset={i / PATHS.length} />
-            ))}
-
-            {/* ── Junction / node dots ── */}
-            {JUNCTION_DOTS.map((d, i) => (
-              <circle key={i} cx={d.x} cy={d.y} r={2.5}
-                fill="rgb(200,210,228)" fillOpacity={0.22} />
-            ))}
-
-            {/* ── Hub ── */}
-            {/* Far ring */}
-            <circle ref={hubRing1} cx={HUB.x} cy={HUB.y} r={54}
-              fill="none" stroke="white" strokeOpacity={0.025} strokeWidth={0.75} />
-            {/* Soft fill bloom */}
-            <circle ref={hubRing2} cx={HUB.x} cy={HUB.y} r={34}
-              fill="white" fillOpacity={0.014} />
-            {/* Core glow orb */}
-            <circle ref={hubCore} cx={HUB.x} cy={HUB.y} r={15}
-              fill="white" fillOpacity={0.055} filter="url(#hub-glow)" />
-            {/* Center pinpoint */}
-            <circle ref={hubDot} cx={HUB.x} cy={HUB.y} r={3.5}
-              fill="white" opacity={0.55} />
-            {/* Crosshair */}
-            <line ref={hubLineH}
-              x1={HUB.x - 24} y1={HUB.y} x2={HUB.x + 24} y2={HUB.y}
-              stroke="white" strokeWidth={0.75} strokeOpacity={0.07} />
-            <line ref={hubLineV}
-              x1={HUB.x} y1={HUB.y - 24} x2={HUB.x} y2={HUB.y + 24}
-              stroke="white" strokeWidth={0.75} strokeOpacity={0.07} />
-
-            {/* ── Input nodes — glassmorphism cards ── */}
-            {INPUT_NODES.map(node => (
-              <g key={node.id}>
-                {/* Card body */}
-                <rect
-                  x={node.cx - 46} y={node.cy - 37}
-                  width={92} height={74}
-                  rx={10}
-                  fill="white"  fillOpacity={0.038}
-                  stroke="white" strokeOpacity={0.085} strokeWidth={0.75}
+            {/* ── Left panel: interactive source nodes ── */}
+            <div
+              className="relative flex-none"
+              style={{
+                width: "196px",
+                borderRight: "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
+              {INPUT_NODES.map((node, i) => (
+                <SourceCard
+                  key={node.id}
+                  node={node}
+                  isExpanded={expanded === i}
+                  onToggle={() => toggleExpand(i)}
                 />
-                {/* Icon placeholder */}
-                <rect
-                  x={node.cx - 13} y={node.cy - 28}
-                  width={26} height={26}
-                  rx={5}
-                  fill="white" fillOpacity={0.07}
-                />
-                {/* Label */}
-                <text
-                  x={node.cx} y={node.cy + 14}
-                  textAnchor="middle"
-                  fill="rgba(255,255,255,0.40)"
-                  fontSize={8} fontWeight="600"
-                  fontFamily="system-ui,-apple-system,BlinkMacSystemFont,sans-serif"
-                  letterSpacing="0.08em"
-                >
-                  {node.label}
-                </text>
-                <text
-                  x={node.cx} y={node.cy + 25}
-                  textAnchor="middle"
-                  fill="rgba(255,255,255,0.18)"
-                  fontSize={6.5}
-                  fontFamily="system-ui,-apple-system,BlinkMacSystemFont,sans-serif"
-                >
-                  {node.sub}
-                </text>
-                {/* Right-edge connector dot */}
-                <circle cx={node.cx + 46} cy={node.cy} r={2.5}
-                  fill="white" fillOpacity={0.18} />
-              </g>
-            ))}
+              ))}
+            </div>
 
-            {/* ── Output nodes — pill chips ── */}
-            {OUTPUT_NODES.map(node => (
-              <g key={node.id}>
-                <rect
-                  x={node.cx - 4} y={node.cy - 13}
-                  width={86} height={26}
-                  rx={13}
-                  fill="white"  fillOpacity={0.05}
-                  stroke="white" strokeOpacity={0.10} strokeWidth={0.75}
-                />
-                <text
-                  x={node.cx + 39} y={node.cy + 4.5}
-                  textAnchor="middle"
-                  fill="rgba(255,255,255,0.44)"
-                  fontSize={10}
-                  fontFamily="system-ui,-apple-system,BlinkMacSystemFont,sans-serif"
-                  letterSpacing="0.04em"
-                >
-                  {node.label}
-                </text>
-                {/* Left-edge connector dot */}
-                <circle cx={node.cx - 4} cy={node.cy} r={2.5}
-                  fill="white" fillOpacity={0.22} />
-              </g>
-            ))}
-          </svg>
+            {/* ── Right: SVG visualization ── */}
+            <div className="flex-1 min-w-0">
+              <svg
+                ref={svgRef}
+                viewBox={`0 0 ${VW} ${VH}`}
+                className="block w-full"
+              >
+                <defs>
+                  <filter id="hub-glow" x="-250%" y="-250%" width="600%" height="600%">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="22" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  <filter id="path-glow" x="-6%" y="-400%" width="112%" height="900%">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  <filter id="dot-glow" x="-600%" y="-600%" width="1300%" height="1300%">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
 
-          {/* ── Phase navigation ── */}
+                {/* Star-field */}
+                {STARS.map(([cx, cy], i) => (
+                  <circle key={i} cx={cx} cy={cy} r={0.7} fill="white" opacity={0.07} />
+                ))}
+
+                {/* Base paths */}
+                {PATHS.map((p, i) => (
+                  <path
+                    key={p.id}
+                    id={p.id}
+                    ref={el => { baseRefs.current[i] = el; }}
+                    d={p.d}
+                    fill="none"
+                    stroke="rgb(200,206,218)"
+                    strokeWidth={0.85}
+                    strokeOpacity={0.13}
+                  />
+                ))}
+
+                {/* Glow paths */}
+                {PATHS.map((p, i) => (
+                  <path
+                    key={`glow-${p.id}`}
+                    ref={el => { glowRefs.current[i] = el; }}
+                    d={p.d}
+                    fill="none"
+                    stroke="rgb(230,233,242)"
+                    strokeWidth={1.6}
+                    strokeOpacity={0.06}
+                  />
+                ))}
+
+                {/* Energy pulses */}
+                {mounted && PATHS.map((p, i) => (
+                  <Pulse key={p.id} pathId={p.id} startOffset={i / PATHS.length} />
+                ))}
+
+                {/* Junction dots */}
+                {JUNCTION_DOTS.map((d, i) => (
+                  <circle key={i} cx={d.x} cy={d.y} r={2.5}
+                    fill="rgb(200,210,228)" fillOpacity={0.22} />
+                ))}
+
+                {/* Hub */}
+                <circle ref={hubRing1} cx={HUB.x} cy={HUB.y} r={54}
+                  fill="none" stroke="white" strokeOpacity={0.025} strokeWidth={0.75} />
+                <circle ref={hubRing2} cx={HUB.x} cy={HUB.y} r={34}
+                  fill="white" fillOpacity={0.014} />
+                <circle ref={hubCore} cx={HUB.x} cy={HUB.y} r={15}
+                  fill="white" fillOpacity={0.055} filter="url(#hub-glow)" />
+                <circle ref={hubDot} cx={HUB.x} cy={HUB.y} r={3.5}
+                  fill="white" opacity={0.55} />
+                <line ref={hubLineH}
+                  x1={HUB.x - 24} y1={HUB.y} x2={HUB.x + 24} y2={HUB.y}
+                  stroke="white" strokeWidth={0.75} strokeOpacity={0.07} />
+                <line ref={hubLineV}
+                  x1={HUB.x} y1={HUB.y - 24} x2={HUB.x} y2={HUB.y + 24}
+                  stroke="white" strokeWidth={0.75} strokeOpacity={0.07} />
+
+                {/* Output nodes */}
+                {OUTPUT_NODES.map(node => (
+                  <g key={node.id}>
+                    <rect
+                      x={node.cx - 4} y={node.cy - 13}
+                      width={80} height={26}
+                      rx={13}
+                      fill="white" fillOpacity={0.05}
+                      stroke="white" strokeOpacity={0.10} strokeWidth={0.75}
+                    />
+                    <text
+                      x={node.cx + 36} y={node.cy + 4.5}
+                      textAnchor="middle"
+                      fill="rgba(255,255,255,0.44)"
+                      fontSize={10}
+                      fontFamily="system-ui,-apple-system,sans-serif"
+                      letterSpacing="0.04em"
+                    >
+                      {node.label}
+                    </text>
+                    <circle cx={node.cx - 4} cy={node.cy} r={2.5}
+                      fill="white" fillOpacity={0.22} />
+                  </g>
+                ))}
+              </svg>
+            </div>
+          </div>
+
+          {/* Phase navigation */}
           <div
             className="flex items-center justify-center gap-2 px-6 py-4"
             style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
@@ -439,9 +572,7 @@ export default function OrchestrationFlow() {
                   border:     phase === i
                     ? "1px solid rgba(255,255,255,0.18)"
                     : "1px solid rgba(255,255,255,0.07)",
-                  color: phase === i
-                    ? "rgba(255,255,255,0.72)"
-                    : "rgba(255,255,255,0.28)",
+                  color: phase === i ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.28)",
                   cursor: "pointer",
                   fontFamily: "system-ui,-apple-system,sans-serif",
                 }}
