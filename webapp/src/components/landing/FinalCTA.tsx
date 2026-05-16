@@ -4,6 +4,8 @@ import AmbientOrbs from "./effects/AmbientOrbs";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const FinalCTA = () => {
   const sectionRef = useRef<HTMLElement>(null);
 

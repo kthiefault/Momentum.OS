@@ -4,6 +4,8 @@ import SectionLabel from "./effects/SectionLabel";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
+
 type Plan = {
   name: string;
   tagline: string;

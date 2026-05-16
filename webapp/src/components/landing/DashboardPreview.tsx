@@ -4,6 +4,8 @@ import SectionLabel from "./effects/SectionLabel";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const tabs = [
   { id: "command", label: "Command", icon: Activity },
   { id: "pipeline", label: "Pipeline", icon: TrendingUp },

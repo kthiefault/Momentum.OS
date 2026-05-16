@@ -4,6 +4,8 @@ import SectionLabel from "./effects/SectionLabel";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const nodes = [
   { icon: Mail, label: "Inbound lead", tone: "ice" },
   { icon: Cog, label: "Enrich + score", tone: "ember" },

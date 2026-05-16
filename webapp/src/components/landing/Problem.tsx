@@ -4,6 +4,8 @@ import SectionLabel from "./effects/SectionLabel";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const chaos = [
   { icon: Inbox, title: "Leads falling through", line: "Contacts live in three different places and nobody's following up." },
   { icon: Clock, title: "Hours wasted on low-value work", line: "You're spending your week on $20/hour tasks instead of $200/hour ones." },

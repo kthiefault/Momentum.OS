@@ -5,6 +5,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect } from "react";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const rawOutcomes = [
   { metric: "41h", label: "reclaimed per operator, per week", note: "boring work, automated" },
   { metric: "2.4×", label: "lift in pipeline velocity", note: "AI-prioritized next actions" },
