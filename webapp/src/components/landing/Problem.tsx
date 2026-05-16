@@ -1,10 +1,6 @@
-import { useEffect, useRef } from "react";
 import { AlertTriangle, Clock, Inbox, Layers, Network, Receipt } from "lucide-react";
 import SectionLabel from "./effects/SectionLabel";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion } from "framer-motion";
 
 const chaos = [
   { icon: Inbox, title: "Leads falling through", line: "Contacts live in three different places and nobody's following up." },
@@ -16,28 +12,6 @@ const chaos = [
 ];
 
 const Problem = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-    const ctx = gsap.context(() => {
-      gsap.from(".problem-header", {
-        scrollTrigger: { trigger: sectionRef.current, start: "top 80%", once: true },
-        opacity: 0, y: 40, duration: 0.9, ease: "power2.out",
-      });
-      gsap.from(".problem-card", {
-        scrollTrigger: { trigger: ".problem-grid", start: "top 82%", once: true },
-        opacity: 0, y: 32, stagger: 0.07, duration: 0.75, ease: "power2.out",
-      });
-      gsap.from(".problem-footer", {
-        scrollTrigger: { trigger: ".problem-footer", start: "top 90%", once: true },
-        opacity: 0, y: 20, duration: 0.7, ease: "power2.out",
-      });
-    }, sectionRef);
-    return () => ctx.revert();
-  }, []);
-
   const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     e.currentTarget.style.setProperty("--x", `${e.clientX - rect.left}px`);
@@ -45,7 +19,7 @@ const Problem = () => {
   };
 
   return (
-    <section ref={sectionRef} id="problem" className="relative isolate overflow-hidden py-16 sm:py-20">
+    <section id="problem" className="relative isolate overflow-hidden py-16 sm:py-20">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -56,7 +30,13 @@ const Problem = () => {
       />
 
       <div className="container relative">
-        <div className="problem-header mx-auto max-w-3xl">
+        <motion.div
+          className="mx-auto max-w-3xl"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           <SectionLabel index="01" label="The problem" tone="ember" />
           <h2 className="mt-6 text-balance text-4xl font-medium leading-[1.05] tracking-[-0.03em] sm:text-5xl md:text-6xl">
             Running a business feels like this:
@@ -65,14 +45,18 @@ const Problem = () => {
             You didn't start this to become an admin. But here you are, buried
             in tasks that someone — or something — else should be doing.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="problem-grid mt-16 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {chaos.map((c, i) => (
-            <div
+            <motion.div
               key={c.title}
               onMouseMove={handleCardMouseMove}
-              className="problem-card group relative overflow-hidden rounded-2xl border border-border/70 bg-card/40 p-6 transition-all duration-500 hover:border-ember/40 hover:bg-card/70 hover:-translate-y-1 hover:shadow-[0_16px_48px_hsl(0_0%_0%/0.4)]"
+              className="group relative overflow-hidden rounded-2xl border border-border/70 bg-card/40 p-6 transition-all duration-500 hover:border-ember/40 hover:bg-card/70 hover:-translate-y-1 hover:shadow-[0_16px_48px_hsl(0_0%_0%/0.4)]"
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.07 }}
             >
               <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                 <div
@@ -93,15 +77,21 @@ const Problem = () => {
               </div>
               <h3 className="relative mt-6 text-lg font-medium tracking-tight">{c.title}</h3>
               <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{c.line}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        <div className="problem-footer mt-16 flex flex-col items-start justify-between gap-4 border-t border-border/60 pt-8 md:flex-row md:items-center">
+        <motion.div
+          className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-border/60 pt-8 md:flex-row md:items-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <p className="font-display text-3xl italic text-ember">
             That's what Momentum was built to fix.
           </p>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
