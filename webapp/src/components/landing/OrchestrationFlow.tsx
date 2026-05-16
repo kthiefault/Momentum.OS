@@ -316,7 +316,7 @@ function SourceCard({
       <div
         className="relative overflow-hidden rounded-xl transition-all duration-500"
         style={{
-          background: isExpanded ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)",
+          background: isExpanded ? "hsl(230 22% 9%)" : "rgba(255,255,255,0.04)",
           border: isExpanded ? "1px solid rgba(255,255,255,0.14)" : "1px solid rgba(255,255,255,0.08)",
           boxShadow: isExpanded ? "0 8px 32px rgba(0,0,0,0.4)" : "none",
         }}
@@ -353,7 +353,7 @@ function SourceCard({
         >
           <div
             className="px-3 pb-3 pt-0 space-y-0.5"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+            style={{ borderTop: "1px solid rgba(255,255,255,0.06)", background: "hsl(230 22% 9%)" }}
           >
             {node.examples.map(item => (
               <div
