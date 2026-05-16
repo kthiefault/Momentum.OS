@@ -64,7 +64,7 @@ const Outcomes = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="outcomes" className="relative isolate overflow-hidden py-32 sm:py-40">
+    <section ref={sectionRef} id="outcomes" className="relative isolate overflow-hidden py-16 sm:py-20">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -96,7 +96,7 @@ const Outcomes = () => {
           ))}
         </div>
 
-        <figure className="outcomes-quote mx-auto mt-20 max-w-3xl text-center">
+        <figure className="outcomes-quote mx-auto mt-12 max-w-3xl text-center">
           <blockquote className="text-balance font-display text-2xl italic leading-snug text-foreground/95 sm:text-3xl md:text-4xl">
             &ldquo;{quote.body}&rdquo;
           </blockquote>

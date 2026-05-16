@@ -27,7 +27,7 @@ const FinalCTA = () => {
     <section
       ref={sectionRef}
       id="cta"
-      className="relative isolate overflow-hidden py-32 sm:py-44"
+      className="relative isolate overflow-hidden py-16 sm:py-24"
     >
       <AmbientOrbs />
       <div
@@ -84,7 +84,7 @@ const FinalCTA = () => {
         </div>
 
         {/* Ticker */}
-        <div className="cta-ticker relative mt-20 overflow-hidden border-y border-border/60 py-4">
+        <div className="cta-ticker relative mt-12 overflow-hidden border-y border-border/60 py-4">
           <div className="flex whitespace-nowrap will-change-transform animate-ticker">
             {Array.from({ length: 2 }).map((_, dup) => (
               <div key={dup} className="flex items-center gap-12 pr-12">

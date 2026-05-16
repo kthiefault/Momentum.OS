@@ -31,7 +31,7 @@ const Hero = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate flex min-h-[100svh] items-center overflow-hidden pt-28 pb-24"
+      className="relative isolate flex min-h-[100svh] items-center overflow-hidden pt-24 pb-16"
     >
       <div ref={bgRef} className="absolute inset-0 will-change-transform">
         <GridBackdrop />

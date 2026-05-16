@@ -64,7 +64,7 @@ const AutomationEngine = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="automation" className="relative isolate overflow-hidden py-32 sm:py-40">
+    <section ref={sectionRef} id="automation" className="relative isolate overflow-hidden py-16 sm:py-20">
       <div aria-hidden className="pointer-events-none absolute inset-0 mask-radial bg-grid opacity-50" />
       <div
         aria-hidden

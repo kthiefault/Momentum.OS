@@ -584,7 +584,7 @@ export default function OrchestrationFlow() {
   };
 
   return (
-    <section className="relative isolate overflow-hidden py-28 sm:py-36">
+    <section className="relative isolate overflow-hidden py-16 sm:py-20">
 
       <div
         aria-hidden
@@ -601,7 +601,7 @@ export default function OrchestrationFlow() {
       <div className="container relative">
 
         {/* Header */}
-        <div ref={headerRef} className="mb-14 text-center">
+        <div ref={headerRef} className="mb-10 text-center">
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
             Orchestration layer
           </span>

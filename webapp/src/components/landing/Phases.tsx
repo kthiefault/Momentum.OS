@@ -107,7 +107,7 @@ const Phases = () => {
     <section
       ref={sectionRef}
       id="phases"
-      className="relative isolate overflow-hidden py-32 sm:py-40"
+      className="relative isolate overflow-hidden py-16 sm:py-20"
     >
       <div
         aria-hidden
@@ -129,7 +129,7 @@ const Phases = () => {
           </h2>
         </div>
 
-        <div className="phases-list mt-20 space-y-0">
+        <div className="phases-list mt-10 space-y-0">
           {phases.map((phase, i) => {
             const Icon = phase.icon;
             const isLast = i === phases.length - 1;
