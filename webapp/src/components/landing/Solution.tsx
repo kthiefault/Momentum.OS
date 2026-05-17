@@ -41,15 +41,15 @@ const Solution = () => {
     if (prefersReduced) return;
     const ctx = gsap.context(() => {
       gsap.from(".solution-header", {
-        scrollTrigger: { trigger: sectionRef.current, start: "top 78%", once: true },
+        scrollTrigger: { trigger: sectionRef.current, start: "top bottom", once: true },
         opacity: 0, y: 40, duration: 0.9, ease: "power2.out",
       });
       gsap.from(".solution-card", {
-        scrollTrigger: { trigger: ".solution-grid", start: "top 82%", once: true },
+        scrollTrigger: { trigger: ".solution-grid", start: "top bottom", once: true },
         opacity: 0, y: 30, stagger: 0.1, duration: 0.75, ease: "power2.out",
       });
       gsap.from(".solution-tags span", {
-        scrollTrigger: { trigger: ".solution-tags", start: "top 88%", once: true },
+        scrollTrigger: { trigger: ".solution-tags", start: "top bottom", once: true },
         opacity: 0, y: 12, scale: 0.9, stagger: 0.06, duration: 0.5, ease: "back.out(2)",
       });
     }, sectionRef);
