@@ -924,25 +924,25 @@ export default function OrchestrationFlow() {
                 background: "transparent",
                 border: "none",
                 cursor: "pointer",
-                opacity: phase === i ? 1 : 0.35,
-                transform: phase === i ? "scale(1)" : "scale(0.96)",
+                opacity: phase === i ? 1 : 0.65,
+                transform: phase === i ? "scale(1)" : "scale(0.97)",
               }}
             >
               <div
                 className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full transition-all duration-500"
                 style={{
-                  background: phase === i ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.03)",
-                  border: phase === i ? "1px solid rgba(255,255,255,0.14)" : "1px solid rgba(255,255,255,0.05)",
+                  background: phase === i ? "rgba(255,255,255,0.10)" : "rgba(255,255,255,0.05)",
+                  border: phase === i ? "1px solid rgba(255,255,255,0.20)" : "1px solid rgba(255,255,255,0.10)",
                 }}
               >
-                <span className="font-mono text-[11px]" style={{ color: "rgba(255,255,255,0.4)" }}>
+                <span className="font-mono text-[11px]" style={{ color: "rgba(255,255,255,0.65)" }}>
                   0{i + 1}
                 </span>
               </div>
-              <p className="text-[13px] font-medium mb-1.5" style={{ color: "rgba(255,255,255,0.6)" }}>
+              <p className="text-[13px] font-medium mb-1.5" style={{ color: "rgba(255,255,255,0.85)" }}>
                 {config.name}
               </p>
-              <p className="text-[11px] leading-[1.55]" style={{ color: "rgba(255,255,255,0.28)" }}>
+              <p className="text-[11px] leading-[1.55]" style={{ color: "rgba(255,255,255,0.52)" }}>
                 {config.tagline}
               </p>
             </button>
