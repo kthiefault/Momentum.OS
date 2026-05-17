@@ -103,7 +103,7 @@ const Solution = () => {
                 <div
                   key={p.title}
                   onMouseMove={handleMouseMove}
-                  className="solution-card group relative overflow-hidden rounded-2xl border border-border/70 bg-card/40 p-6 transition-all duration-500 hover:border-ember/50 hover:bg-card/70 hover:-translate-y-1 hover:shadow-[0_16px_48px_hsl(0_0%_0%/0.4)]"
+                  className="solution-card group relative overflow-hidden rounded-2xl border border-border bg-card/80 p-6 transition-all duration-500 hover:border-ember/50 hover:bg-card hover:-translate-y-1 hover:shadow-[0_16px_48px_hsl(0_0%_0%/0.4)]"
                   style={{ minHeight: 220 }}
                 >
                   <div className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
