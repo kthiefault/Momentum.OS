@@ -69,7 +69,7 @@ const Solution = () => {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 70% 60% at 0% 0%, hsl(22 80% 45% / 0.12), transparent 55%), radial-gradient(ellipse 60% 50% at 100% 100%, hsl(192 80% 60% / 0.08), transparent 55%)",
+            "radial-gradient(ellipse 70% 60% at 0% 0%, hsl(221 80% 45% / 0.12), transparent 55%), radial-gradient(ellipse 60% 50% at 100% 100%, hsl(192 80% 60% / 0.08), transparent 55%)",
         }}
       />
 
@@ -111,7 +111,7 @@ const Solution = () => {
                       className="absolute inset-0 rounded-2xl"
                       style={{
                         background:
-                          "radial-gradient(360px circle at var(--x, 50%) var(--y, 50%), hsl(22 95% 58% / 0.1), transparent 40%)",
+                          "radial-gradient(360px circle at var(--x, 50%) var(--y, 50%), hsl(221 79% 48% / 0.1), transparent 40%)",
                       }}
                     />
                   </div>

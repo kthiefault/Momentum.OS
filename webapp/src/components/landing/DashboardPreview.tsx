@@ -110,7 +110,7 @@ const DashboardPreview = () => {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 100%, hsl(22 80% 50% / 0.18), transparent 60%)",
+            "radial-gradient(ellipse 80% 60% at 50% 100%, hsl(221 80% 50% / 0.18), transparent 60%)",
         }}
       />
 
@@ -136,7 +136,7 @@ const DashboardPreview = () => {
             className="pointer-events-none absolute -inset-6 -z-10 rounded-[2rem]"
             style={{
               background:
-                "linear-gradient(180deg, hsl(22 95% 58% / 0.25), hsl(192 90% 70% / 0.18) 50%, transparent 100%)",
+                "linear-gradient(180deg, hsl(221 79% 48% / 0.25), hsl(192 90% 70% / 0.18) 50%, transparent 100%)",
               filter: "blur(36px)",
             }}
           />
@@ -181,7 +181,7 @@ const DashboardPreview = () => {
                     <t.icon className="h-3.5 w-3.5" />
                     {t.label}
                     {active ? (
-                      <span className="h-1 w-1 rounded-full bg-ember shadow-[0_0_6px_hsl(22_95%_58%)]" />
+                      <span className="h-1 w-1 rounded-full bg-ember shadow-[0_0_6px_hsl(221_79%_48%)]" />
                     ) : null}
                   </button>
                 );
@@ -287,11 +287,11 @@ const DashboardPreview = () => {
                       <svg viewBox="0 0 220 60" preserveAspectRatio="none" className="h-full w-full">
                         <defs>
                           <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
-                            <stop offset="0%" stopColor="hsl(22 95% 58%)" stopOpacity="0.5" />
-                            <stop offset="100%" stopColor="hsl(22 95% 58%)" stopOpacity="0" />
+                            <stop offset="0%" stopColor="hsl(221 79% 48%)" stopOpacity="0.5" />
+                            <stop offset="100%" stopColor="hsl(221 79% 48%)" stopOpacity="0" />
                           </linearGradient>
                           <linearGradient id="g2" x1="0" x2="1" y1="0" y2="0">
-                            <stop offset="0%" stopColor="hsl(22 95% 58%)" />
+                            <stop offset="0%" stopColor="hsl(221 79% 48%)" />
                             <stop offset="100%" stopColor="hsl(192 90% 70%)" />
                           </linearGradient>
                         </defs>
@@ -316,7 +316,7 @@ const DashboardPreview = () => {
                           cx="220"
                           cy={60 - ((trend[trend.length - 1] - Math.min(...trend)) / (Math.max(...trend) - Math.min(...trend))) * 60}
                           r="3"
-                          fill="hsl(22 95% 58%)"
+                          fill="hsl(221 79% 48%)"
                           className={`transition-opacity duration-300 ${phase >= 5 ? "opacity-100" : "opacity-0"}`}
                         >
                           <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
@@ -344,7 +344,7 @@ const DashboardPreview = () => {
                           <span
                             className={`mt-1 h-1.5 w-1.5 flex-none rounded-full ${
                               row.dot === "ember"
-                                ? "bg-ember shadow-[0_0_8px_hsl(22_95%_58%)]"
+                                ? "bg-ember shadow-[0_0_8px_hsl(221_79%_48%)]"
                                 : row.dot === "ice"
                                 ? "bg-ice shadow-[0_0_8px_hsl(192_90%_70%)]"
                                 : "bg-[hsl(140_70%_55%)] shadow-[0_0_8px_hsl(140_70%_55%)]"
@@ -377,7 +377,7 @@ const DashboardPreview = () => {
                             style={{
                               height: phase >= 6 ? `${s.fill}%` : "0%",
                               transitionDelay: `${idx * 80}ms`,
-                              background: "linear-gradient(180deg, hsl(22 95% 58% / 0.5), hsl(22 95% 58% / 0.15))",
+                              background: "linear-gradient(180deg, hsl(221 79% 48% / 0.5), hsl(221 79% 48% / 0.15))",
                             }}
                           />
                           <div
@@ -386,7 +386,7 @@ const DashboardPreview = () => {
                             style={{
                               top: phase >= 6 ? `${100 - s.fill}%` : "100%",
                               transitionDelay: `${idx * 80}ms`,
-                              background: "linear-gradient(90deg, transparent, hsl(22 95% 58%), transparent)",
+                              background: "linear-gradient(90deg, transparent, hsl(221 79% 48%), transparent)",
                             }}
                           />
                         </div>

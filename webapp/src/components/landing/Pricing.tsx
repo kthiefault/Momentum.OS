@@ -106,13 +106,13 @@ const Pricing = () => {
               key={p.name}
               className={`pricing-card group relative flex flex-col rounded-2xl border p-8 transition-all duration-500 hover:-translate-y-1 ${
                 p.highlight
-                  ? "border-ember/40 bg-gradient-to-b from-ember/[0.08] to-card/60 ring-1 ring-ember/20 hover:ring-ember hover:shadow-[0_24px_60px_hsl(22_95%_58%/0.2)]"
+                  ? "border-ember/40 bg-gradient-to-b from-ember/[0.08] to-card/60 ring-1 ring-ember/20 hover:ring-ember hover:shadow-[0_24px_60px_hsl(221_79%_48%/0.2)]"
                   : "border-border/70 bg-card/40 hover:border-foreground/30 hover:bg-card/70 hover:shadow-[0_24px_60px_hsl(0_0%_0%/0.4)]"
               }`}
             >
               {p.highlight ? (
                 <span className="absolute -top-3 left-8 inline-flex items-center gap-1.5 rounded-full border border-ember/40 bg-background px-3 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-ember">
-                  <span className="h-1 w-1 rounded-full bg-ember shadow-[0_0_6px_hsl(22_95%_58%)]" />
+                  <span className="h-1 w-1 rounded-full bg-ember shadow-[0_0_6px_hsl(221_79%_48%)]" />
                   Most loved
                 </span>
               ) : null}
@@ -149,7 +149,7 @@ const Pricing = () => {
                 data-magnetic
                 className={`mt-10 inline-flex items-center justify-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
                   p.highlight
-                    ? "bg-foreground text-background hover:scale-[1.03] hover:shadow-[0_8px_24px_hsl(22_95%_58%/0.3)]"
+                    ? "bg-foreground text-background hover:scale-[1.03] hover:shadow-[0_8px_24px_hsl(221_79%_48%/0.3)]"
                     : "border border-border bg-background/60 text-foreground hover:bg-secondary"
                 }`}
                 style={{ willChange: "transform" }}

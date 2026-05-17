@@ -183,7 +183,7 @@ const AIAssistant = () => {
 
               {/* Input */}
               <div className="border-t border-border/60 p-3">
-                <div className="flex items-center gap-2 rounded-xl border border-border bg-background/60 px-3 py-2 transition-all duration-300 focus-within:border-ember/40 focus-within:shadow-[0_0_0_3px_hsl(22_95%_58%/0.1)]">
+                <div className="flex items-center gap-2 rounded-xl border border-border bg-background/60 px-3 py-2 transition-all duration-300 focus-within:border-ember/40 focus-within:shadow-[0_0_0_3px_hsl(221_79%_48%/0.1)]">
                   <Sparkles className="h-3.5 w-3.5 text-ember" />
                   <span className="flex-1 text-sm text-muted-foreground">
                     Ask Momentum anything about your business...

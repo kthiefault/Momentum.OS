@@ -11,7 +11,7 @@ const AmbientOrbs = ({ variant = "dual", className = "" }: AmbientOrbsProps) => 
           className="absolute -top-32 -left-24 h-[40rem] w-[40rem] rounded-full opacity-40 animate-drift"
           style={{
             background:
-              "radial-gradient(circle at center, hsl(22 95% 58% / 0.55), hsl(14 90% 50% / 0.25) 40%, transparent 70%)",
+              "radial-gradient(circle at center, hsl(221 79% 48% / 0.55), hsl(214 85% 40% / 0.25) 40%, transparent 70%)",
             filter: "blur(80px)",
           }}
         />

@@ -148,7 +148,7 @@ const CRMPipeline = () => {
                             width: `${d.score}%`,
                             background:
                               d.score > 80
-                                ? "linear-gradient(90deg, hsl(22 95% 58%), hsl(40 100% 70%))"
+                                ? "linear-gradient(90deg, hsl(221 79% 48%), hsl(200 100% 65%))"
                                 : d.score > 60
                                 ? "linear-gradient(90deg, hsl(192 90% 70%), hsl(210 90% 60%))"
                                 : "linear-gradient(90deg, hsl(230 8% 40%), hsl(230 8% 60%))",

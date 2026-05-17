@@ -63,7 +63,7 @@ const Problem = () => {
                   className="absolute inset-0 rounded-2xl"
                   style={{
                     background:
-                      "radial-gradient(400px circle at var(--x, 50%) var(--y, 50%), hsl(22 95% 58% / 0.12), transparent 40%)",
+                      "radial-gradient(400px circle at var(--x, 50%) var(--y, 50%), hsl(221 79% 48% / 0.12), transparent 40%)",
                   }}
                 />
               </div>

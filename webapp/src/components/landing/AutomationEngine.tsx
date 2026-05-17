@@ -73,7 +73,7 @@ const AutomationEngine = () => {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 100% 50%, hsl(22 95% 58% / 0.1), transparent 60%)",
+            "radial-gradient(ellipse 60% 50% at 100% 50%, hsl(221 79% 48% / 0.1), transparent 60%)",
         }}
       />
 
@@ -139,7 +139,7 @@ const AutomationEngine = () => {
                           isActive ? "opacity-100 scale-100" : "opacity-0 scale-95"
                         } ${
                           isEmber
-                            ? isActive ? "border-ember/60 shadow-[0_0_20px_hsl(22_95%_58%/0.2)]" : "border-ember/40"
+                            ? isActive ? "border-ember/60 shadow-[0_0_20px_hsl(221_79%_48%/0.2)]" : "border-ember/40"
                             : isActive ? "border-ice/60 shadow-[0_0_20px_hsl(192_90%_70%/0.2)]" : "border-ice/40"
                         }`}
                         style={{ transitionDelay: "0ms" }}

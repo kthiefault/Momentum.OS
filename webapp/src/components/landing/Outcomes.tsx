@@ -28,7 +28,7 @@ function OutcomeMetric({ metric, label, note }: { metric: string; label: string;
       <div
         aria-hidden
         className="absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background: "linear-gradient(90deg, transparent, hsl(22 95% 58%), transparent)" }}
+        style={{ background: "linear-gradient(90deg, transparent, hsl(221 79% 48%), transparent)" }}
       />
       <p
         ref={ref as React.RefObject<HTMLParagraphElement>}
@@ -72,7 +72,7 @@ const Outcomes = () => {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 50% 0%, hsl(22 80% 50% / 0.1), transparent 60%)",
+            "radial-gradient(ellipse 80% 60% at 50% 0%, hsl(221 80% 50% / 0.1), transparent 60%)",
         }}
       />
 

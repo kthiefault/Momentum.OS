@@ -55,7 +55,7 @@ const Hero = () => {
             className="reveal-up mb-7 inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/60 px-3 py-1 backdrop-blur"
             style={{ animationDelay: "0.05s" }}
           >
-            <span className="flex h-1.5 w-1.5 rounded-full bg-ember shadow-[0_0_10px_2px_hsl(22_95%_58%/0.8)]" />
+            <span className="flex h-1.5 w-1.5 rounded-full bg-ember shadow-[0_0_10px_2px_hsl(221_79%_48%/0.8)]" />
             <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
               Now in early access
             </span>
@@ -84,7 +84,7 @@ const Hero = () => {
             <a
               href="#cta"
               data-magnetic
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition-all duration-300 hover:scale-[1.04] hover:shadow-[0_8px_32px_hsl(22_95%_58%/0.3)]"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition-all duration-300 hover:scale-[1.04] hover:shadow-[0_8px_32px_hsl(221_79%_48%/0.3)]"
               style={{ willChange: "transform" }}
             >
               <span className="absolute inset-0 bg-gradient-to-r from-ember/0 via-ember/25 to-ember/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />

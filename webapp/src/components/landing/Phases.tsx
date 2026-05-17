@@ -114,7 +114,7 @@ const Phases = () => {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 65% 55% at 50% 0%, hsl(22 80% 45% / 0.07), transparent 60%), radial-gradient(ellipse 50% 40% at 0% 100%, hsl(22 95% 58% / 0.05), transparent 50%)",
+            "radial-gradient(ellipse 65% 55% at 50% 0%, hsl(221 80% 45% / 0.07), transparent 60%), radial-gradient(ellipse 50% 40% at 0% 100%, hsl(221 79% 48% / 0.05), transparent 50%)",
         }}
       />
 
@@ -142,7 +142,7 @@ const Phases = () => {
                     style={{
                       height: "calc(100% - 3.5rem)",
                       background:
-                        "linear-gradient(to bottom, hsl(22 95% 58% / 0.3), hsl(22 95% 58% / 0.05))",
+                        "linear-gradient(to bottom, hsl(221 79% 48% / 0.3), hsl(221 79% 48% / 0.05))",
                     }}
                   />
                 )}
@@ -151,7 +151,7 @@ const Phases = () => {
                   {/* Left: number + icon */}
                   <div className="flex flex-row items-start gap-4 md:flex-col md:items-center md:w-22">
                     <div className="relative flex-shrink-0">
-                      <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-border/70 bg-card/60 transition-all duration-500 group-hover:border-ember/50 group-hover:bg-ember/5 group-hover:shadow-[0_0_32px_hsl(22_95%_58%/0.15)]">
+                      <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-border/70 bg-card/60 transition-all duration-500 group-hover:border-ember/50 group-hover:bg-ember/5 group-hover:shadow-[0_0_32px_hsl(221_79%_48%/0.15)]">
                         <Icon className="h-6 w-6 text-muted-foreground transition-colors duration-300 group-hover:text-ember" />
                       </div>
                     </div>
@@ -174,7 +174,7 @@ const Phases = () => {
                           className="absolute inset-0 rounded-2xl"
                           style={{
                             background:
-                              "radial-gradient(500px circle at var(--x, 50%) var(--y, 50%), hsl(22 95% 58% / 0.1), transparent 40%)",
+                              "radial-gradient(500px circle at var(--x, 50%) var(--y, 50%), hsl(221 79% 48% / 0.1), transparent 40%)",
                           }}
                         />
                       </div>

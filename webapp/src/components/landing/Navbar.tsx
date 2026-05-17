@@ -34,7 +34,7 @@ const Navbar = () => {
           <div className="relative h-7 w-7">
             <div className="absolute inset-0 rounded-md bg-gradient-to-br from-ember to-ember-deep" />
             <div className="absolute inset-[2px] rounded-[5px] bg-background flex items-center justify-center">
-              <div className="h-2 w-2 rounded-full bg-ember shadow-[0_0_12px_2px_hsl(22_95%_58%/0.8)]" />
+              <div className="h-2 w-2 rounded-full bg-ember shadow-[0_0_12px_2px_hsl(221_79%_48%/0.8)]" />
             </div>
           </div>
           <div className="flex items-baseline gap-1 font-medium tracking-tight">

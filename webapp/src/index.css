@@ -12,7 +12,7 @@
     --card-foreground: 30 30% 96%;
     --popover: 230 18% 6%;
     --popover-foreground: 30 30% 96%;
-    --primary: 22 95% 58%;
+    --primary: 221 79% 48%;
     --primary-foreground: 230 25% 4%;
     --secondary: 230 16% 10%;
     --secondary-foreground: 30 25% 96%;
@@ -24,9 +24,9 @@
     --destructive-foreground: 0 0% 100%;
     --border: 230 14% 14%;
     --input: 230 14% 14%;
-    --ring: 22 95% 58%;
-    --ember: 22 95% 58%;
-    --ember-deep: 14 90% 50%;
+    --ring: 221 79% 48%;
+    --ember: 221 79% 48%;
+    --ember-deep: 214 85% 40%;
     --ice: 192 90% 70%;
     --ice-deep: 210 90% 55%;
     --radius: 0.75rem;
@@ -39,7 +39,7 @@
     --card-foreground: 30 30% 96%;
     --popover: 230 18% 6%;
     --popover-foreground: 30 30% 96%;
-    --primary: 22 95% 58%;
+    --primary: 221 79% 48%;
     --primary-foreground: 230 25% 4%;
     --secondary: 230 16% 10%;
     --secondary-foreground: 30 25% 96%;
@@ -51,7 +51,7 @@
     --destructive-foreground: 0 0% 100%;
     --border: 230 14% 14%;
     --input: 230 14% 14%;
-    --ring: 22 95% 58%;
+    --ring: 221 79% 48%;
   }
 
   .light {
@@ -61,7 +61,7 @@
     --card-foreground: 20 18% 9%;
     --popover: 38 22% 99%;
     --popover-foreground: 20 18% 9%;
-    --primary: 22 92% 50%;
+    --primary: 221 79% 48%;
     --primary-foreground: 0 0% 100%;
     --secondary: 34 14% 91%;
     --secondary-foreground: 20 14% 22%;
@@ -73,9 +73,9 @@
     --destructive-foreground: 0 0% 100%;
     --border: 32 10% 80%;
     --input: 32 10% 80%;
-    --ring: 22 92% 50%;
-    --ember: 22 92% 50%;
-    --ember-deep: 14 88% 42%;
+    --ring: 221 79% 48%;
+    --ember: 221 79% 48%;
+    --ember-deep: 214 85% 35%;
     --ice: 192 62% 34%;
     --ice-deep: 210 62% 30%;
     --radius: 0.75rem;
@@ -101,16 +101,16 @@
     font-feature-settings: 'ss01', 'ss02', 'cv01', 'cv02';
     overflow-x: hidden;
     background:
-      radial-gradient(ellipse 100% 60% at 50% -20%, hsl(22 60% 12% / 0.35), transparent 60%),
+      radial-gradient(ellipse 100% 60% at 50% -20%, hsl(221 60% 12% / 0.35), transparent 60%),
       radial-gradient(ellipse 80% 50% at 90% 100%, hsl(192 60% 12% / 0.25), transparent 60%),
       hsl(var(--background));
   }
 
   html.light body {
     background:
-      radial-gradient(ellipse 100% 55% at 50% -10%, hsl(22 88% 68% / 0.14), transparent 60%),
+      radial-gradient(ellipse 100% 55% at 50% -10%, hsl(221 88% 68% / 0.14), transparent 60%),
       radial-gradient(ellipse 70% 45% at 95% 95%, hsl(192 65% 60% / 0.09), transparent 55%),
-      radial-gradient(ellipse 60% 40% at 5% 80%, hsl(38 60% 70% / 0.08), transparent 55%),
+      radial-gradient(ellipse 60% 40% at 5% 80%, hsl(220 60% 70% / 0.08), transparent 55%),
       hsl(var(--background));
   }
 
@@ -177,7 +177,7 @@
 .mesh-blob--ember {
   width: 70vw;
   height: 70vw;
-  background: radial-gradient(circle, hsl(22 60% 14% / 0.45), transparent 70%);
+  background: radial-gradient(circle, hsl(221 60% 14% / 0.45), transparent 70%);
   top: -15%;
   left: -15%;
   animation: mesh-drift-1 28s ease-in-out infinite;
@@ -195,7 +195,7 @@
 .mesh-blob--mid {
   width: 50vw;
   height: 50vw;
-  background: radial-gradient(circle, hsl(22 40% 10% / 0.2), transparent 70%);
+  background: radial-gradient(circle, hsl(221 40% 10% / 0.2), transparent 70%);
   top: 40%;
   left: 30%;
   animation: mesh-drift-3 36s ease-in-out infinite;
@@ -254,9 +254,9 @@
 
   .ring-ember {
     box-shadow:
-      0 0 0 1px hsl(22 95% 58% / 0.4),
-      0 0 30px -4px hsl(22 95% 58% / 0.35),
-      0 0 60px -10px hsl(22 95% 58% / 0.25);
+      0 0 0 1px hsl(221 79% 48% / 0.4),
+      0 0 30px -4px hsl(221 79% 48% / 0.35),
+      0 0 60px -10px hsl(221 79% 48% / 0.25);
   }
 
   .ring-ice {
@@ -267,7 +267,7 @@
   }
 
   .text-ember {
-    background: linear-gradient(135deg, hsl(40 100% 75%) 0%, hsl(22 95% 58%) 50%, hsl(14 90% 50%) 100%);
+    background: linear-gradient(135deg, hsl(200 100% 75%) 0%, hsl(221 79% 48%) 50%, hsl(214 85% 40%) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -285,7 +285,7 @@
       120deg,
       hsl(30 30% 96%) 0%,
       hsl(30 30% 96%) 40%,
-      hsl(22 95% 70%) 50%,
+      hsl(221 79% 70%) 50%,
       hsl(30 30% 96%) 60%,
       hsl(30 30% 96%) 100%
     );
@@ -326,7 +326,7 @@
   }
 
   .ember-line {
-    background: linear-gradient(90deg, transparent, hsl(22 95% 58% / 0.8), transparent);
+    background: linear-gradient(90deg, transparent, hsl(221 79% 48% / 0.8), transparent);
     height: 1px;
   }
 
@@ -393,7 +393,7 @@
       120deg,
       hsl(20 18% 9%) 0%,
       hsl(20 18% 9%) 40%,
-      hsl(22 92% 48%) 50%,
+      hsl(221 79% 48%) 50%,
       hsl(20 18% 9%) 60%,
       hsl(20 18% 9%) 100%
     );
@@ -404,7 +404,7 @@
   }
 
   html.light .mesh-blob--ember {
-    background: radial-gradient(circle, hsl(22 88% 68% / 0.18), transparent 70%);
+    background: radial-gradient(circle, hsl(221 88% 68% / 0.18), transparent 70%);
   }
 
   html.light .mesh-blob--ice {
@@ -412,7 +412,7 @@
   }
 
   html.light .mesh-blob--mid {
-    background: radial-gradient(circle, hsl(38 60% 65% / 0.10), transparent 70%);
+    background: radial-gradient(circle, hsl(220 60% 65% / 0.10), transparent 70%);
   }
 }
 

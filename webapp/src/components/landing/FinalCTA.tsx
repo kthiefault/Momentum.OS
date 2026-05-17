@@ -37,7 +37,7 @@ const FinalCTA = () => {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 60% 70% at 50% 50%, hsl(22 95% 58% / 0.18), transparent 60%)",
+            "radial-gradient(ellipse 60% 70% at 50% 50%, hsl(221 79% 48% / 0.18), transparent 60%)",
         }}
       />
       <div aria-hidden className="pointer-events-none absolute inset-0 mask-radial bg-grid opacity-50" />
@@ -67,12 +67,12 @@ const FinalCTA = () => {
               type="email"
               required
               placeholder="you@yourcompany.com"
-              className="flex-1 rounded-full border border-border bg-card/60 px-5 py-3 text-sm outline-none ring-0 placeholder:text-muted-foreground/70 transition-all duration-300 focus:border-ember/60 focus:ring-2 focus:ring-ember/20 focus:shadow-[0_0_0_4px_hsl(22_95%_58%/0.12)]"
+              className="flex-1 rounded-full border border-border bg-card/60 px-5 py-3 text-sm outline-none ring-0 placeholder:text-muted-foreground/70 transition-all duration-300 focus:border-ember/60 focus:ring-2 focus:ring-ember/20 focus:shadow-[0_0_0_4px_hsl(221_79%_48%/0.12)]"
             />
             <button
               type="submit"
               data-magnetic
-              className="group inline-flex items-center justify-center gap-1.5 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_8px_32px_hsl(22_95%_58%/0.3)] active:scale-[0.98]"
+              className="group inline-flex items-center justify-center gap-1.5 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_8px_32px_hsl(221_79%_48%/0.3)] active:scale-[0.98]"
               style={{ willChange: "transform" }}
             >
               Request access
