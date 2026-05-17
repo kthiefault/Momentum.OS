@@ -150,7 +150,7 @@ const DashboardPreview = () => {
             <div className={`flex items-center justify-between border-b border-border/60 px-4 py-3 transition-all duration-500 ${visible(1)}`}>
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-[hsl(0_80%_55%)]/70" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[hsl(40_90%_55%)]/70" />
+                <span className="h-2.5 w-2.5 rounded-full bg-[hsl(221_79%_55%)]/70" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[hsl(140_60%_50%)]/70" />
                 <span className="ml-3 font-mono text-[11px] text-muted-foreground">
                   momentum.os / atlas group · production
