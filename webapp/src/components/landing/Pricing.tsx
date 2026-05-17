@@ -20,9 +20,9 @@ const plans: Plan[] = [
   {
     name: "Operator",
     tagline: "For solo founders & advisors getting out of the weeds.",
-    price: "$98",
-    cadence: "/ seat / month",
-    cta: "Start free trial",
+    price: "Custom",
+    cadence: "per seat · billed annually",
+    cta: "Get a quote",
     features: [
       "Up to 5 active workflows",
       "1 AI agent · Sales OR Ops",
@@ -34,8 +34,8 @@ const plans: Plan[] = [
   {
     name: "Studio",
     tagline: "For 2–15 person teams running real revenue.",
-    price: "$340",
-    cadence: "/ seat / month",
+    price: "Custom",
+    cadence: "per seat · billed annually",
     cta: "Talk to sales",
     highlight: true,
     features: [
