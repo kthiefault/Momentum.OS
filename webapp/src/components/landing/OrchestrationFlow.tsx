@@ -556,24 +556,23 @@ export default function OrchestrationFlow() {
     if (activeHotspot === hotspot.id) { setActiveHotspot(null); return; }
 
     const svg = svgRef.current;
-    const container = windowRef.current;
-    if (!svg || !container) return;
+    if (!svg) return;
 
     const svgRect = svg.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
     const scaleX = svgRect.width / VW;
     const scaleY = svgRect.height / VH;
-
-    const nodeX = svgRect.left - containerRect.left + hotspot.svgX * scaleX;
-    const nodeY = svgRect.top  - containerRect.top  + hotspot.svgY * scaleY;
 
     const CARD_W = 240;
     const CARD_H = 200;
 
+    // Position relative to the SVG's parent div (the relative flex-1 container)
+    const nodeX = hotspot.svgX * scaleX;
+    const nodeY = hotspot.svgY * scaleY;
+
     let x = hotspot.cardAnchor === "left" ? nodeX - CARD_W - 14 : nodeX + 20;
     let y = nodeY - CARD_H / 2;
-    y = Math.max(8, Math.min(y, containerRect.height - CARD_H - 8));
-    x = Math.max(8, Math.min(x, containerRect.width  - CARD_W - 8));
+    y = Math.max(8, Math.min(y, svgRect.height - CARD_H - 8));
+    x = Math.max(8, Math.min(x, svgRect.width - CARD_W - 8));
 
     setCardStyle({ position: "absolute", left: x, top: y, width: CARD_W, zIndex: 20 });
     setActiveHotspot(hotspot.id);
