@@ -53,6 +53,33 @@
     --input: 230 14% 14%;
     --ring: 22 95% 58%;
   }
+
+  .light {
+    --background: 30 15% 97%;
+    --foreground: 230 20% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 230 20% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 20% 10%;
+    --primary: 22 95% 52%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 230 10% 93%;
+    --secondary-foreground: 230 20% 15%;
+    --muted: 230 10% 91%;
+    --muted-foreground: 230 8% 42%;
+    --accent: 192 75% 38%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 230 14% 86%;
+    --input: 230 14% 86%;
+    --ring: 22 95% 52%;
+    --ember: 22 95% 52%;
+    --ember-deep: 14 90% 44%;
+    --ice: 192 75% 38%;
+    --ice-deep: 210 75% 36%;
+    --radius: 0.75rem;
+  }
 }
 
 @layer base {
@@ -64,6 +91,9 @@
     scroll-behavior: smooth;
     color-scheme: dark;
   }
+  html.light {
+    color-scheme: light;
+  }
 
   body {
     @apply bg-background text-foreground antialiased;
@@ -73,6 +103,13 @@
     background:
       radial-gradient(ellipse 100% 60% at 50% -20%, hsl(22 60% 12% / 0.35), transparent 60%),
       radial-gradient(ellipse 80% 50% at 90% 100%, hsl(192 60% 12% / 0.25), transparent 60%),
+      hsl(var(--background));
+  }
+
+  html.light body {
+    background:
+      radial-gradient(ellipse 100% 60% at 50% -20%, hsl(22 90% 75% / 0.18), transparent 60%),
+      radial-gradient(ellipse 80% 50% at 90% 100%, hsl(192 80% 75% / 0.12), transparent 60%),
       hsl(var(--background));
   }
 

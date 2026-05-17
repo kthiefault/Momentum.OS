@@ -10,14 +10,17 @@ import AI from "./pages/AI";
 import Pipeline from "./pages/Pipeline";
 import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
+import ThemePickerModal from "./components/ThemePickerModal";
+import { useTheme } from "./hooks/use-theme";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
+function AppContent() {
+  const { hasChosen, chooseTheme } = useTheme();
+
+  return (
+    <>
+      <ThemePickerModal open={!hasChosen} onChoose={chooseTheme} />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
@@ -30,6 +33,16 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+    </>
+  );
+}
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <AppContent />
     </TooltipProvider>
   </QueryClientProvider>
 );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Moon, Sun } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "@/hooks/use-theme";
 
 const links = [
   { label: "Platform", to: "/platform" },
@@ -13,6 +14,7 @@ const links = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -60,6 +62,13 @@ const Navbar = () => {
         </ul>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={toggleTheme}
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/40 text-muted-foreground transition-all hover:border-border hover:text-foreground"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+          </button>
           <Link
             to="/"
             className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:block"
