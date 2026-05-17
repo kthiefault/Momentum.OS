@@ -37,7 +37,7 @@ const Footer = () => {
             </a>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
               An AI-powered execution operating system for entrepreneurs,
-              advisors, and operators. Built in San Francisco.
+              advisors, and operators. Built in Coeur d'Alene, Idaho.
             </p>
             <div className="mt-6 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground/70">
               © {new Date().getFullYear()} Momentum Labs, Inc.
