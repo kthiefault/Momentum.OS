@@ -109,7 +109,7 @@ const Pricing = () => {
                   ? "border-ember/40 bg-gradient-to-b from-ember/[0.08] to-card/60 ring-1 ring-ember/20 hover:ring-ember hover:shadow-[0_24px_60px_hsl(221_79%_48%/0.2)]"
                   : "border-border/70 bg-card/40 hover:border-foreground/30 hover:bg-card/70 hover:shadow-[0_24px_60px_hsl(0_0%_0%/0.4)]"
               }`}
-              style={p.name === "Atlas" ? { opacity: 0.55 } : undefined}
+              style={undefined}
             >
               {p.highlight ? (
                 <span className="absolute -top-3 left-8 inline-flex items-center gap-1.5 rounded-full border border-ember/40 bg-background px-3 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-ember">
