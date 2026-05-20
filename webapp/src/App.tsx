@@ -33,10 +33,11 @@ const queryClient = new QueryClient();
 
 function AppContent() {
   const { hasChosen, chooseTheme } = useTheme();
+  const isAdminRoute = window.location.pathname === "/sign-in" || window.location.pathname.startsWith("/admin");
 
   return (
     <>
-      <ThemePickerModal open={!hasChosen} onChoose={chooseTheme} />
+      <ThemePickerModal open={!hasChosen && !isAdminRoute} onChoose={chooseTheme} />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />

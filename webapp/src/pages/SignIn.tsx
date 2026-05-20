@@ -39,6 +39,7 @@ export default function SignIn() {
         if (json?.data?.token) {
           localStorage.setItem("admin_token", json.data.token);
         }
+        localStorage.setItem("theme-chosen", "true");
         toast.success("Welcome back, Kenny!");
         window.location.href = "/admin";
       }
