@@ -9,10 +9,14 @@ interface SessionUser {
 }
 
 async function fetchSession(): Promise<SessionUser | null> {
+  const token = localStorage.getItem("admin_token");
   const baseURL = import.meta.env.VITE_BACKEND_URL || "";
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
   const res = await fetch(`${baseURL}/api/auth/get-session`, {
     credentials: "include",
-    headers: { "Content-Type": "application/json" },
+    headers,
   });
   if (!res.ok) return null;
   const data = await res.json();

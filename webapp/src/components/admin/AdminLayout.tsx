@@ -40,11 +40,16 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   });
 
   const handleSignOut = async () => {
+    const token = localStorage.getItem("admin_token");
     const baseURL = import.meta.env.VITE_BACKEND_URL || "";
+    const headers: Record<string, string> = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
     await fetch(`${baseURL}/api/auth/sign-out`, {
       method: "POST",
       credentials: "include",
+      headers,
     });
+    localStorage.removeItem("admin_token");
     toast.success("Signed out successfully");
     window.location.href = "/sign-in";
   };

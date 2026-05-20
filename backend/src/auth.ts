@@ -1,4 +1,5 @@
 import { betterAuth } from "better-auth";
+import { bearer } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "@prisma/client";
 
@@ -10,6 +11,7 @@ export const auth = betterAuth({
   }),
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
   secret: process.env.BETTER_AUTH_SECRET!,
+  plugins: [bearer()],
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 4,

@@ -37,6 +37,10 @@ export default function SignIn() {
         const json = await res.json().catch(() => null);
         setError(json?.message ?? "Invalid credentials. Please try again.");
       } else {
+        const json = await res.json();
+        if (json?.token) {
+          localStorage.setItem("admin_token", json.token);
+        }
         toast.success("Welcome back, Kenny!");
         window.location.href = "/admin";
       }

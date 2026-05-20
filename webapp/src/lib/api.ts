@@ -15,10 +15,14 @@ interface ApiResponse<T> {
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
 
+  const token = localStorage.getItem("admin_token");
+  const authHeader: Record<string, string> = token ? { "Authorization": `Bearer ${token}` } : {};
+
   const config: RequestInit = {
     ...options,
     headers: {
       "Content-Type": "application/json",
+      ...authHeader,
       ...options.headers,
     },
     credentials: "include",
