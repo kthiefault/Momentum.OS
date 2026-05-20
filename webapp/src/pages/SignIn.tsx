@@ -25,14 +25,17 @@ export default function SignIn() {
     setIsLoading(true);
 
     try {
-      const result = await authClient.signIn.email({
-        email: resolveEmail(username),
-        password,
-        fetchOptions: { credentials: "include" },
+      const baseURL = import.meta.env.VITE_BACKEND_URL || "";
+      const res = await fetch(`${baseURL}/api/auth/sign-in/email`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: resolveEmail(username), password }),
       });
 
-      if (result.error) {
-        setError(result.error.message ?? "Invalid credentials. Please try again.");
+      if (!res.ok) {
+        const json = await res.json().catch(() => null);
+        setError(json?.message ?? "Invalid credentials. Please try again.");
       } else {
         toast.success("Welcome back, Kenny!");
         window.location.href = "/admin";

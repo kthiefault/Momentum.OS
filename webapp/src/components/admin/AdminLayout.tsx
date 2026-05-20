@@ -38,9 +38,13 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   });
 
   const handleSignOut = async () => {
-    await authClient.signOut({ fetchOptions: { credentials: "include" } });
+    const baseURL = import.meta.env.VITE_BACKEND_URL || "";
+    await fetch(`${baseURL}/api/auth/sign-out`, {
+      method: "POST",
+      credentials: "include",
+    });
     toast.success("Signed out successfully");
-    navigate("/sign-in");
+    window.location.href = "/sign-in";
   };
 
   const SidebarContent = () => (
