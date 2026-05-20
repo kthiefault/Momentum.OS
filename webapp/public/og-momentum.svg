@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="bgGrad" cx="70%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#12121a"/>
+      <stop offset="100%" stop-color="#09090e"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.08)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+
+  <!-- Subtle glow behind nucleus -->
+  <ellipse cx="870" cy="315" rx="260" ry="260" fill="rgba(255,255,255,0.04)" filter="url(#blur)"/>
+
+  <!-- ───── NUCLEUS (right side, centered at 870, 315) ───── -->
+
+  <!-- Orbit ring 1: horizontal -->
+  <ellipse cx="870" cy="315" rx="200" ry="72" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+  <!-- Orbit ring 2: 60° tilt -->
+  <ellipse cx="870" cy="315" rx="200" ry="72" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" transform="rotate(60 870 315)"/>
+  <!-- Orbit ring 3: -60° tilt -->
+  <ellipse cx="870" cy="315" rx="200" ry="72" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" transform="rotate(-60 870 315)"/>
+
+  <!-- Electrons (static, frozen mid-orbit for the snapshot look) -->
+  <!-- Orbit 1 electron at ~30° -->
+  <circle cx="1043" cy="279" r="10" fill="white" opacity="0.90"/>
+  <!-- Orbit 2 electron at ~150° (on the 60° orbit) -->
+  <g transform="rotate(60 870 315)">
+    <circle cx="697" cy="315" r="10" fill="white" opacity="0.90"/>
+  </g>
+  <!-- Orbit 3 electron at ~270° (on the -60° orbit) -->
+  <g transform="rotate(-60 870 315)">
+    <circle cx="870" cy="387" r="10" fill="white" opacity="0.90"/>
+  </g>
+
+  <!-- Nucleus core -->
+  <circle cx="870" cy="315" r="38" fill="white" opacity="0.97"/>
+  <circle cx="870" cy="315" r="20" fill="#09090e" opacity="0.45"/>
+
+  <!-- ───── TEXT (left side) ───── -->
+
+  <!-- Logo mark small above title -->
+  <ellipse cx="88" cy="108" rx="28" ry="10" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.8"/>
+  <ellipse cx="88" cy="108" rx="28" ry="10" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.8" transform="rotate(60 88 108)"/>
+  <ellipse cx="88" cy="108" rx="28" ry="10" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.8" transform="rotate(-60 88 108)"/>
+  <circle cx="88" cy="108" r="7" fill="white" opacity="0.95"/>
+
+  <!-- Brand name -->
+  <text x="130" y="122" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" font-weight="600" letter-spacing="0.12em" fill="rgba(255,255,255,0.45)" text-transform="uppercase">MOMENTUM.OS</text>
+
+  <!-- Divider line -->
+  <line x1="80" y1="164" x2="560" y2="164" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+  <!-- Main headline -->
+  <text x="80" y="270" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="72" font-weight="700" fill="white" opacity="0.95" letter-spacing="-0.02em">Momentum.OS</text>
+
+  <!-- Tagline -->
+  <text x="82" y="340" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="34" font-weight="400" fill="rgba(255,255,255,0.55)" letter-spacing="-0.01em">Your business on autopilot.</text>
+
+  <!-- Supporting line -->
+  <text x="84" y="410" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="20" font-weight="400" fill="rgba(255,255,255,0.28)" letter-spacing="0.01em">AI workflows · CRM intelligence · Execution engine</text>
+
+  <!-- Bottom domain -->
+  <text x="80" y="568" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', monospace" font-size="18" fill="rgba(255,255,255,0.22)" letter-spacing="0.04em">momentum.os</text>
+</svg>

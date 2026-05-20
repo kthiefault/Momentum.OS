@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background -->
+  <rect width="32" height="32" rx="7" fill="#09090e"/>
+
+  <!-- Orbit 1: horizontal -->
+  <ellipse cx="16" cy="16" rx="11.5" ry="4.2" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.75"/>
+  <g>
+    <circle cx="27.5" cy="16" r="2.1" fill="white" opacity="0.95"/>
+    <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="2s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- Orbit 2: tilted 60° -->
+  <g transform="rotate(60 16 16)">
+    <ellipse cx="16" cy="16" rx="11.5" ry="4.2" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.75"/>
+    <g>
+      <circle cx="27.5" cy="16" r="2.1" fill="white" opacity="0.95"/>
+      <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="3.1s" repeatCount="indefinite"/>
+    </g>
+  </g>
+
+  <!-- Orbit 3: tilted -60° -->
+  <g transform="rotate(-60 16 16)">
+    <ellipse cx="16" cy="16" rx="11.5" ry="4.2" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.75"/>
+    <g>
+      <circle cx="27.5" cy="16" r="2.1" fill="white" opacity="0.95"/>
+      <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="-360 16 16" dur="1.7s" repeatCount="indefinite"/>
+    </g>
+  </g>
+
+  <!-- Nucleus core -->
+  <circle cx="16" cy="16" r="3.2" fill="white" opacity="0.98"/>
+  <circle cx="16" cy="16" r="1.6" fill="#09090e" opacity="0.5"/>
+</svg>
