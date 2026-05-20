@@ -35,7 +35,7 @@ export default function SignIn() {
         setError(result.error.message ?? "Invalid credentials. Please try again.");
       } else {
         toast.success("Welcome back, Kenny!");
-        navigate("/admin");
+        window.location.href = "/admin";
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Something went wrong. Please try again.";
