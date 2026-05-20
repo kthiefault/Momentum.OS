@@ -1,10 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const CustomCursor = () => {
+  const [isCoarse] = useState(() => window.matchMedia("(pointer: coarse)").matches);
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (isCoarse) return;
+
     const isTouchDevice = window.matchMedia("(hover: none)").matches;
     if (isTouchDevice) return;
 
@@ -108,7 +111,9 @@ const CustomCursor = () => {
         el.style.transform = "";
       });
     };
-  }, []);
+  }, [isCoarse]);
+
+  if (isCoarse) return null;
 
   return (
     <>

@@ -1,7 +1,9 @@
+import { Suspense, lazy } from "react";
 import PageLayout from "@/components/landing/PageLayout";
-import CRMPipeline from "@/components/landing/CRMPipeline";
 import FinalCTA from "@/components/landing/FinalCTA";
 import { SEO } from "@/components/SEO";
+
+const CRMPipeline = lazy(() => import("../components/landing/CRMPipeline"));
 
 const Pipeline = () => (
   <PageLayout>
@@ -12,7 +14,9 @@ const Pipeline = () => (
       canonical="/pipeline"
     />
     <div className="pt-20">
-      <CRMPipeline />
+      <Suspense fallback={<div className="h-64 animate-pulse bg-gray-900/50 rounded-xl" />}>
+        <CRMPipeline />
+      </Suspense>
       <FinalCTA />
     </div>
   </PageLayout>

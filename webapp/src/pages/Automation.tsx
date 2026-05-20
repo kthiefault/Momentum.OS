@@ -1,8 +1,10 @@
+import { Suspense, lazy } from "react";
 import PageLayout from "@/components/landing/PageLayout";
-import OrchestrationFlow from "@/components/landing/OrchestrationFlow";
-import AutomationEngine from "@/components/landing/AutomationEngine";
 import FinalCTA from "@/components/landing/FinalCTA";
 import { SEO } from "@/components/SEO";
+
+const OrchestrationFlow = lazy(() => import("../components/landing/OrchestrationFlow"));
+const AutomationEngine = lazy(() => import("../components/landing/AutomationEngine"));
 
 const Automation = () => (
   <PageLayout>
@@ -13,8 +15,12 @@ const Automation = () => (
       canonical="/automation"
     />
     <div className="pt-20">
-      <OrchestrationFlow />
-      <AutomationEngine />
+      <Suspense fallback={<div className="h-64 animate-pulse bg-gray-900/50 rounded-xl" />}>
+        <OrchestrationFlow />
+      </Suspense>
+      <Suspense fallback={<div className="h-64 animate-pulse bg-gray-900/50 rounded-xl" />}>
+        <AutomationEngine />
+      </Suspense>
       <FinalCTA />
     </div>
   </PageLayout>

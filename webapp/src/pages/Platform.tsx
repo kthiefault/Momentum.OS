@@ -1,9 +1,11 @@
+import { Suspense, lazy } from "react";
 import PageLayout from "@/components/landing/PageLayout";
 import Solution from "@/components/landing/Solution";
 import Phases from "@/components/landing/Phases";
-import DashboardPreview from "@/components/landing/DashboardPreview";
 import FinalCTA from "@/components/landing/FinalCTA";
 import { SEO } from "@/components/SEO";
+
+const DashboardPreview = lazy(() => import("../components/landing/DashboardPreview"));
 
 const Platform = () => (
   <PageLayout>
@@ -16,7 +18,9 @@ const Platform = () => (
     <div className="pt-20">
       <Solution />
       <Phases />
-      <DashboardPreview />
+      <Suspense fallback={<div className="h-64 animate-pulse bg-gray-900/50 rounded-xl" />}>
+        <DashboardPreview />
+      </Suspense>
       <FinalCTA />
     </div>
   </PageLayout>

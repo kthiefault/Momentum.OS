@@ -1,7 +1,9 @@
+import { Suspense, lazy } from "react";
 import PageLayout from "@/components/landing/PageLayout";
-import AIAssistant from "@/components/landing/AIAssistant";
 import FinalCTA from "@/components/landing/FinalCTA";
 import { SEO } from "@/components/SEO";
+
+const AIAssistant = lazy(() => import("../components/landing/AIAssistant"));
 
 const AI = () => (
   <PageLayout>
@@ -12,7 +14,9 @@ const AI = () => (
       canonical="/ai"
     />
     <div className="pt-20">
-      <AIAssistant />
+      <Suspense fallback={<div className="h-64 animate-pulse bg-gray-900/50 rounded-xl" />}>
+        <AIAssistant />
+      </Suspense>
       <FinalCTA />
     </div>
   </PageLayout>
