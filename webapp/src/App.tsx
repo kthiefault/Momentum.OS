@@ -12,6 +12,13 @@ import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 import ThemePickerModal from "./components/ThemePickerModal";
 import { useTheme } from "./hooks/use-theme";
+import SignIn from "./pages/SignIn";
+import Dashboard from "./pages/admin/Dashboard";
+import Workflows from "./pages/admin/Workflows";
+import Leads from "./pages/admin/Leads";
+import AdminSettings from "./pages/admin/Settings";
+import { AdminLayout } from "./components/admin/AdminLayout";
+import { ProtectedRoute } from "./components/admin/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +36,47 @@ function AppContent() {
           <Route path="/ai" element={<AI />} />
           <Route path="/pipeline" element={<Pipeline />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <Dashboard />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/workflows"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <Workflows />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/leads"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <Leads />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <AdminSettings />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

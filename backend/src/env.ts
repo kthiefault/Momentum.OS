@@ -11,6 +11,11 @@ const envSchema = z.object({
   // Email notifications (optional — feature fails gracefully if unset)
   RESEND_API_KEY: z.string().optional(),
   NOTIFICATION_EMAIL: z.string().optional(),
+  // Database
+  DATABASE_URL: z.string().optional().default("file:./dev.db"),
+  // Better Auth
+  BETTER_AUTH_SECRET: z.string().optional().default("momentum-admin-secret-key-2024-secure"),
+  BETTER_AUTH_URL: z.string().optional().default("http://localhost:3000"),
 });
 
 /**

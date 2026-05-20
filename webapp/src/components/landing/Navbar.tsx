@@ -85,10 +85,10 @@ const Navbar = () => {
               {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
             </button>
             <Link
-              to="/"
+              to="/sign-in"
               className="hidden text-sm text-muted-foreground transition-colors hover:text-foreground sm:block md:block"
             >
-              Sign in
+              Admin
             </Link>
             <Link
               to="/pricing"
@@ -197,10 +197,10 @@ const Navbar = () => {
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
                 <Link
-                  to="/"
+                  to="/sign-in"
                   className="flex items-center justify-center rounded-xl border border-white/15 px-6 py-3.5 text-[15px] font-medium text-white/70 transition-all active:scale-95 hover:border-white/25 hover:text-white"
                 >
-                  Sign in
+                  Admin
                 </Link>
               </motion.div>
             </motion.div>

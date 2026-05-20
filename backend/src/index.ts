@@ -5,6 +5,10 @@ import "./env";
 import { sampleRouter } from "./routes/sample";
 import { notificationsRouter } from "./routes/notifications";
 import { logger } from "hono/logger";
+import { auth } from "./auth";
+import workflowsRouter from "./routes/workflows";
+import leadsRouter from "./routes/leads";
+import adminRouter from "./routes/admin";
 
 const app = new Hono();
 
@@ -33,9 +37,15 @@ app.use("*", logger());
 // Health check endpoint
 app.get("/health", (c) => c.json({ status: "ok" }));
 
+// Better Auth handler — must be before other /api/auth routes
+app.on(["GET", "POST"], "/api/auth/*", (c) => auth.handler(c.req.raw));
+
 // Routes
 app.route("/api/sample", sampleRouter);
 app.route("/api/notifications", notificationsRouter);
+app.route("/api/workflows", workflowsRouter);
+app.route("/api/leads", leadsRouter);
+app.route("/api/admin", adminRouter);
 
 const port = Number(process.env.PORT) || 3000;
 
