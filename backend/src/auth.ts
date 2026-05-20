@@ -13,6 +13,9 @@ export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET!,
   trustedProxyHeaders: true,
   plugins: [bearer()],
+  rateLimit: {
+    enabled: false,
+  },
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 4,

@@ -7,8 +7,8 @@ import { toast } from "sonner";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [username, setUsername] = useState<string>("admin");
+  const [password, setPassword] = useState<string>("1234");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");

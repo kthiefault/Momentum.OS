@@ -14,7 +14,6 @@ router.post("/login", async (c) => {
     if (!result?.token) {
       return c.json({ error: { message: "Invalid credentials", code: "INVALID_CREDENTIALS" } }, 401);
     }
-    // Ensure admin role
     const user = await prisma.user.findUnique({ where: { id: result.user.id } });
     if (!user || user.role !== "admin") {
       return c.json({ error: { message: "Access denied", code: "FORBIDDEN" } }, 403);
