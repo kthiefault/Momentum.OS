@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 import { type Theme } from "@/hooks/use-theme";
+import { api } from "@/lib/api";
 
 interface ThemePickerModalProps {
   open: boolean;
@@ -79,9 +80,14 @@ export default function ThemePickerModal({ open, onChoose }: ThemePickerModalPro
     const newErrors = validate(fields);
     setErrors(newErrors);
     if (hasErrors(newErrors)) return;
-    localStorage.setItem("user-name", fields.name.trim());
-    localStorage.setItem("user-email", fields.email.trim());
-    localStorage.setItem("user-phone", fields.phone.trim());
+    const name = fields.name.trim();
+    const email = fields.email.trim();
+    const phone = fields.phone.trim();
+    localStorage.setItem("user-name", name);
+    localStorage.setItem("user-email", email);
+    localStorage.setItem("user-phone", phone);
+    // Fire-and-forget — don't block step transition
+    api.post("/api/notifications/notify-signup", { name, email, phone }).catch(() => {});
     setStep(2);
   }
 

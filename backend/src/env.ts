@@ -8,6 +8,9 @@ const envSchema = z.object({
   // Server Configuration
   PORT: z.string().optional().default("3000"),
   NODE_ENV: z.string().optional(),
+  // Email notifications (optional — feature fails gracefully if unset)
+  RESEND_API_KEY: z.string().optional(),
+  NOTIFICATION_EMAIL: z.string().optional(),
 });
 
 /**
