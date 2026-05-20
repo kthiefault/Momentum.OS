@@ -92,7 +92,7 @@ const Hero = () => {
             >
               <span className="absolute inset-0 bg-gradient-to-r from-ember/0 via-ember/25 to-ember/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
               <Sparkles className="relative h-4 w-4" />
-              <span className="relative">Start for free</span>
+              <span className="relative">Book a free demo</span>
               <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
             <a
