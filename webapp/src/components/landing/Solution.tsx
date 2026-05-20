@@ -45,8 +45,8 @@ const Solution = () => {
         opacity: 0, y: 40, duration: 0.9, ease: "power2.out",
       });
       gsap.from(".solution-card", {
-        scrollTrigger: { trigger: ".solution-grid", start: "top bottom", once: true },
-        opacity: 0, y: 30, stagger: 0.1, duration: 0.75, ease: "power2.out",
+        scrollTrigger: { trigger: ".solution-grid", start: "top 90%", once: true },
+        y: 30, stagger: 0.1, duration: 0.75, ease: "power2.out",
       });
       gsap.from(".solution-tags span", {
         scrollTrigger: { trigger: ".solution-tags", start: "top bottom", once: true },
