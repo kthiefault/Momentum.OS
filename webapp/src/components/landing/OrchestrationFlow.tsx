@@ -174,18 +174,15 @@ const INPUT_NODES: InputNodeDef[] = [
   },
 ];
 
-const STATUS_DOT: Record<ExampleItem["status"], string> = {
-  live:      "bg-emerald-400",
-  connected: "bg-black/25",
-  available: "bg-black/10",
-};
-
 // ─── PhaseControl segmented control ──────────────────────────────────────────
-function PhaseControl({ phase, onChange }: { phase: number; onChange: (i: number) => void }) {
+function PhaseControl({ phase, onChange, isLight }: { phase: number; onChange: (i: number) => void; isLight: boolean }) {
   return (
     <div
       className="relative flex items-center rounded-full p-1"
-      style={{ background: "rgba(0,0,0,0.03)", border: "1px solid rgba(0,0,0,0.07)" }}
+      style={{
+        background: isLight ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.03)",
+        border: isLight ? "1px solid rgba(0,0,0,0.07)" : "1px solid rgba(255,255,255,0.07)",
+      }}
     >
       {PHASE_CONFIGS.map((config, i) => (
         <button
@@ -197,7 +194,9 @@ function PhaseControl({ phase, onChange }: { phase: number; onChange: (i: number
             border: "none",
             cursor: "pointer",
             zIndex: 1,
-            color: phase === i ? "rgba(0,0,0,0.75)" : "rgba(0,0,0,0.35)",
+            color: isLight
+              ? (phase === i ? "rgba(0,0,0,0.75)" : "rgba(0,0,0,0.35)")
+              : (phase === i ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.28)"),
             fontFamily: "system-ui,-apple-system,sans-serif",
             whiteSpace: "nowrap",
           }}
@@ -206,7 +205,10 @@ function PhaseControl({ phase, onChange }: { phase: number; onChange: (i: number
             <motion.div
               layoutId="phase-pill"
               className="absolute inset-0 rounded-full"
-              style={{ background: "rgba(0,0,0,0.08)", border: "1px solid rgba(0,0,0,0.12)" }}
+              style={{
+                background: isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)",
+                border: isLight ? "1px solid rgba(0,0,0,0.12)" : "1px solid rgba(255,255,255,0.14)",
+              }}
               transition={{ type: "spring", stiffness: 360, damping: 30 }}
             />
           ) : null}
@@ -222,10 +224,12 @@ function HotspotInfoCard({
   hotspot,
   style,
   onClose,
+  isLight,
 }: {
   hotspot: HotspotDef;
   style: React.CSSProperties;
   onClose: () => void;
+  isLight: boolean;
 }) {
   const Icon = hotspot.Icon;
   return (
@@ -238,10 +242,12 @@ function HotspotInfoCard({
         ...style,
         backdropFilter: "blur(28px) saturate(180%)",
         WebkitBackdropFilter: "blur(28px) saturate(180%)",
-        background: "rgba(255,255,255,0.95)",
-        border: "1px solid rgba(0,0,0,0.12)",
+        background: isLight ? "rgba(255,255,255,0.95)" : "rgba(10,12,20,0.92)",
+        border: isLight ? "1px solid rgba(0,0,0,0.12)" : "1px solid rgba(255,255,255,0.10)",
         borderRadius: "14px",
-        boxShadow: "0 24px 64px rgba(0,0,0,0.15)",
+        boxShadow: isLight
+          ? "0 24px 64px rgba(0,0,0,0.15)"
+          : "0 24px 64px rgba(0,0,0,0.75), 0 0 0 0.5px rgba(255,255,255,0.04) inset",
         padding: "16px",
         pointerEvents: "all",
       }}
@@ -250,13 +256,16 @@ function HotspotInfoCard({
         <div className="flex items-center gap-2.5">
           <div
             className="flex h-7 w-7 items-center justify-center rounded-lg"
-            style={{ background: "rgba(0,0,0,0.05)", border: "1px solid rgba(0,0,0,0.06)" }}
+            style={{
+              background: isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.07)",
+              border: isLight ? "1px solid rgba(0,0,0,0.06)" : "1px solid rgba(255,255,255,0.08)",
+            }}
           >
-            <Icon className="h-3.5 w-3.5 text-black/55" />
+            <Icon className={`h-3.5 w-3.5 ${isLight ? "text-black/55" : "text-white/55"}`} />
           </div>
           <span
             className="text-[12px] font-semibold tracking-[-0.01em]"
-            style={{ color: "rgba(0,0,0,0.78)" }}
+            style={{ color: isLight ? "rgba(0,0,0,0.78)" : "rgba(255,255,255,0.78)" }}
           >
             {hotspot.title}
           </span>
@@ -264,14 +273,18 @@ function HotspotInfoCard({
         <button
           onClick={onClose}
           className="flex h-5 w-5 items-center justify-center rounded-full"
-          style={{ background: "rgba(0,0,0,0.06)", border: "none", cursor: "pointer" }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.10)"; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.06)"; }}
+          style={{
+            background: isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)",
+            border: "none",
+            cursor: "pointer",
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = isLight ? "rgba(0,0,0,0.10)" : "rgba(255,255,255,0.12)"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = isLight ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)"; }}
         >
-          <X className="h-3 w-3 text-black/40" />
+          <X className={`h-3 w-3 ${isLight ? "text-black/40" : "text-white/40"}`} />
         </button>
       </div>
-      <p className="text-[11px] leading-[1.65]" style={{ color: "rgba(0,0,0,0.55)" }}>
+      <p className="text-[11px] leading-[1.65]" style={{ color: isLight ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.42)" }}>
         {hotspot.body}
       </p>
       <div className="flex flex-wrap gap-1 mt-3">
@@ -280,9 +293,9 @@ function HotspotInfoCard({
             key={tag}
             className="text-[9px] rounded-full px-2 py-0.5"
             style={{
-              background: "rgba(0,0,0,0.05)",
-              border: "1px solid rgba(0,0,0,0.08)",
-              color: "rgba(0,0,0,0.45)",
+              background: isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
+              border: isLight ? "1px solid rgba(0,0,0,0.08)" : "1px solid rgba(255,255,255,0.08)",
+              color: isLight ? "rgba(0,0,0,0.45)" : "rgba(255,255,255,0.32)",
               letterSpacing: "0.03em",
             }}
           >
@@ -299,12 +312,20 @@ function SourceCard({
   node,
   isExpanded,
   onToggle,
+  isLight,
 }: {
   node: InputNodeDef;
   isExpanded: boolean;
   onToggle: () => void;
+  isLight: boolean;
 }) {
   const Icon = node.icon;
+
+  const statusDot: Record<ExampleItem["status"], string> = {
+    live:      "bg-emerald-400",
+    connected: isLight ? "bg-black/25" : "bg-white/40",
+    available: isLight ? "bg-black/10" : "bg-white/15",
+  };
 
   return (
     <div
@@ -317,9 +338,15 @@ function SourceCard({
       <div
         className="relative overflow-hidden rounded-xl transition-all duration-500"
         style={{
-          background: isExpanded ? "hsl(0 0% 97%)" : "rgba(0,0,0,0.02)",
-          border: isExpanded ? "1px solid rgba(0,0,0,0.12)" : "1px solid rgba(0,0,0,0.06)",
-          boxShadow: isExpanded ? "0 8px 32px rgba(0,0,0,0.08)" : "none",
+          background: isExpanded
+            ? (isLight ? "hsl(0 0% 97%)" : "hsl(230 22% 9%)")
+            : (isLight ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.04)"),
+          border: isExpanded
+            ? (isLight ? "1px solid rgba(0,0,0,0.12)" : "1px solid rgba(255,255,255,0.14)")
+            : (isLight ? "1px solid rgba(0,0,0,0.06)" : "1px solid rgba(255,255,255,0.08)"),
+          boxShadow: isExpanded
+            ? (isLight ? "0 8px 32px rgba(0,0,0,0.08)" : "0 8px 32px rgba(0,0,0,0.4)")
+            : "none",
         }}
       >
         <button
@@ -329,18 +356,18 @@ function SourceCard({
         >
           <div
             className="flex h-8 w-8 flex-none items-center justify-center rounded-lg"
-            style={{ background: "rgba(0,0,0,0.05)" }}
+            style={{ background: isLight ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.07)" }}
           >
-            <Icon className="h-3.5 w-3.5 text-black/45" />
+            <Icon className={`h-3.5 w-3.5 ${isLight ? "text-black/45" : "text-white/50"}`} />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-black/45 leading-none">
+            <p className={`text-[11px] font-semibold uppercase tracking-[0.08em] leading-none ${isLight ? "text-black/45" : "text-white/45"}`}>
               {node.label}
             </p>
-            <p className="mt-0.5 text-[9px] text-black/22 truncate">{node.sub}</p>
+            <p className={`mt-0.5 text-[9px] truncate ${isLight ? "text-black/22" : "text-white/22"}`}>{node.sub}</p>
           </div>
           <ChevronDown
-            className="h-3 w-3 flex-none text-black/25 transition-transform duration-300"
+            className={`h-3 w-3 flex-none transition-transform duration-300 ${isLight ? "text-black/25" : "text-white/25"}`}
             style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)" }}
           />
         </button>
@@ -354,24 +381,27 @@ function SourceCard({
         >
           <div
             className="px-3 pb-3 pt-0 space-y-0.5"
-            style={{ borderTop: "1px solid rgba(0,0,0,0.06)", background: "hsl(0 0% 97%)" }}
+            style={{
+              borderTop: isLight ? "1px solid rgba(0,0,0,0.06)" : "1px solid rgba(255,255,255,0.06)",
+              background: isLight ? "hsl(0 0% 97%)" : "hsl(230 22% 9%)",
+            }}
           >
             {node.examples.map(item => (
               <div
                 key={item.name}
                 className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors duration-150"
-                style={{ background: "rgba(0,0,0,0.02)" }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.04)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.02)"; }}
+                style={{ background: isLight ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.02)" }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = isLight ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.05)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = isLight ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.02)"; }}
               >
-                <div className={`h-1.5 w-1.5 flex-none rounded-full ${STATUS_DOT[item.status]}`} />
-                <span className="flex-1 text-[10px] text-black/50 truncate">{item.name}</span>
+                <div className={`h-1.5 w-1.5 flex-none rounded-full ${statusDot[item.status]}`} />
+                <span className={`flex-1 text-[10px] truncate ${isLight ? "text-black/50" : "text-white/50"}`}>{item.name}</span>
                 <span
                   className="text-[8px] rounded px-1 py-0.5"
                   style={{
-                    background: "rgba(0,0,0,0.04)",
-                    border: "1px solid rgba(0,0,0,0.07)",
-                    color: "rgba(0,0,0,0.32)",
+                    background: isLight ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.04)",
+                    border: isLight ? "1px solid rgba(0,0,0,0.07)" : "1px solid rgba(255,255,255,0.07)",
+                    color: isLight ? "rgba(0,0,0,0.32)" : "rgba(255,255,255,0.20)",
                   }}
                 >
                   {item.tag}
@@ -385,8 +415,10 @@ function SourceCard({
       <div
         className="absolute right-0 top-[36px] -translate-y-1/2 translate-x-1/2 h-2 w-2 rounded-full"
         style={{
-          background: isExpanded ? "rgba(0,0,0,0.55)" : "rgba(0,0,0,0.22)",
-          border: "1px solid rgba(0,0,0,0.3)",
+          background: isExpanded
+            ? (isLight ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.55)")
+            : (isLight ? "rgba(0,0,0,0.22)" : "rgba(255,255,255,0.22)"),
+          border: isLight ? "1px solid rgba(0,0,0,0.3)" : "1px solid rgba(255,255,255,0.3)",
           transition: "background 0.3s ease",
           zIndex: 2,
         }}
@@ -420,6 +452,8 @@ export default function OrchestrationFlow() {
   const windowRef  = useRef<HTMLDivElement>(null);
 
   const { theme } = useTheme();
+  const isLight = theme === "light";
+
   const [phase,          setPhase]          = useState<number>(1);
   const [expanded,       setExpanded]       = useState<number | null>(null);
   const [mounted,        setMounted]        = useState<boolean>(false);
@@ -588,6 +622,12 @@ export default function OrchestrationFlow() {
     setExpanded(prev => (prev === i ? null : i));
   };
 
+  // Theme-aware color helpers
+  const svgLine = isLight ? "rgb(20,20,30)" : "rgb(200,206,218)";
+  const svgGlow = isLight ? "rgb(0,0,0)" : "rgb(230,233,242)";
+  const svgDot  = isLight ? "rgb(20,20,40)" : "rgb(200,210,228)";
+  const hubColor = isLight ? "black" : "white";
+
   return (
     <section className="relative isolate overflow-hidden py-16 sm:py-20">
 
@@ -628,9 +668,11 @@ export default function OrchestrationFlow() {
           ref={windowRef}
           className="relative mx-auto max-w-5xl overflow-hidden rounded-2xl"
           style={{
-            border: "1px solid rgba(0,0,0,0.10)",
-            background: "white",
-            boxShadow: "0 0 0 1px rgba(0,0,0,0.04) inset, 0 8px 40px rgba(0,0,0,0.10)",
+            border: isLight ? "1px solid rgba(0,0,0,0.10)" : "1px solid rgba(255,255,255,0.07)",
+            background: isLight ? "white" : "hsl(230 22% 4.5%)",
+            boxShadow: isLight
+              ? "0 0 0 1px rgba(0,0,0,0.04) inset, 0 8px 40px rgba(0,0,0,0.10)"
+              : "0 0 0 1px rgba(255,255,255,0.03) inset, 0 52px 130px rgba(0,0,0,0.7)",
           }}
           onClick={() => setActiveHotspot(null)}
         >
@@ -638,20 +680,20 @@ export default function OrchestrationFlow() {
           {/* Window chrome */}
           <div
             className="flex items-center gap-3 px-5 py-3"
-            style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}
+            style={{ borderBottom: isLight ? "1px solid rgba(0,0,0,0.08)" : "1px solid rgba(255,255,255,0.05)" }}
           >
             <div className="flex gap-1.5">
               {[0, 1, 2].map(i => (
                 <div
                   key={i}
                   className="rounded-full"
-                  style={{ width: 9, height: 9, background: "rgba(0,0,0,0.15)" }}
+                  style={{ width: 9, height: 9, background: isLight ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.08)" }}
                 />
               ))}
             </div>
             <span
               className="ml-2 font-mono text-[10px] uppercase tracking-[0.22em]"
-              style={{ color: "rgba(0,0,0,0.35)" }}
+              style={{ color: isLight ? "rgba(0,0,0,0.35)" : "rgba(255,255,255,0.18)" }}
             >
               Momentum.OS · Workflow Canvas
             </span>
@@ -676,7 +718,7 @@ export default function OrchestrationFlow() {
               />
               <span
                 className="font-mono text-[9px]"
-                style={{ color: "rgba(0,0,0,0.35)" }}
+                style={{ color: isLight ? "rgba(0,0,0,0.35)" : "rgba(255,255,255,0.22)" }}
               >
                 {currentConfig.name.toUpperCase()}
               </span>
@@ -689,7 +731,7 @@ export default function OrchestrationFlow() {
             {/* Left panel: interactive source nodes */}
             <div
               className="relative flex-none"
-              style={{ width: "196px", borderRight: "1px solid rgba(0,0,0,0.08)" }}
+              style={{ width: "196px", borderRight: isLight ? "1px solid rgba(0,0,0,0.08)" : "1px solid rgba(255,255,255,0.05)" }}
             >
               {INPUT_NODES.map((node, i) => (
                 <SourceCard
@@ -697,6 +739,7 @@ export default function OrchestrationFlow() {
                   node={node}
                   isExpanded={expanded === i}
                   onToggle={() => toggleExpand(i)}
+                  isLight={isLight}
                 />
               ))}
             </div>
@@ -744,7 +787,7 @@ export default function OrchestrationFlow() {
 
                 {/* Star-field */}
                 {STARS.map(([cx, cy], i) => (
-                  <circle key={i} cx={cx} cy={cy} r={0.7} fill="rgba(0,0,0,0.06)" opacity={1} />
+                  <circle key={i} cx={cx} cy={cy} r={0.7} fill={isLight ? "rgba(0,0,0,0.06)" : "white"} opacity={isLight ? 1 : 0.07} />
                 ))}
 
                 {/* Base paths — React-driven opacity with CSS transition for smooth phase changes */}
@@ -755,7 +798,7 @@ export default function OrchestrationFlow() {
                     ref={el => { baseRefs.current[i] = el; }}
                     d={p.d}
                     fill="none"
-                    stroke="rgb(20,20,30)"
+                    stroke={svgLine}
                     strokeWidth={0.85}
                     strokeOpacity={currentConfig.pathBaseOpacity}
                     style={{ transition: "stroke-opacity 1.4s cubic-bezier(0.23, 1, 0.32, 1)" }}
@@ -769,7 +812,7 @@ export default function OrchestrationFlow() {
                     ref={el => { glowRefs.current[i] = el; }}
                     d={p.d}
                     fill="none"
-                    stroke="rgb(0,0,0)"
+                    stroke={svgGlow}
                     strokeWidth={1.6}
                     strokeOpacity={0.06}
                   />
@@ -781,7 +824,7 @@ export default function OrchestrationFlow() {
                     key={`pulse-${i}`}
                     ref={el => { pulseCircleRefs.current[i] = el; }}
                     r={2.2}
-                    fill="black"
+                    fill={hubColor}
                     opacity={phaseConfigRef.current.pulseAlpha}
                     filter="url(#dot-glow)"
                   />
@@ -792,7 +835,7 @@ export default function OrchestrationFlow() {
                   <circle
                     key={i}
                     cx={d.x} cy={d.y} r={2.5}
-                    fill="rgb(20,20,40)"
+                    fill={svgDot}
                     fillOpacity={currentConfig.pathBaseOpacity * 1.5}
                     style={{ transition: "fill-opacity 1.4s cubic-bezier(0.23, 1, 0.32, 1)" }}
                   />
@@ -800,19 +843,19 @@ export default function OrchestrationFlow() {
 
                 {/* Hub */}
                 <circle ref={hubRing1} cx={HUB.x} cy={HUB.y} r={54}
-                  fill="none" stroke="black" strokeOpacity={0.025 * currentConfig.hubIntensity} strokeWidth={0.75} />
+                  fill="none" stroke={hubColor} strokeOpacity={0.025 * currentConfig.hubIntensity} strokeWidth={0.75} />
                 <circle ref={hubRing2} cx={HUB.x} cy={HUB.y} r={34}
-                  fill="black" fillOpacity={0.014 * currentConfig.hubIntensity} />
+                  fill={hubColor} fillOpacity={0.014 * currentConfig.hubIntensity} />
                 <circle ref={hubCore} cx={HUB.x} cy={HUB.y} r={15}
-                  fill="black" fillOpacity={0.055 * currentConfig.hubIntensity} filter="url(#hub-glow)" />
+                  fill={hubColor} fillOpacity={0.055 * currentConfig.hubIntensity} filter="url(#hub-glow)" />
                 <circle ref={hubDot} cx={HUB.x} cy={HUB.y} r={3.5}
-                  fill="black" opacity={0.35 * currentConfig.hubIntensity + 0.15} />
+                  fill={hubColor} opacity={0.35 * currentConfig.hubIntensity + 0.15} />
                 <line ref={hubLineH}
                   x1={HUB.x - 24} y1={HUB.y} x2={HUB.x + 24} y2={HUB.y}
-                  stroke="black" strokeWidth={0.75} strokeOpacity={0.07 * currentConfig.hubIntensity} />
+                  stroke={hubColor} strokeWidth={0.75} strokeOpacity={0.07 * currentConfig.hubIntensity} />
                 <line ref={hubLineV}
                   x1={HUB.x} y1={HUB.y - 24} x2={HUB.x} y2={HUB.y + 24}
-                  stroke="black" strokeWidth={0.75} strokeOpacity={0.07 * currentConfig.hubIntensity} />
+                  stroke={hubColor} strokeWidth={0.75} strokeOpacity={0.07 * currentConfig.hubIntensity} />
 
                 {/* Output nodes */}
                 {OUTPUT_NODES.map(node => (
@@ -821,13 +864,13 @@ export default function OrchestrationFlow() {
                       x={node.cx - 4} y={node.cy - 13}
                       width={80} height={26}
                       rx={13}
-                      fill="rgba(0,0,0,0.04)"
-                      stroke="rgba(0,0,0,0.12)" strokeWidth={0.75}
+                      fill={isLight ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.05)"}
+                      stroke={isLight ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.10)"} strokeWidth={0.75}
                     />
                     <text
                       x={node.cx + 36} y={node.cy + 4.5}
                       textAnchor="middle"
-                      fill="rgba(0,0,0,0.55)"
+                      fill={isLight ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.44)"}
                       fontSize={10}
                       fontFamily="system-ui,-apple-system,sans-serif"
                       letterSpacing="0.04em"
@@ -835,7 +878,7 @@ export default function OrchestrationFlow() {
                       {node.label}
                     </text>
                     <circle cx={node.cx - 4} cy={node.cy} r={2.5}
-                      fill="rgba(0,0,0,0.35)" fillOpacity={1} />
+                      fill={isLight ? "rgba(0,0,0,0.35)" : "rgba(255,255,255,0.22)"} fillOpacity={1} />
                   </g>
                 ))}
 
@@ -844,21 +887,25 @@ export default function OrchestrationFlow() {
                   <circle
                     key={hotspot.id}
                     cx={hotspot.svgX} cy={hotspot.svgY} r={hotspot.hitR}
-                    fill={activeHotspot === hotspot.id ? "rgba(0,0,0,0.03)" : "rgba(0,0,0,0.01)"}
-                    stroke={activeHotspot === hotspot.id ? "rgba(0,0,0,0.12)" : "rgba(0,0,0,0.04)"}
+                    fill={activeHotspot === hotspot.id
+                      ? (isLight ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.05)")
+                      : (isLight ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)")}
+                    stroke={activeHotspot === hotspot.id
+                      ? (isLight ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.15)")
+                      : (isLight ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.04)")}
                     strokeWidth={0.8}
                     style={{ cursor: "pointer", transition: "fill 0.2s, stroke 0.2s" }}
                     onClick={e => handleHotspotClick(hotspot, e)}
                     onMouseEnter={e => {
                       if (activeHotspot !== hotspot.id) {
-                        (e.currentTarget as SVGCircleElement).setAttribute("fill", "rgba(0,0,0,0.02)");
-                        (e.currentTarget as SVGCircleElement).setAttribute("stroke", "rgba(0,0,0,0.08)");
+                        (e.currentTarget as SVGCircleElement).setAttribute("fill", isLight ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.03)");
+                        (e.currentTarget as SVGCircleElement).setAttribute("stroke", isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.10)");
                       }
                     }}
                     onMouseLeave={e => {
                       if (activeHotspot !== hotspot.id) {
-                        (e.currentTarget as SVGCircleElement).setAttribute("fill", "rgba(0,0,0,0.01)");
-                        (e.currentTarget as SVGCircleElement).setAttribute("stroke", "rgba(0,0,0,0.04)");
+                        (e.currentTarget as SVGCircleElement).setAttribute("fill", isLight ? "rgba(0,0,0,0.01)" : "rgba(255,255,255,0.01)");
+                        (e.currentTarget as SVGCircleElement).setAttribute("stroke", isLight ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.04)");
                       }
                     }}
                   />
@@ -869,7 +916,7 @@ export default function OrchestrationFlow() {
                   <circle
                     key={`ind-${hotspot.id}`}
                     cx={hotspot.svgX} cy={hotspot.svgY} r={3.5}
-                    fill="black"
+                    fill={hubColor}
                     opacity={activeHotspot === hotspot.id ? 0.85 : 0.2}
                     style={{ transition: "opacity 0.2s", pointerEvents: "none" }}
                     filter={activeHotspot === hotspot.id ? "url(#hotspot-glow)" : undefined}
@@ -887,6 +934,7 @@ export default function OrchestrationFlow() {
                       hotspot={hotspot}
                       style={cardStyle}
                       onClose={() => setActiveHotspot(null)}
+                      isLight={isLight}
                     />
                   ) : null;
                 })() : null}
@@ -897,9 +945,9 @@ export default function OrchestrationFlow() {
           {/* Phase navigation footer */}
           <div
             className="flex flex-col items-center gap-4 px-6 py-5"
-            style={{ borderTop: "1px solid rgba(0,0,0,0.08)" }}
+            style={{ borderTop: isLight ? "1px solid rgba(0,0,0,0.08)" : "1px solid rgba(255,255,255,0.05)" }}
           >
-            <PhaseControl phase={phase} onChange={handlePhaseChange} />
+            <PhaseControl phase={phase} onChange={handlePhaseChange} isLight={isLight} />
 
             <AnimatePresence mode="wait">
               <motion.p
@@ -910,7 +958,7 @@ export default function OrchestrationFlow() {
                 transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
                 className="text-center text-[11px] max-w-md"
                 style={{
-                  color: "rgba(0,0,0,0.45)",
+                  color: isLight ? "rgba(0,0,0,0.45)" : "rgba(255,255,255,0.30)",
                   lineHeight: "1.6",
                   fontFamily: "system-ui,-apple-system,sans-serif",
                 }}
@@ -939,18 +987,22 @@ export default function OrchestrationFlow() {
               <div
                 className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full transition-all duration-500"
                 style={{
-                  background: phase === i ? "rgba(0,0,0,0.08)" : "rgba(0,0,0,0.04)",
-                  border: phase === i ? "1px solid rgba(0,0,0,0.18)" : "1px solid rgba(0,0,0,0.08)",
+                  background: phase === i
+                    ? (isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.10)")
+                    : (isLight ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.05)"),
+                  border: phase === i
+                    ? (isLight ? "1px solid rgba(0,0,0,0.18)" : "1px solid rgba(255,255,255,0.20)")
+                    : (isLight ? "1px solid rgba(0,0,0,0.08)" : "1px solid rgba(255,255,255,0.10)"),
                 }}
               >
-                <span className="font-mono text-[11px]" style={{ color: "rgba(0,0,0,0.65)" }}>
+                <span className="font-mono text-[11px]" style={{ color: isLight ? "rgba(0,0,0,0.65)" : "rgba(255,255,255,0.65)" }}>
                   0{i + 1}
                 </span>
               </div>
-              <p className="text-[13px] font-medium mb-1.5" style={{ color: "rgba(0,0,0,0.85)" }}>
+              <p className="text-[13px] font-medium mb-1.5" style={{ color: isLight ? "rgba(0,0,0,0.85)" : "rgba(255,255,255,0.85)" }}>
                 {config.name}
               </p>
-              <p className="text-[11px] leading-[1.55]" style={{ color: "rgba(0,0,0,0.52)" }}>
+              <p className="text-[11px] leading-[1.55]" style={{ color: isLight ? "rgba(0,0,0,0.52)" : "rgba(255,255,255,0.52)" }}>
                 {config.tagline}
               </p>
             </button>
