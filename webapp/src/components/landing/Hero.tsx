@@ -96,7 +96,9 @@ const Hero = () => {
               <ArrowRight className="relative h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </a>
             <a
-              href="#preview"
+              href="https://v0.app/chat/momentum-os-product-demo-eZj6o3drkBn?ref=AVETH4"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 rounded-full border border-border/80 bg-card/40 px-5 py-3 text-sm text-foreground backdrop-blur transition-all duration-300 hover:bg-card/80 hover:shadow-[0_4px_20px_hsl(0_0%_0%/0.3)]"
             >
               <span className="flex h-6 w-6 items-center justify-center rounded-full border border-border bg-background">
