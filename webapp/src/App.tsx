@@ -4,18 +4,20 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import Platform from "./pages/Platform";
-import Automation from "./pages/Automation";
-import AI from "./pages/AI";
-import Pipeline from "./pages/Pipeline";
-import Pricing from "./pages/Pricing";
-import NotFound from "./pages/NotFound";
 import ThemePickerModal from "./components/ThemePickerModal";
 import { useTheme } from "./hooks/use-theme";
-import SignIn from "./pages/SignIn";
+
 import { AdminLayout } from "./components/admin/AdminLayout";
 import { ProtectedRoute } from "./components/admin/ProtectedRoute";
+
+const Index = lazy(() => import("./pages/Index"));
+const Platform = lazy(() => import("./pages/Platform"));
+const Automation = lazy(() => import("./pages/Automation"));
+const AI = lazy(() => import("./pages/AI"));
+const Pipeline = lazy(() => import("./pages/Pipeline"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const SignIn = lazy(() => import("./pages/SignIn"));
 
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Workflows = lazy(() => import("./pages/admin/Workflows"));
@@ -29,7 +31,7 @@ const PageLoader = () => (
   </div>
 );
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 30000 } } });
 
 function AppContent() {
   const { hasChosen, chooseTheme } = useTheme();
@@ -40,13 +42,13 @@ function AppContent() {
       <ThemePickerModal open={!hasChosen && !isAdminRoute} onChoose={chooseTheme} />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/platform" element={<Platform />} />
-          <Route path="/automation" element={<Automation />} />
-          <Route path="/ai" element={<AI />} />
-          <Route path="/pipeline" element={<Pipeline />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/" element={<Suspense fallback={<PageLoader />}><Index /></Suspense>} />
+          <Route path="/platform" element={<Suspense fallback={<PageLoader />}><Platform /></Suspense>} />
+          <Route path="/automation" element={<Suspense fallback={<PageLoader />}><Automation /></Suspense>} />
+          <Route path="/ai" element={<Suspense fallback={<PageLoader />}><AI /></Suspense>} />
+          <Route path="/pipeline" element={<Suspense fallback={<PageLoader />}><Pipeline /></Suspense>} />
+          <Route path="/pricing" element={<Suspense fallback={<PageLoader />}><Pricing /></Suspense>} />
+          <Route path="/sign-in" element={<Suspense fallback={<PageLoader />}><SignIn /></Suspense>} />
           <Route
             path="/admin"
             element={
@@ -108,7 +110,7 @@ function AppContent() {
             }
           />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
         </Routes>
       </BrowserRouter>
     </>
