@@ -19,6 +19,8 @@ const Pricing = lazy(() => import("./pages/Pricing"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const SignIn = lazy(() => import("./pages/SignIn"));
 
+const Funnel = lazy(() => import("./pages/Funnel"));
+
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Workflows = lazy(() => import("./pages/admin/Workflows"));
 const Leads = lazy(() => import("./pages/admin/Leads"));
@@ -35,7 +37,7 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 30
 
 function AppContent() {
   const { hasChosen, chooseTheme } = useTheme();
-  const isAdminRoute = window.location.pathname === "/sign-in" || window.location.pathname.startsWith("/admin");
+  const isAdminRoute = window.location.pathname === "/sign-in" || window.location.pathname.startsWith("/admin") || window.location.pathname === "/funnel";
 
   return (
     <>
@@ -109,6 +111,7 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
+          <Route path="/funnel" element={<Suspense fallback={<PageLoader />}><Funnel /></Suspense>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
         </Routes>
