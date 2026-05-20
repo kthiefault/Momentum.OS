@@ -1,10 +1,9 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 import {
   Plus, Play, Pencil, Trash2, GitBranch, Clock, Zap, Webhook, Calendar,
   MousePointer, ChevronDown, X, Check, Loader2
 } from "lucide-react";
-import { api } from "../../lib/api";
+import { mockStore, type Workflow } from "../../lib/mock-data";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -21,25 +20,12 @@ interface WorkflowStep {
   type: "trigger" | "condition" | "action";
 }
 
-interface Workflow {
-  id: string;
-  name: string;
-  description: string | null;
-  status: "active" | "paused" | "draft";
-  triggerType: string;
-  category: string;
-  runCount: number;
-  lastRunAt: string | null;
-  createdAt: string;
-  steps: WorkflowStep[];
-}
-
 interface WorkflowFormData {
   name: string;
   description: string;
   status: "active" | "paused" | "draft";
-  triggerType: string;
-  category: string;
+  triggerType: "manual" | "scheduled" | "webhook" | "form";
+  category: "automation" | "ai" | "crm" | "notification" | "custom";
   steps: WorkflowStep[];
 }
 
@@ -192,8 +178,8 @@ function WorkflowFormModal({
   onClose: () => void;
   editingWorkflow: Workflow | null;
 }) {
-  const qc = useQueryClient();
   const isEdit = !!editingWorkflow;
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const [form, setForm] = useState<WorkflowFormData>(() =>
     editingWorkflow
@@ -207,22 +193,6 @@ function WorkflowFormModal({
         }
       : defaultForm
   );
-
-  const mutation = useMutation({
-    mutationFn: (data: WorkflowFormData) =>
-      isEdit
-        ? api.put(`/api/workflows/${editingWorkflow!.id}`, data)
-        : api.post("/api/workflows", data),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["workflows"] });
-      qc.invalidateQueries({ queryKey: ["admin-stats"] });
-      toast.success(isEdit ? "Workflow updated!" : "Workflow created!");
-      onClose();
-    },
-    onError: () => {
-      toast.error("Failed to save workflow");
-    },
-  });
 
   const addStep = () => {
     setForm((f) => ({
@@ -244,12 +214,27 @@ function WorkflowFormModal({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    mutation.mutate(form);
+    setIsSaving(true);
+    await new Promise((r) => setTimeout(r, 400));
+    if (isEdit && editingWorkflow) {
+      mockStore.updateWorkflow(editingWorkflow.id, form);
+      toast.success("Workflow updated!");
+    } else {
+      mockStore.addWorkflow({
+        id: Date.now().toString(),
+        ...form,
+        runCount: 0,
+        lastRunAt: null,
+        createdAt: new Date().toISOString(),
+      });
+      toast.success("Workflow created!");
+    }
+    setIsSaving(false);
+    onClose();
   };
 
-  // Reset form when editingWorkflow changes
   const handleOpenChange = (o: boolean) => {
     if (!o) onClose();
   };
@@ -304,7 +289,7 @@ function WorkflowFormModal({
               <label className="text-xs font-medium text-gray-400 uppercase tracking-wide">Trigger</label>
               <select
                 value={form.triggerType}
-                onChange={(e) => setForm((f) => ({ ...f, triggerType: e.target.value }))}
+                onChange={(e) => setForm((f) => ({ ...f, triggerType: e.target.value as WorkflowFormData["triggerType"] }))}
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500"
               >
                 <option value="manual">Manual</option>
@@ -317,7 +302,7 @@ function WorkflowFormModal({
               <label className="text-xs font-medium text-gray-400 uppercase tracking-wide">Category</label>
               <select
                 value={form.category}
-                onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
+                onChange={(e) => setForm((f) => ({ ...f, category: e.target.value as WorkflowFormData["category"] }))}
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500"
               >
                 <option value="automation">Automation</option>
@@ -383,10 +368,10 @@ function WorkflowFormModal({
           </button>
           <button
             onClick={handleSubmit}
-            disabled={mutation.isPending}
+            disabled={isSaving}
             className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white rounded-lg transition-all disabled:opacity-50 flex items-center gap-2"
           >
-            {mutation.isPending ? (
+            {isSaving ? (
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
             ) : (
               <Check className="h-3.5 w-3.5" />
@@ -400,40 +385,29 @@ function WorkflowFormModal({
 }
 
 export default function Workflows() {
-  const qc = useQueryClient();
+  const [workflows, setWorkflows] = useState<Workflow[]>(mockStore.getWorkflows());
   const [filter, setFilter] = useState<FilterTab>("all");
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [editingWorkflow, setEditingWorkflow] = useState<Workflow | null>(null);
   const [deletingWorkflow, setDeletingWorkflow] = useState<Workflow | null>(null);
   const [runningId, setRunningId] = useState<string | null>(null);
 
-  const { data: workflows, isLoading } = useQuery({
-    queryKey: ["workflows"],
-    queryFn: () => api.get<Workflow[]>("/api/workflows"),
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: string) => api.delete(`/api/workflows/${id}`),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["workflows"] });
-      qc.invalidateQueries({ queryKey: ["admin-stats"] });
-      toast.success("Workflow deleted");
-      setDeletingWorkflow(null);
-    },
-    onError: () => toast.error("Failed to delete workflow"),
-  });
+  useEffect(() => {
+    const unsub = mockStore.subscribe(() => {
+      setWorkflows(mockStore.getWorkflows());
+    });
+    return () => { unsub(); };
+  }, []);
 
   const handleRun = async (id: string) => {
     setRunningId(id);
-    try {
-      await api.post(`/api/workflows/${id}/run`);
-      toast.success("Workflow triggered!");
-      qc.invalidateQueries({ queryKey: ["workflows"] });
-    } catch {
-      toast.error("Failed to run workflow");
-    } finally {
-      setRunningId(null);
-    }
+    await new Promise((r) => setTimeout(r, 800));
+    mockStore.updateWorkflow(id, {
+      runCount: (mockStore.getWorkflows().find((w) => w.id === id)?.runCount ?? 0) + 1,
+      lastRunAt: new Date().toISOString(),
+    });
+    toast.success("Workflow executed successfully");
+    setRunningId(null);
   };
 
   const handleEdit = (wf: Workflow) => {
@@ -446,7 +420,15 @@ export default function Workflows() {
     setEditingWorkflow(null);
   };
 
-  const filtered = (workflows ?? []).filter(
+  const handleDelete = () => {
+    if (deletingWorkflow) {
+      mockStore.deleteWorkflow(deletingWorkflow.id);
+      toast.success("Workflow deleted");
+      setDeletingWorkflow(null);
+    }
+  };
+
+  const filtered = workflows.filter(
     (wf) => filter === "all" || wf.status === filter
   );
 
@@ -483,23 +465,17 @@ export default function Workflows() {
             {tab}
             {tab !== "all" ? (
               <span className="ml-1.5 text-xs text-gray-600">
-                {(workflows ?? []).filter((w) => w.status === tab).length}
+                {workflows.filter((w) => w.status === tab).length}
               </span>
             ) : (
-              <span className="ml-1.5 text-xs text-gray-600">{(workflows ?? []).length}</span>
+              <span className="ml-1.5 text-xs text-gray-600">{workflows.length}</span>
             )}
           </button>
         ))}
       </div>
 
       {/* Grid */}
-      {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <Skeleton key={i} className="h-52 w-full bg-gray-900 rounded-xl" />
-          ))}
-        </div>
-      ) : filtered.length === 0 ? (
+      {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <div className="h-16 w-16 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-center mb-4">
             <GitBranch className="h-8 w-8 text-gray-600" />
@@ -553,7 +529,7 @@ export default function Workflows() {
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => deletingWorkflow && deleteMutation.mutate(deletingWorkflow.id)}
+              onClick={handleDelete}
               className="bg-red-600 hover:bg-red-500 text-white"
             >
               Delete

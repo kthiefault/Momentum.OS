@@ -1,25 +1,12 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 import { Trash2, Loader2, Users, Mail, Phone, Globe, Filter } from "lucide-react";
-import { api } from "../../lib/api";
+import { mockStore, type Lead } from "../../lib/mock-data";
 import { toast } from "sonner";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
-
-interface Lead {
-  id: string;
-  name: string;
-  email: string;
-  phone: string | null;
-  source: string;
-  status: string;
-  notes: string | null;
-  createdAt: string;
-}
 
 const statusConfig: Record<string, { label: string; className: string }> = {
   new: { label: "New", className: "bg-blue-500/15 text-blue-400 border border-blue-500/20" },
@@ -47,22 +34,21 @@ function InlineStatusSelect({
   leadId: string;
   currentStatus: string;
 }) {
-  const qc = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: (status: string) => api.put(`/api/leads/${leadId}`, { status }),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["leads"] });
-      qc.invalidateQueries({ queryKey: ["admin-stats"] });
-      toast.success("Status updated");
-    },
-    onError: () => toast.error("Failed to update status"),
-  });
+  const [isPending, setIsPending] = useState<boolean>(false);
+
+  const handleChange = async (status: string) => {
+    setIsPending(true);
+    await new Promise((r) => setTimeout(r, 300));
+    mockStore.updateLead(leadId, { status: status as Lead["status"] });
+    toast.success("Status updated");
+    setIsPending(false);
+  };
 
   return (
     <select
       value={currentStatus}
-      onChange={(e) => mutation.mutate(e.target.value)}
-      disabled={mutation.isPending}
+      onChange={(e) => handleChange(e.target.value)}
+      disabled={isPending}
       className="bg-gray-800 border border-gray-700 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-purple-500 disabled:opacity-50 cursor-pointer"
     >
       <option value="new">New</option>
@@ -74,27 +60,29 @@ function InlineStatusSelect({
 }
 
 export default function Leads() {
-  const qc = useQueryClient();
+  const [leads, setLeads] = useState<Lead[]>(mockStore.getLeads());
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [deletingLead, setDeletingLead] = useState<Lead | null>(null);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
-  const { data: leads, isLoading } = useQuery({
-    queryKey: ["leads"],
-    queryFn: () => api.get<Lead[]>("/api/leads"),
-  });
+  useEffect(() => {
+    const unsub = mockStore.subscribe(() => {
+      setLeads(mockStore.getLeads());
+    });
+    return () => { unsub(); };
+  }, []);
 
-  const deleteMutation = useMutation({
-    mutationFn: (id: string) => api.delete(`/api/leads/${id}`),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["leads"] });
-      qc.invalidateQueries({ queryKey: ["admin-stats"] });
-      toast.success("Lead deleted");
-      setDeletingLead(null);
-    },
-    onError: () => toast.error("Failed to delete lead"),
-  });
+  const handleDelete = async () => {
+    if (!deletingLead) return;
+    setIsDeleting(true);
+    await new Promise((r) => setTimeout(r, 300));
+    mockStore.deleteLead(deletingLead.id);
+    toast.success("Lead deleted");
+    setIsDeleting(false);
+    setDeletingLead(null);
+  };
 
-  const filtered = (leads ?? []).filter(
+  const filtered = leads.filter(
     (l) => statusFilter === "all" || l.status === statusFilter
   );
 
@@ -112,9 +100,7 @@ export default function Leads() {
         <div>
           <h2 className="text-xl font-bold text-white">
             Leads
-            {leads ? (
-              <span className="ml-2 text-base font-normal text-gray-500">({leads.length})</span>
-            ) : null}
+            <span className="ml-2 text-base font-normal text-gray-500">({leads.length})</span>
           </h2>
           <p className="text-sm text-gray-500 mt-0.5">Track and manage your pipeline leads</p>
         </div>
@@ -140,8 +126,8 @@ export default function Leads() {
             {s}
             <span className="ml-1.5 text-xs text-gray-600">
               {s === "all"
-                ? (leads ?? []).length
-                : (leads ?? []).filter((l) => l.status === s).length}
+                ? leads.length
+                : leads.filter((l) => l.status === s).length}
             </span>
           </button>
         ))}
@@ -149,13 +135,7 @@ export default function Leads() {
 
       {/* Table */}
       <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-        {isLoading ? (
-          <div className="p-6 space-y-3">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <Skeleton key={i} className="h-12 w-full bg-gray-800" />
-            ))}
-          </div>
-        ) : filtered.length === 0 ? (
+        {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <div className="h-16 w-16 rounded-2xl bg-gray-800 border border-gray-700 flex items-center justify-center mb-4">
               <Users className="h-8 w-8 text-gray-600" />
@@ -223,7 +203,7 @@ export default function Leads() {
                     </td>
                     <td className="px-4 py-3 max-w-[160px]">
                       <p className="text-xs text-gray-500 truncate">
-                        {lead.notes ?? <span className="text-gray-700 italic">No notes</span>}
+                        {lead.notes ? lead.notes : <span className="text-gray-700 italic">No notes</span>}
                       </p>
                     </td>
                     <td className="px-4 py-3">
@@ -259,10 +239,10 @@ export default function Leads() {
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              onClick={() => deletingLead && deleteMutation.mutate(deletingLead.id)}
+              onClick={handleDelete}
               className="bg-red-600 hover:bg-red-500 text-white"
             >
-              {deleteMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Delete"}
+              {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Delete"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -1,37 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
-interface SessionUser {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
-
-async function fetchSession(): Promise<SessionUser | null> {
-  const token = localStorage.getItem("admin_token");
-  const baseURL = import.meta.env.VITE_BACKEND_URL || "";
-  const headers: Record<string, string> = { "Content-Type": "application/json" };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
-
-  const res = await fetch(`${baseURL}/api/auth/get-session`, {
-    credentials: "include",
-    headers,
-  });
-  if (!res.ok) return null;
-  const data = await res.json();
-  return data?.user ?? null;
-}
-
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { data: user, isPending } = useQuery({
-    queryKey: ["session"],
-    queryFn: fetchSession,
-    retry: false,
-    staleTime: 30_000,
-  });
+  const [checked, setChecked] = useState<boolean>(false);
+  const [allowed, setAllowed] = useState<boolean>(false);
 
-  if (isPending) {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAllowed(!!localStorage.getItem("admin_token"));
+      setChecked(true);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!checked) {
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <div className="animate-spin w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full" />
@@ -39,7 +21,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (!user) return <Navigate to="/sign-in" replace />;
+  if (!allowed) return <Navigate to="/sign-in" replace />;
 
   return <>{children}</>;
 }

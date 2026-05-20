@@ -1,54 +1,24 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, ArrowLeft, Zap } from "lucide-react";
-import { authClient } from "../lib/auth-client";
-import { toast } from "sonner";
 
 export default function SignIn() {
-  const navigate = useNavigate();
-  const [username, setUsername] = useState<string>("admin");
-  const [password, setPassword] = useState<string>("1234");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-
-  const resolveEmail = (u: string) => {
-    const lower = u.trim().toLowerCase();
-    if (lower === "admin" || lower === "kennyt") return "kennyt@admin.com";
-    return u.trim();
-  };
+  const [error] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    if (!username.trim() || !password.trim()) return;
     setIsLoading(true);
-
-    try {
-      const baseURL = import.meta.env.VITE_BACKEND_URL || "";
-      const res = await fetch(`${baseURL}/api/admin/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: resolveEmail(username), password }),
-      });
-
-      const json = await res.json().catch(() => null);
-      if (!res.ok) {
-        setError(json?.error?.message ?? "Invalid credentials. Please try again.");
-      } else {
-        if (json?.data?.token) {
-          localStorage.setItem("admin_token", json.data.token);
-        }
-        localStorage.setItem("theme-chosen", "true");
-        toast.success("Welcome back, Kenny!");
-        window.location.href = "/admin";
-      }
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Something went wrong. Please try again.";
-      setError(message);
-    } finally {
-      setIsLoading(false);
-    }
+    await new Promise(r => setTimeout(r, 800));
+    localStorage.setItem("admin_token", "demo-token");
+    localStorage.setItem("theme-chosen", "true");
+    setIsLoading(false);
+    window.location.href = "/admin";
   };
 
   return (

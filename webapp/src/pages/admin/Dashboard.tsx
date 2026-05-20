@@ -1,37 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { GitBranch, Users, TrendingUp, Activity, ArrowRight, Play, Clock } from "lucide-react";
-import { api } from "../../lib/api";
-import { Skeleton } from "@/components/ui/skeleton";
+import { mockStore, type Workflow, type Lead } from "../../lib/mock-data";
 import { Badge } from "@/components/ui/badge";
-
-interface AdminStats {
-  totalWorkflows: number;
-  activeWorkflows: number;
-  totalLeads: number;
-  newLeads: number;
-  recentWorkflows: Workflow[];
-  recentLeads: Lead[];
-}
-
-interface Workflow {
-  id: string;
-  name: string;
-  status: string;
-  category: string;
-  runCount: number;
-  lastRunAt: string | null;
-  createdAt: string;
-}
-
-interface Lead {
-  id: string;
-  name: string;
-  email: string;
-  source: string;
-  status: string;
-  createdAt: string;
-}
 
 const statusColors: Record<string, string> = {
   active: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
@@ -48,24 +19,18 @@ function StatCard({
   value,
   icon: Icon,
   color,
-  isLoading,
 }: {
   label: string;
-  value: number | undefined;
+  value: number;
   icon: React.ElementType;
   color: string;
-  isLoading: boolean;
 }) {
   return (
     <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
       <div className="flex items-start justify-between">
         <div>
           <p className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-2">{label}</p>
-          {isLoading ? (
-            <Skeleton className="h-8 w-16 bg-gray-800" />
-          ) : (
-            <p className="text-3xl font-bold text-white">{value ?? 0}</p>
-          )}
+          <p className="text-3xl font-bold text-white">{value}</p>
         </div>
         <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${color}`}>
           <Icon className="h-5 w-5" />
@@ -131,10 +96,23 @@ function LeadRow({ lead }: { lead: Lead }) {
 }
 
 export default function Dashboard() {
-  const { data: stats, isLoading } = useQuery({
-    queryKey: ["admin-stats"],
-    queryFn: () => api.get<AdminStats>("/api/admin/stats"),
-  });
+  const [workflows, setWorkflows] = useState<Workflow[]>(mockStore.getWorkflows());
+  const [leads, setLeads] = useState<Lead[]>(mockStore.getLeads());
+
+  useEffect(() => {
+    const unsub = mockStore.subscribe(() => {
+      setWorkflows(mockStore.getWorkflows());
+      setLeads(mockStore.getLeads());
+    });
+    return () => { unsub(); };
+  }, []);
+
+  const totalWorkflows = workflows.length;
+  const activeWorkflows = workflows.filter((w) => w.status === "active").length;
+  const totalLeads = leads.length;
+  const newLeads = leads.filter((l) => l.status === "new").length;
+  const recentWorkflows = workflows.slice(0, 5);
+  const recentLeads = leads.slice(0, 5);
 
   return (
     <div className="space-y-6">
@@ -142,31 +120,27 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           label="Total Workflows"
-          value={stats?.totalWorkflows}
+          value={totalWorkflows}
           icon={GitBranch}
           color="bg-purple-500/15 text-purple-400"
-          isLoading={isLoading}
         />
         <StatCard
           label="Active Workflows"
-          value={stats?.activeWorkflows}
+          value={activeWorkflows}
           icon={Activity}
           color="bg-emerald-500/15 text-emerald-400"
-          isLoading={isLoading}
         />
         <StatCard
           label="Total Leads"
-          value={stats?.totalLeads}
+          value={totalLeads}
           icon={Users}
           color="bg-blue-500/15 text-blue-400"
-          isLoading={isLoading}
         />
         <StatCard
           label="New Leads"
-          value={stats?.newLeads}
+          value={newLeads}
           icon={TrendingUp}
           color="bg-orange-500/15 text-orange-400"
-          isLoading={isLoading}
         />
       </div>
 
@@ -183,31 +157,25 @@ export default function Dashboard() {
               View all <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
-          {isLoading ? (
-            <div className="p-4 space-y-3">
-              {[1, 2, 3].map((i) => <Skeleton key={i} className="h-10 w-full bg-gray-800" />)}
-            </div>
-          ) : (
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-800/60">
-                  <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Name</th>
-                  <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Status</th>
-                  <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Runs</th>
-                  <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Last Run</th>
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-800/60">
+                <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Name</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Status</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Runs</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Last Run</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentWorkflows.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="py-8 text-center text-sm text-gray-600">No workflows yet</td>
                 </tr>
-              </thead>
-              <tbody>
-                {(stats?.recentWorkflows ?? []).length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="py-8 text-center text-sm text-gray-600">No workflows yet</td>
-                  </tr>
-                ) : (
-                  (stats?.recentWorkflows ?? []).map((wf) => <WorkflowRow key={wf.id} wf={wf} />)
-                )}
-              </tbody>
-            </table>
-          )}
+              ) : (
+                recentWorkflows.map((wf) => <WorkflowRow key={wf.id} wf={wf} />)
+              )}
+            </tbody>
+          </table>
           <div className="px-4 py-3 border-t border-gray-800">
             <Link
               to="/admin/workflows"
@@ -230,31 +198,25 @@ export default function Dashboard() {
               View all <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
-          {isLoading ? (
-            <div className="p-4 space-y-3">
-              {[1, 2, 3].map((i) => <Skeleton key={i} className="h-10 w-full bg-gray-800" />)}
-            </div>
-          ) : (
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-800/60">
-                  <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Name</th>
-                  <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Email</th>
-                  <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Source</th>
-                  <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Status</th>
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-800/60">
+                <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Name</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Email</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Source</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-4 py-2">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentLeads.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="py-8 text-center text-sm text-gray-600">No leads yet</td>
                 </tr>
-              </thead>
-              <tbody>
-                {(stats?.recentLeads ?? []).length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="py-8 text-center text-sm text-gray-600">No leads yet</td>
-                  </tr>
-                ) : (
-                  (stats?.recentLeads ?? []).map((lead) => <LeadRow key={lead.id} lead={lead} />)
-                )}
-              </tbody>
-            </table>
-          )}
+              ) : (
+                recentLeads.map((lead) => <LeadRow key={lead.id} lead={lead} />)
+              )}
+            </tbody>
+          </table>
           <div className="px-4 py-3 border-t border-gray-800">
             <Link
               to="/admin/leads"
