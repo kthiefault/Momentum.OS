@@ -9,6 +9,7 @@ import { auth } from "./auth";
 import workflowsRouter from "./routes/workflows";
 import leadsRouter from "./routes/leads";
 import adminRouter from "./routes/admin";
+import { blogRouter } from "./routes/blog";
 
 const app = new Hono();
 
@@ -46,6 +47,7 @@ app.route("/api/notifications", notificationsRouter);
 app.route("/api/workflows", workflowsRouter);
 app.route("/api/leads", leadsRouter);
 app.route("/api/admin", adminRouter);
+app.route("/api/blog", blogRouter); // blog system
 
 const port = Number(process.env.PORT) || 3000;
 

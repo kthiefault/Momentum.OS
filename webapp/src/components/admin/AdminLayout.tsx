@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, GitBranch, Users, Settings, LogOut, Zap, Menu, X, ChevronRight, Gauge } from "lucide-react";
+import { LayoutDashboard, GitBranch, Users, Settings, LogOut, Zap, Menu, X, ChevronRight, Gauge, BookOpen } from "lucide-react";
 import { authClient } from "../../lib/auth-client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,7 @@ const navItems = [
   { label: "Workflows", icon: GitBranch, to: "/admin/workflows" },
   { label: "Leads", icon: Users, to: "/admin/leads" },
   { label: "Speed", icon: Gauge, to: "/admin/speed" },
+  { label: "Blog", icon: BookOpen, to: "/admin/blog" },
   { label: "Settings", icon: Settings, to: "/admin/settings" },
 ];
 
@@ -18,6 +19,7 @@ const pageTitles: Record<string, string> = {
   "/admin/workflows": "Workflow Station",
   "/admin/leads": "Leads",
   "/admin/speed": "Speed Optimizer",
+  "/admin/blog": "Blog",
   "/admin/settings": "Settings",
 };
 

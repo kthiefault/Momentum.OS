@@ -35,6 +35,22 @@ export const AdminStatsSchema = z.object({
   recentLeads: z.array(LeadSchema),
 });
 
+export const BlogPostSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  slug: z.string(),
+  content: z.string(),
+  excerpt: z.string().nullable(),
+  coverImage: z.string().nullable(),
+  author: z.string(),
+  tags: z.string(),
+  status: z.string(),
+  publishedAt: z.string().nullable(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
 export type Workflow = z.infer<typeof WorkflowSchema>;
 export type Lead = z.infer<typeof LeadSchema>;
 export type AdminStats = z.infer<typeof AdminStatsSchema>;
+export type BlogPost = z.infer<typeof BlogPostSchema>;

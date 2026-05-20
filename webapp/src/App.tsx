@@ -21,11 +21,15 @@ const SignIn = lazy(() => import("./pages/SignIn"));
 
 const Funnel = lazy(() => import("./pages/Funnel"));
 
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 const Workflows = lazy(() => import("./pages/admin/Workflows"));
 const Leads = lazy(() => import("./pages/admin/Leads"));
 const AdminSettings = lazy(() => import("./pages/admin/Settings"));
 const SpeedOptimizer = lazy(() => import("./pages/admin/SpeedOptimizer"));
+const AdminBlog = lazy(() => import("./pages/admin/Blog"));
 
 const PageLoader = () => (
   <div className="flex-1 flex items-center justify-center min-h-[400px]">
@@ -37,7 +41,7 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 30
 
 function AppContent() {
   const { hasChosen, chooseTheme } = useTheme();
-  const isAdminRoute = window.location.pathname === "/sign-in" || window.location.pathname.startsWith("/admin") || window.location.pathname === "/funnel";
+  const isAdminRoute = window.location.pathname === "/sign-in" || window.location.pathname.startsWith("/admin") || window.location.pathname === "/funnel" || window.location.pathname.startsWith("/blog");
 
   return (
     <>
@@ -106,6 +110,20 @@ function AppContent() {
                 <AdminLayout>
                   <Suspense fallback={<PageLoader />}>
                     <SpeedOptimizer />
+                  </Suspense>
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/blog" element={<Suspense fallback={<PageLoader />}><Blog /></Suspense>} />
+          <Route path="/blog/:slug" element={<Suspense fallback={<PageLoader />}><BlogPost /></Suspense>} />
+          <Route
+            path="/admin/blog"
+            element={
+              <ProtectedRoute>
+                <AdminLayout>
+                  <Suspense fallback={<PageLoader />}>
+                    <AdminBlog />
                   </Suspense>
                 </AdminLayout>
               </ProtectedRoute>
