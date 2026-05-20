@@ -7,11 +7,17 @@ import { toast } from "sonner";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+
+  const resolveEmail = (u: string) => {
+    const lower = u.trim().toLowerCase();
+    if (lower === "admin" || lower === "kennyt") return "kennyt@admin.com";
+    return u.trim();
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +26,7 @@ export default function SignIn() {
 
     try {
       const result = await authClient.signIn.email({
-        email,
+        email: resolveEmail(username),
         password,
         fetchOptions: { credentials: "include" },
       });
@@ -109,13 +115,13 @@ export default function SignIn() {
             {/* Email */}
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-gray-400 uppercase tracking-wide">
-                Email address
+                Username
               </label>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="kennyt@admin.com"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="admin"
                 required
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all"
               />
