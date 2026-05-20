@@ -1,12 +1,9 @@
-import { lazy, Suspense } from "react";
 import PageLayout from "@/components/landing/PageLayout";
 import Hero from "@/components/landing/Hero";
 import Problem from "@/components/landing/Problem";
 import Outcomes from "@/components/landing/Outcomes";
 import FinalCTA from "@/components/landing/FinalCTA";
 import { SEO } from "@/components/SEO";
-
-const DemoVideo = lazy(() => import("../components/landing/DemoVideo"));
 
 const Index = () => (
   <PageLayout>
@@ -19,9 +16,6 @@ const Index = () => (
     <Hero />
     <Problem />
     <Outcomes />
-    <Suspense fallback={<div className="h-96 animate-pulse bg-gray-900/50" />}>
-      <DemoVideo />
-    </Suspense>
     <FinalCTA />
   </PageLayout>
 );
