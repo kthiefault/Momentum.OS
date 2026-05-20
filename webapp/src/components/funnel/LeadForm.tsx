@@ -29,18 +29,18 @@ function SuccessState() {
       transition={{ duration: 0.4, ease: "easeOut" }}
       className="flex flex-col items-center gap-5 py-6 text-center"
     >
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-500/15 ring-2 ring-amber-500/30">
-        <CheckCircle2 className="h-8 w-8 text-amber-500" />
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-ember/15 ring-2 ring-ember/30">
+        <CheckCircle2 className="h-8 w-8 text-ember" />
       </div>
       <div className="space-y-2">
-        <h3 className="text-2xl font-bold text-white">You're booked!</h3>
-        <p className="text-sm leading-relaxed text-zinc-400">
+        <h3 className="text-2xl font-bold text-foreground">You're booked!</h3>
+        <p className="text-sm leading-relaxed text-muted-foreground">
           We'll reach out within 24 hours to confirm your demo time. Check your email for a
           calendar invite.
         </p>
       </div>
-      <div className="w-full rounded-xl border border-zinc-800 bg-zinc-900/60 p-5 text-left">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+      <div className="w-full rounded-xl border border-border bg-card p-5 text-left">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           In the meantime, explore what's possible:
         </p>
         <ul className="space-y-3">
@@ -51,7 +51,7 @@ function SuccessState() {
           ].map((item) => (
             <li key={item.text} className="flex items-start gap-3">
               <span className="mt-0.5 text-base">{item.icon}</span>
-              <span className="text-sm text-zinc-300">{item.text}</span>
+              <span className="text-sm text-foreground/80">{item.text}</span>
             </li>
           ))}
         </ul>
@@ -81,17 +81,17 @@ export function LeadForm({ compact = false }: LeadFormProps) {
 
   const inputClass = (hasError: boolean) =>
     cn(
-      "w-full rounded-lg border bg-zinc-900 px-4 py-3 text-sm text-white placeholder-zinc-500 transition-all outline-none",
-      "focus:ring-2 focus:ring-amber-500 focus:border-amber-500/60",
+      "w-full rounded-lg border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground transition-all outline-none",
+      "focus:ring-2 focus-visible:ring-ring focus:border-border",
       hasError
         ? "border-red-500/60 focus:ring-red-500"
-        : "border-zinc-700 hover:border-zinc-600"
+        : "border-border hover:border-border/80"
     );
 
   return (
     <div
       className={cn(
-        "rounded-2xl border border-zinc-800 bg-zinc-900/80 backdrop-blur-sm",
+        "rounded-2xl border border-border bg-card/80 backdrop-blur-sm",
         compact ? "p-5" : "p-6 sm:p-8"
       )}
     >
@@ -107,18 +107,18 @@ export function LeadForm({ compact = false }: LeadFormProps) {
           >
             {!compact && (
               <div className="mb-6">
-                <h2 className="text-xl font-bold text-white sm:text-2xl">
+                <h2 className="text-xl font-bold text-foreground sm:text-2xl">
                   Book Your Free Strategy Demo
                 </h2>
-                <p className="mt-1.5 text-sm text-zinc-400">
+                <p className="mt-1.5 text-sm text-muted-foreground">
                   See exactly how much time you're losing — and get a custom automation plan.
                 </p>
               </div>
             )}
             {compact && (
               <div className="mb-5">
-                <h2 className="text-lg font-bold text-white">Book Your Free Demo</h2>
-                <p className="mt-1 text-xs text-zinc-400">
+                <h2 className="text-lg font-bold text-foreground">Book Your Free Demo</h2>
+                <p className="mt-1 text-xs text-muted-foreground">
                   Get your custom automation plan in 24 hours.
                 </p>
               </div>
@@ -177,7 +177,7 @@ export function LeadForm({ compact = false }: LeadFormProps) {
               <button
                 type="submit"
                 disabled={mutation.isPending}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-6 py-3.5 text-sm font-semibold text-black transition-all hover:bg-amber-400 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {mutation.isPending ? (
                   <>
@@ -192,7 +192,7 @@ export function LeadForm({ compact = false }: LeadFormProps) {
                 )}
               </button>
 
-              <p className="text-center text-xs text-zinc-600">
+              <p className="text-center text-xs text-muted-foreground/60">
                 No credit card required. No spam, ever.
               </p>
             </form>

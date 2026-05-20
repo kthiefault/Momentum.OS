@@ -23,8 +23,8 @@ export function HeroSection() {
     <section className="relative overflow-hidden py-16 sm:py-20 lg:py-28">
       {/* Background glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-amber-500/5 blur-[120px]" />
-        <div className="absolute -bottom-20 right-0 h-[400px] w-[500px] rounded-full bg-amber-600/5 blur-[100px]" />
+        <div className="absolute -top-40 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-ember/5 blur-[120px]" />
+        <div className="absolute -bottom-20 right-0 h-[400px] w-[500px] rounded-full bg-ice/5 blur-[100px]" />
       </div>
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
@@ -37,8 +37,8 @@ export function HeroSection() {
               animate="visible"
               custom={0}
             >
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-400">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-ember/20 bg-ember/10 px-3 py-1 text-xs font-medium text-ember">
+                <span className="h-1.5 w-1.5 rounded-full bg-ember animate-pulse" />
                 Trusted by 500+ operators
               </span>
             </motion.div>
@@ -50,14 +50,14 @@ export function HeroSection() {
               custom={0.1}
               className="space-y-3"
             >
-              <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-6xl">
+              <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
                 Stop Wasting{" "}
-                <span className="bg-gradient-to-r from-amber-400 to-amber-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-ember to-ice bg-clip-text text-transparent">
                   41+ Hours
                 </span>{" "}
                 a Week on Manual Work
               </h1>
-              <p className="text-base leading-relaxed text-zinc-400 sm:text-lg">
+              <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
                 Momentum.OS automates your workflows, eliminates busywork, and integrates AI into
                 every corner of your business — so you can scale without burning out.
               </p>
@@ -72,10 +72,10 @@ export function HeroSection() {
             >
               {trustBadges.map((badge) => (
                 <div key={badge} className="flex items-center gap-2">
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/20">
-                    <Check className="h-3 w-3 text-amber-500" strokeWidth={3} />
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-ember/20">
+                    <Check className="h-3 w-3 text-ember" strokeWidth={3} />
                   </div>
-                  <span className="text-sm font-medium text-zinc-300">{badge}</span>
+                  <span className="text-sm font-medium text-foreground/80">{badge}</span>
                 </div>
               ))}
             </motion.div>
@@ -92,18 +92,18 @@ export function HeroSection() {
                 {["SL", "MT", "PK", "JR", "AW"].map((initials, i) => (
                   <div
                     key={initials}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#0A0A0A] text-[10px] font-bold"
+                    className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background text-[10px] font-bold"
                     style={{
-                      background: `hsl(${35 + i * 15}, 90%, ${40 + i * 4}%)`,
-                      color: "black",
+                      background: `hsl(${221 + i * 10}, 79%, ${40 + i * 4}%)`,
+                      color: "white",
                     }}
                   >
                     {initials}
                   </div>
                 ))}
               </div>
-              <p className="text-sm text-zinc-400">
-                <span className="font-semibold text-white">500+</span> businesses automated this month
+              <p className="text-sm text-muted-foreground">
+                <span className="font-semibold text-foreground">500+</span> businesses automated this month
               </p>
             </motion.div>
           </div>

@@ -43,11 +43,13 @@ export function TestimonialsSection() {
           transition={{ duration: 0.5 }}
           className="mb-10 text-center"
         >
-          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-amber-500">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-ember">
             Social Proof
           </p>
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">
-            What operators are saying
+          <h2 className="text-2xl font-bold sm:text-3xl">
+            <span className="bg-gradient-to-r from-ember to-ice bg-clip-text text-transparent">
+              What operators are saying
+            </span>
           </h2>
         </motion.div>
 
@@ -59,26 +61,26 @@ export function TestimonialsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition-colors hover:border-zinc-700"
+              className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-colors hover:border-border/80"
             >
               <div className="flex gap-0.5">
                 {Array.from({ length: t.stars }).map((_, j) => (
-                  <Star key={j} className="h-4 w-4 fill-amber-500 text-amber-500" />
+                  <Star key={j} className="h-4 w-4 fill-ember text-ember" />
                 ))}
               </div>
-              <blockquote className="flex-1 text-sm leading-relaxed text-zinc-300">
+              <blockquote className="flex-1 text-sm leading-relaxed text-foreground/80">
                 "{t.quote}"
               </blockquote>
               <div className="flex items-center gap-3">
                 <div
-                  className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-black"
+                  className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
                   style={{ background: t.color }}
                 >
                   {t.initials}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-white">{t.name}</p>
-                  <p className="text-xs text-zinc-500">{t.title}</p>
+                  <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                  <p className="text-xs text-muted-foreground">{t.title}</p>
                 </div>
               </div>
             </motion.div>

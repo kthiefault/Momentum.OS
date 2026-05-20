@@ -35,11 +35,13 @@ export function WhatYouGetSection() {
           transition={{ duration: 0.5 }}
           className="mb-10 text-center"
         >
-          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-amber-500">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-ember">
             What's included
           </p>
-          <h2 className="text-2xl font-bold text-white sm:text-3xl">
-            Your free demo includes:
+          <h2 className="text-2xl font-bold sm:text-3xl">
+            <span className="bg-gradient-to-r from-ember to-ice bg-clip-text text-transparent">
+              Your free demo includes:
+            </span>
           </h2>
         </motion.div>
 
@@ -51,14 +53,14 @@ export function WhatYouGetSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="group flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition-all hover:border-amber-500/30 hover:bg-zinc-900/80"
+              className="group flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 transition-all hover:border-ember/30 hover:bg-card/80"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-zinc-700 bg-zinc-800 text-2xl transition-colors group-hover:border-amber-500/30 group-hover:bg-amber-500/10">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-background text-2xl transition-colors group-hover:border-ember/30 group-hover:bg-ember/10">
                 {f.emoji}
               </div>
               <div className="space-y-1.5">
-                <h3 className="font-semibold text-white">{f.title}</h3>
-                <p className="text-sm leading-relaxed text-zinc-400">{f.desc}</p>
+                <h3 className="font-semibold text-foreground">{f.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
               </div>
             </motion.div>
           ))}

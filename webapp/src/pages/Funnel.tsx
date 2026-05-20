@@ -8,7 +8,7 @@ import { BottomCTA } from "@/components/funnel/BottomCTA";
 
 export default function Funnel() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <TopBar />
       <main>
         <HeroSection />
