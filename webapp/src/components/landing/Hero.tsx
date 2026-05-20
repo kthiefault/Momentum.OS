@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { ArrowRight, Play, Sparkles } from "lucide-react";
 import AmbientOrbs from "./effects/AmbientOrbs";
 import GridBackdrop from "./effects/GridBackdrop";
+import { useTheme } from "@/hooks/use-theme";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -10,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -44,8 +46,9 @@ const Hero = () => {
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
-          background:
-            "radial-gradient(ellipse 90% 60% at 50% 100%, hsl(230 20% 4% / 0.9), transparent 60%)",
+          background: theme === "light"
+            ? "radial-gradient(ellipse 90% 60% at 50% 100%, hsl(220 18% 94% / 0.85), transparent 60%)"
+            : "radial-gradient(ellipse 90% 60% at 50% 100%, hsl(230 20% 4% / 0.9), transparent 60%)",
         }}
       />
 

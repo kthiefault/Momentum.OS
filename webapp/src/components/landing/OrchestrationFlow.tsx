@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTheme } from "@/hooks/use-theme";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -414,6 +415,7 @@ export default function OrchestrationFlow() {
   const headerRef  = useRef<HTMLDivElement>(null);
   const windowRef  = useRef<HTMLDivElement>(null);
 
+  const { theme } = useTheme();
   const [phase,          setPhase]          = useState<number>(1);
   const [expanded,       setExpanded]       = useState<number | null>(null);
   const [mounted,        setMounted]        = useState<boolean>(false);
@@ -585,13 +587,15 @@ export default function OrchestrationFlow() {
   return (
     <section className="relative isolate overflow-hidden py-16 sm:py-20">
 
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: "radial-gradient(ellipse 90% 70% at 50% 50%, hsl(230 18% 6%), hsl(230 20% 3%))",
-        }}
-      />
+      {theme !== "light" ? (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: "radial-gradient(ellipse 90% 70% at 50% 50%, hsl(230 18% 6%), hsl(230 20% 3%))",
+          }}
+        />
+      ) : null}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 mask-radial bg-grid opacity-25"
