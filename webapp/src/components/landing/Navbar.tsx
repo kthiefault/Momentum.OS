@@ -51,23 +51,23 @@ const Navbar = () => {
                 {/* Orbit 1: horizontal */}
                 <ellipse cx="14" cy="14" rx="10" ry="3.6" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="0.7"/>
                 <g>
-                  <circle cx="24" cy="14" r="1.8" fill="white" opacity="0.95"/>
-                  <animateTransform attributeName="transform" type="rotate" from="0 14 14" to="360 14 14" dur="2s" repeatCount="indefinite"/>
+                  <circle cx="24" cy="14" r="1.8" fill="#60a5fa" opacity="0.95"/>
+                  <animateTransform attributeName="transform" type="rotate" from="0 14 14" to="360 14 14" dur="3.5s" repeatCount="indefinite"/>
                 </g>
                 {/* Orbit 2: 60° tilt */}
                 <g transform="rotate(60 14 14)">
                   <ellipse cx="14" cy="14" rx="10" ry="3.6" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="0.7"/>
                   <g>
-                    <circle cx="24" cy="14" r="1.8" fill="white" opacity="0.95"/>
-                    <animateTransform attributeName="transform" type="rotate" from="0 14 14" to="360 14 14" dur="3.1s" repeatCount="indefinite"/>
+                    <circle cx="24" cy="14" r="1.8" fill="#60a5fa" opacity="0.95"/>
+                    <animateTransform attributeName="transform" type="rotate" from="0 14 14" to="360 14 14" dur="5s" repeatCount="indefinite"/>
                   </g>
                 </g>
                 {/* Orbit 3: -60° tilt */}
                 <g transform="rotate(-60 14 14)">
                   <ellipse cx="14" cy="14" rx="10" ry="3.6" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="0.7"/>
                   <g>
-                    <circle cx="24" cy="14" r="1.8" fill="white" opacity="0.95"/>
-                    <animateTransform attributeName="transform" type="rotate" from="0 14 14" to="-360 14 14" dur="1.7s" repeatCount="indefinite"/>
+                    <circle cx="24" cy="14" r="1.8" fill="#60a5fa" opacity="0.95"/>
+                    <animateTransform attributeName="transform" type="rotate" from="0 14 14" to="-360 14 14" dur="3s" repeatCount="indefinite"/>
                   </g>
                 </g>
                 {/* Nucleus core */}
