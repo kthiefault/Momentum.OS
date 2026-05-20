@@ -46,34 +46,10 @@ const Navbar = () => {
         >
           <Link to="/" className="flex items-center gap-2.5">
             <div className="relative h-7 w-7 flex-shrink-0">
-              <svg viewBox="0 0 28 28" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
-                <rect width="28" height="28" rx="7" fill="#09090e"/>
-                {/* Orbit 1: horizontal */}
-                <ellipse cx="14" cy="14" rx="10" ry="3.6" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="0.7"/>
-                <g>
-                  <circle cx="24" cy="14" r="1.8" fill="#60a5fa" opacity="0.95"/>
-                  <animateTransform attributeName="transform" type="rotate" from="0 14 14" to="360 14 14" dur="3.5s" repeatCount="indefinite"/>
-                </g>
-                {/* Orbit 2: 60° tilt */}
-                <g transform="rotate(60 14 14)">
-                  <ellipse cx="14" cy="14" rx="10" ry="3.6" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="0.7"/>
-                  <g>
-                    <circle cx="24" cy="14" r="1.8" fill="#60a5fa" opacity="0.95"/>
-                    <animateTransform attributeName="transform" type="rotate" from="0 14 14" to="360 14 14" dur="5s" repeatCount="indefinite"/>
-                  </g>
-                </g>
-                {/* Orbit 3: -60° tilt */}
-                <g transform="rotate(-60 14 14)">
-                  <ellipse cx="14" cy="14" rx="10" ry="3.6" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="0.7"/>
-                  <g>
-                    <circle cx="24" cy="14" r="1.8" fill="#60a5fa" opacity="0.95"/>
-                    <animateTransform attributeName="transform" type="rotate" from="0 14 14" to="-360 14 14" dur="3s" repeatCount="indefinite"/>
-                  </g>
-                </g>
-                {/* Nucleus core */}
-                <circle cx="14" cy="14" r="2.8" fill="white" opacity="0.97"/>
-                <circle cx="14" cy="14" r="1.4" fill="#09090e" opacity="0.45"/>
-              </svg>
+              <div className="absolute inset-0 rounded-md bg-gradient-to-br from-ember to-ember-deep" />
+              <div className="absolute inset-[2px] rounded-[5px] bg-background flex items-center justify-center">
+                <div className="h-2 w-2 rounded-full bg-ember shadow-[0_0_12px_2px_hsl(221_79%_48%/0.8)]" />
+              </div>
             </div>
             <div className="flex items-baseline gap-1 font-medium tracking-tight">
               <span>Momentum</span>
