@@ -26,20 +26,18 @@ export default function SignIn() {
 
     try {
       const baseURL = import.meta.env.VITE_BACKEND_URL || "";
-      const res = await fetch(`${baseURL}/api/auth/sign-in/email`, {
+      const res = await fetch(`${baseURL}/api/admin/login`, {
         method: "POST",
-        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: resolveEmail(username), password }),
       });
 
+      const json = await res.json().catch(() => null);
       if (!res.ok) {
-        const json = await res.json().catch(() => null);
-        setError(json?.message ?? "Invalid credentials. Please try again.");
+        setError(json?.error?.message ?? "Invalid credentials. Please try again.");
       } else {
-        const json = await res.json();
-        if (json?.token) {
-          localStorage.setItem("admin_token", json.token);
+        if (json?.data?.token) {
+          localStorage.setItem("admin_token", json.data.token);
         }
         toast.success("Welcome back, Kenny!");
         window.location.href = "/admin";
