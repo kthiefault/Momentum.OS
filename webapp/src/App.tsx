@@ -20,6 +20,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const SignIn = lazy(() => import("./pages/SignIn"));
 
 const Funnel = lazy(() => import("./pages/Funnel"));
+const Demo = lazy(() => import("./pages/Demo"));
 
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
@@ -41,7 +42,7 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 30
 
 function AppContent() {
   const { hasChosen, chooseTheme } = useTheme();
-  const isAdminRoute = window.location.pathname === "/sign-in" || window.location.pathname.startsWith("/admin") || window.location.pathname === "/funnel" || window.location.pathname.startsWith("/blog");
+  const isAdminRoute = window.location.pathname === "/sign-in" || window.location.pathname.startsWith("/admin") || window.location.pathname === "/funnel" || window.location.pathname.startsWith("/blog") || window.location.pathname === "/demo";
 
   return (
     <>
@@ -130,6 +131,7 @@ function AppContent() {
             }
           />
           <Route path="/funnel" element={<Suspense fallback={<PageLoader />}><Funnel /></Suspense>} />
+          <Route path="/demo" element={<Suspense fallback={<PageLoader />}><Demo /></Suspense>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<Suspense fallback={<PageLoader />}><NotFound /></Suspense>} />
         </Routes>
