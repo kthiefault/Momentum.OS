@@ -25,22 +25,15 @@ router.post("/login", async (c) => {
 });
 
 router.get("/stats", requireAdmin, async (c) => {
-  const [totalWorkflows, activeWorkflows, totalLeads, newLeads] = await Promise.all([
-    prisma.workflow.count(),
-    prisma.workflow.count({ where: { status: "active" } }),
-    prisma.lead.count(),
-    prisma.lead.count({ where: { status: "new" } }),
-  ]);
-
-  const recentWorkflows = await prisma.workflow.findMany({
-    take: 5,
-    orderBy: { updatedAt: "desc" },
-  });
-
-  const recentLeads = await prisma.lead.findMany({
-    take: 5,
-    orderBy: { createdAt: "desc" },
-  });
+  const [totalWorkflows, activeWorkflows, totalLeads, newLeads, recentWorkflows, recentLeads] =
+    await Promise.all([
+      prisma.workflow.count(),
+      prisma.workflow.count({ where: { status: "active" } }),
+      prisma.lead.count(),
+      prisma.lead.count({ where: { status: "new" } }),
+      prisma.workflow.findMany({ take: 5, orderBy: { updatedAt: "desc" } }),
+      prisma.lead.findMany({ take: 5, orderBy: { createdAt: "desc" } }),
+    ]);
 
   return c.json({
     data: {

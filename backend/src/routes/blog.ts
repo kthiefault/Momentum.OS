@@ -174,12 +174,15 @@ blogRouter.put(
 
 blogRouter.delete("/admin/:id", requireAdmin, async (c) => {
   const id = c.req.param("id");
-  const existing = await prisma.blogPost.findUnique({ where: { id } });
-  if (!existing) {
-    return c.json({ error: { message: "Post not found", code: "NOT_FOUND" } }, 404);
+  try {
+    await prisma.blogPost.delete({ where: { id } });
+    return c.json({ data: null });
+  } catch (e: any) {
+    if (e?.code === "P2025") {
+      return c.json({ error: { message: "Post not found", code: "NOT_FOUND" } }, 404);
+    }
+    throw e;
   }
-  await prisma.blogPost.delete({ where: { id } });
-  return c.json({ data: null });
 });
 
 // --- Jarvis API key route ---
@@ -205,38 +208,21 @@ blogRouter.post(
     const status = body.status ?? "published";
     const publishedAt = status === "published" ? new Date() : null;
 
-    const existing = await prisma.blogPost.findUnique({ where: { slug } });
-
-    let post;
-    if (existing) {
-      post = await prisma.blogPost.update({
-        where: { slug },
-        data: {
-          title: body.title,
-          content: body.content,
-          excerpt: body.excerpt ?? null,
-          coverImage: body.coverImage ?? null,
-          author: body.author ?? "Jarvis AI",
-          tags: body.tags ?? "[]",
-          status,
-          publishedAt,
-        },
-      });
-    } else {
-      post = await prisma.blogPost.create({
-        data: {
-          title: body.title,
-          slug,
-          content: body.content,
-          excerpt: body.excerpt ?? null,
-          coverImage: body.coverImage ?? null,
-          author: body.author ?? "Jarvis AI",
-          tags: body.tags ?? "[]",
-          status,
-          publishedAt,
-        },
-      });
-    }
+    const sharedFields = {
+      title: body.title,
+      content: body.content,
+      excerpt: body.excerpt ?? null,
+      coverImage: body.coverImage ?? null,
+      author: body.author ?? "Jarvis AI",
+      tags: body.tags ?? "[]",
+      status,
+      publishedAt,
+    };
+    const post = await prisma.blogPost.upsert({
+      where: { slug },
+      update: sharedFields,
+      create: { slug, ...sharedFields },
+    });
 
     return c.json({ data: { success: true, id: post.id, slug: post.slug } });
   }
