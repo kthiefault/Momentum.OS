@@ -1,12 +1,11 @@
 MOMENTUM.OS — SOCIAL MEDIA CAPTIONS
 =====================================
-Use these with the matching post images (post-1, post-2, post-3).
-Adapt hashtags based on your current niche focus.
+Ready-to-paste captions for post-1, post-2, post-3.
 
 
 ────────────────────────────────────────
 POST 1 — Hook/Stat Post  (post-1.svg)
-IMAGE: "41 Hours Lost Per Week" stat graphic
+"41 Hours Lost Per Week"
 ────────────────────────────────────────
 
 The average operator wastes 41+ hours a week on tasks an AI could do in seconds.
@@ -25,8 +24,8 @@ No contracts. Setup in 48 hours. ROI in 30 days.
 
 
 ────────────────────────────────────────
-POST 2 — Features/Value Post  (post-2.svg)
-IMAGE: "3 Things That Run Your Business While You Sleep"
+POST 2 — Features Post  (post-2.svg)
+"3 Things Running Your Business While You Sleep"
 ────────────────────────────────────────
 
 Your business should be making money while you sleep.
@@ -46,12 +45,12 @@ Every metric that matters, visible at a glance. No more end-of-month surprises.
 
 Ready to join them? 👇 Link in bio.
 
-#Automation #CRM #BusinessIntelligence #AIBusiness #ScaleUp #PassiveIncome #BusinessSystems #WorkflowAutomation #MomentumOS #DigitalTransformation
+#Automation #CRM #BusinessIntelligence #AIBusiness #ScaleUp #BusinessSystems #WorkflowAutomation #MomentumOS #DigitalTransformation #OperationsStrategy
 
 
 ────────────────────────────────────────
 POST 3 — Social Proof/CTA Post  (post-3.svg)
-IMAGE: "500+ Operators Automated" with testimonial + CTA button
+"500+ Operators Automated"
 ────────────────────────────────────────
 
 "We got back 30 hours a week in the first month."

@@ -1,89 +1,71 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
   <defs>
-    <radialGradient id="bg1" cx="30%" cy="70%" r="70%">
-      <stop offset="0%" stop-color="#0D1630"/>
-      <stop offset="100%" stop-color="#08090C"/>
+    <radialGradient id="bg" cx="70%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#12121a"/>
+      <stop offset="100%" stop-color="#09090e"/>
     </radialGradient>
-    <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#1A57DB" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#1A57DB" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#6EDCF7" stop-opacity="0.25"/>
-      <stop offset="100%" stop-color="#6EDCF7" stop-opacity="0"/>
-    </radialGradient>
-    <filter id="blur1"><feGaussianBlur stdDeviation="60"/></filter>
-    <filter id="blur2"><feGaussianBlur stdDeviation="40"/></filter>
+    <linearGradient id="badge-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <filter id="blur-bg"><feGaussianBlur stdDeviation="80"/></filter>
     <filter id="glow-dot"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="glow-e"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="1080" height="1080" fill="url(#bg1)"/>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
 
-  <!-- Ambient blobs -->
-  <circle cx="200" cy="800" r="400" fill="#1A57DB" opacity="0.12" filter="url(#blur1)"/>
-  <circle cx="900" cy="200" r="350" fill="#6EDCF7" opacity="0.08" filter="url(#blur1)"/>
+  <!-- Subtle blue glow blob -->
+  <circle cx="200" cy="800" r="500" fill="#3b82f6" opacity="0.06" filter="url(#blur-bg)"/>
 
-  <!-- Top accent line -->
-  <line x1="80" y1="80" x2="320" y2="80" stroke="#1A57DB" stroke-width="2" opacity="0.6"/>
-  <circle cx="80" cy="80" r="4" fill="#1A57DB"/>
-
-  <!-- Atom icon - top right area -->
-  <g transform="translate(860, 160) scale(1.8)">
-    <ellipse cx="0" cy="0" rx="55" ry="18" fill="none" stroke="#1A57DB" stroke-width="2" opacity="0.5"/>
-    <ellipse cx="0" cy="0" rx="55" ry="18" fill="none" stroke="#6EDCF7" stroke-width="1.5" opacity="0.4" transform="rotate(60)"/>
-    <ellipse cx="0" cy="0" rx="55" ry="18" fill="none" stroke="#6EDCF7" stroke-width="1.5" opacity="0.4" transform="rotate(-60)"/>
-    <circle cx="55" cy="0" r="5" fill="#1A57DB" filter="url(#glow-dot)"/>
-    <circle cx="-27.5" cy="-47.6" r="4" fill="#6EDCF7" filter="url(#glow-dot)"/>
-    <circle cx="-27.5" cy="47.6" r="4" fill="#6EDCF7" filter="url(#glow-dot)"/>
-    <circle cx="0" cy="0" r="10" fill="#1A57DB" opacity="0.9"/>
-    <circle cx="0" cy="0" r="5" fill="#6EDCF7"/>
+  <!-- Large atom on right (matching OG style — white orbits) -->
+  <g transform="translate(820, 380)">
+    <ellipse cx="0" cy="0" rx="200" ry="72" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+    <ellipse cx="0" cy="0" rx="200" ry="72" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" transform="rotate(60)"/>
+    <ellipse cx="0" cy="0" rx="200" ry="72" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" transform="rotate(-60)"/>
+    <circle cx="173" cy="-36" r="12" fill="white" opacity="0.9" filter="url(#glow-e)"/>
+    <g transform="rotate(60)"><circle cx="-200" cy="0" r="12" fill="white" opacity="0.9" filter="url(#glow-e)"/></g>
+    <g transform="rotate(-60)"><circle cx="0" cy="72" r="12" fill="white" opacity="0.9" filter="url(#glow-e)"/></g>
+    <circle cx="0" cy="0" r="38" fill="white" opacity="0.97"/>
+    <circle cx="0" cy="0" r="20" fill="#09090e" opacity="0.45"/>
   </g>
 
-  <!-- STAT — big number -->
-  <text x="80" y="380" font-family="'Onest', 'Inter', sans-serif" font-weight="800" font-size="180" fill="#1A57DB" opacity="0.15" letter-spacing="-8">41</text>
-  <text x="80" y="360" font-family="'Onest', 'Inter', sans-serif" font-weight="800" font-size="140" fill="url(#glow1)">
-    <tspan fill="#F5EDE0">41</tspan>
-  </text>
+  <!-- Top logo mark -->
+  <rect x="80" y="80" width="56" height="56" rx="13" fill="url(#badge-grad)"/>
+  <rect x="84" y="84" width="48" height="48" rx="10" fill="#09090e"/>
+  <circle cx="108" cy="108" r="8" fill="#3b82f6" filter="url(#glow-dot)" opacity="0.9"/>
+  <circle cx="108" cy="108" r="5" fill="#60a5fa"/>
 
-  <!-- STAT label -->
-  <text x="80" y="400" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="32" fill="#6EDCF7" letter-spacing="2">HOURS LOST PER WEEK</text>
+  <!-- Brand name -->
+  <text x="154" y="116" font-family="'Onest', -apple-system, sans-serif" font-weight="600" font-size="22" letter-spacing="2" fill="rgba(255,255,255,0.45)">MOMENTUM.OS</text>
 
   <!-- Divider -->
-  <rect x="80" y="430" width="920" height="1" fill="#1A57DB" opacity="0.25"/>
+  <line x1="80" y1="164" x2="620" y2="164" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
 
-  <!-- Main copy -->
-  <text x="80" y="520" font-family="'Onest', 'Inter', sans-serif" font-weight="800" font-size="58" fill="#F5EDE0" letter-spacing="-1">Stop doing it manually.</text>
-  <text x="80" y="600" font-family="'Onest', 'Inter', sans-serif" font-weight="800" font-size="58" fill="#F5EDE0" letter-spacing="-1">Start scaling on</text>
-  <text x="80" y="680" font-family="'Onest', 'Inter', sans-serif" font-weight="800" font-size="58" fill="#1A57DB" letter-spacing="-1">autopilot.</text>
+  <!-- Big stat -->
+  <text x="80" y="400" font-family="'Onest', -apple-system, sans-serif" font-weight="800" font-size="200" fill="white" opacity="0.06" letter-spacing="-8">41</text>
+  <text x="80" y="390" font-family="'Onest', -apple-system, sans-serif" font-weight="800" font-size="160" fill="white" opacity="0.9" letter-spacing="-6">41</text>
+  <text x="80" y="440" font-family="'Onest', -apple-system, sans-serif" font-weight="400" font-size="28" fill="rgba(255,255,255,0.45)" letter-spacing="3">HOURS LOST PER WEEK TO MANUAL WORK</text>
 
-  <!-- Body copy -->
-  <text x="80" y="760" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="28" fill="#8892A4">The average operator wastes 41+ hours a week on tasks</text>
-  <text x="80" y="798" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="28" fill="#8892A4">an AI workflow could handle in seconds.</text>
+  <!-- Divider 2 -->
+  <line x1="80" y1="480" x2="940" y2="480" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
 
-  <!-- Trust badges -->
-  <rect x="80" y="850" width="220" height="48" rx="24" fill="#1A57DB" opacity="0.15" stroke="#1A57DB" stroke-width="1"/>
-  <text x="190" y="880" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="600" font-size="16" fill="#6EDCF7">No contracts</text>
+  <!-- Main headline -->
+  <text x="80" y="570" font-family="'Onest', -apple-system, sans-serif" font-weight="700" font-size="60" fill="white" opacity="0.95" letter-spacing="-1.5">Stop doing it manually.</text>
+  <text x="80" y="650" font-family="'Onest', -apple-system, sans-serif" font-weight="700" font-size="60" fill="white" opacity="0.95" letter-spacing="-1.5">Start scaling on</text>
+  <text x="80" y="730" font-family="'Onest', -apple-system, sans-serif" font-weight="700" font-size="60" fill="#60a5fa" letter-spacing="-1.5">autopilot.</text>
 
-  <rect x="320" y="850" width="260" height="48" rx="24" fill="#1A57DB" opacity="0.15" stroke="#1A57DB" stroke-width="1"/>
-  <text x="450" y="880" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="600" font-size="16" fill="#6EDCF7">Setup in 48 hours</text>
+  <!-- Body -->
+  <text x="80" y="810" font-family="'Onest', -apple-system, sans-serif" font-weight="400" font-size="26" fill="rgba(255,255,255,0.38)">AI workflows · CRM intelligence · Execution engine</text>
 
-  <rect x="600" y="850" width="240" height="48" rx="24" fill="#1A57DB" opacity="0.15" stroke="#1A57DB" stroke-width="1"/>
-  <text x="720" y="880" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="600" font-size="16" fill="#6EDCF7">ROI in 30 days</text>
+  <!-- CTA strip -->
+  <rect x="80" y="870" width="420" height="64" rx="32" fill="#3b82f6"/>
+  <text x="290" y="910" text-anchor="middle" font-family="'Onest', -apple-system, sans-serif" font-weight="600" font-size="24" fill="white">Book a free demo →</text>
 
-  <!-- Bottom brand bar -->
-  <rect x="0" y="980" width="1080" height="100" fill="#0D101A"/>
-  <line x1="0" y1="980" x2="1080" y2="980" stroke="#1A57DB" stroke-width="1" opacity="0.4"/>
+  <!-- Domain -->
+  <text x="940" y="910" text-anchor="end" font-family="'Onest', -apple-system, sans-serif" font-weight="400" font-size="20" fill="rgba(255,255,255,0.22)">os-momentum.com</text>
 
-  <!-- Bottom atom icon small -->
-  <g transform="translate(80, 1030)">
-    <ellipse cx="0" cy="0" rx="22" ry="7" fill="none" stroke="#1A57DB" stroke-width="1.5"/>
-    <ellipse cx="0" cy="0" rx="22" ry="7" fill="none" stroke="#6EDCF7" stroke-width="1" transform="rotate(60)"/>
-    <ellipse cx="0" cy="0" rx="22" ry="7" fill="none" stroke="#6EDCF7" stroke-width="1" transform="rotate(-60)"/>
-    <circle cx="0" cy="0" r="4" fill="#1A57DB"/>
-    <circle cx="0" cy="0" r="2" fill="#6EDCF7"/>
-  </g>
-  <text x="120" y="1023" font-family="'Onest', 'Inter', sans-serif" font-weight="700" font-size="22" fill="#F5EDE0">Momentum</text>
-  <text x="120" y="1048" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="14" letter-spacing="3" fill="#6EDCF7">.OS</text>
-  <text x="1000" y="1038" text-anchor="end" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="18" fill="#8892A4">os-momentum.com</text>
+  <!-- Bottom line -->
+  <line x1="0" y1="980" x2="1080" y2="980" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <text x="80" y="1040" font-family="'Onest', -apple-system, sans-serif" font-weight="400" font-size="18" fill="rgba(255,255,255,0.2)">No contracts · Setup in 48 hours · ROI in 30 days</text>
 </svg>

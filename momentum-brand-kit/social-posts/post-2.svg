@@ -1,61 +1,54 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
   <defs>
-    <radialGradient id="bg2" cx="70%" cy="30%" r="80%">
-      <stop offset="0%" stop-color="#0A1020"/>
-      <stop offset="100%" stop-color="#08090C"/>
+    <radialGradient id="bg2" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#0e0e16"/>
+      <stop offset="100%" stop-color="#09090e"/>
     </radialGradient>
-    <filter id="blur3"><feGaussianBlur stdDeviation="70"/></filter>
-    <filter id="glow3"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-    <linearGradient id="card-line" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#1A57DB" stop-opacity="1"/>
-      <stop offset="100%" stop-color="#6EDCF7" stop-opacity="0.3"/>
+    <linearGradient id="bg2-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
     </linearGradient>
+    <filter id="blur2"><feGaussianBlur stdDeviation="70"/></filter>
+    <filter id="glow2"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
 
   <rect width="1080" height="1080" fill="url(#bg2)"/>
-  <circle cx="900" cy="200" r="500" fill="#1A57DB" opacity="0.09" filter="url(#blur3)"/>
-  <circle cx="100" cy="900" r="400" fill="#6EDCF7" opacity="0.06" filter="url(#blur3)"/>
+  <circle cx="900" cy="150" r="400" fill="#3b82f6" opacity="0.07" filter="url(#blur2)"/>
 
-  <!-- Badge -->
-  <rect x="80" y="80" width="240" height="44" rx="22" fill="#1A57DB" opacity="0.2" stroke="#1A57DB" stroke-width="1"/>
-  <text x="200" y="108" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="600" font-size="16" fill="#6EDCF7" letter-spacing="1">WHAT YOU GET</text>
+  <!-- Top logo badge -->
+  <rect x="80" y="80" width="56" height="56" rx="13" fill="url(#bg2-grad)"/>
+  <rect x="84" y="84" width="48" height="48" rx="10" fill="#09090e"/>
+  <circle cx="108" cy="108" r="8" fill="#3b82f6" filter="url(#glow2)" opacity="0.9"/>
+  <circle cx="108" cy="108" r="5" fill="#60a5fa"/>
+  <text x="154" y="116" font-family="'Onest', -apple-system, sans-serif" font-weight="600" font-size="22" letter-spacing="2" fill="rgba(255,255,255,0.45)">MOMENTUM.OS</text>
+  <line x1="80" y1="164" x2="620" y2="164" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
 
   <!-- Headline -->
-  <text x="80" y="220" font-family="'Onest', 'Inter', sans-serif" font-weight="800" font-size="68" fill="#F5EDE0" letter-spacing="-2">3 things that run</text>
-  <text x="80" y="308" font-family="'Onest', 'Inter', sans-serif" font-weight="800" font-size="68" fill="#F5EDE0" letter-spacing="-2">your business</text>
-  <text x="80" y="396" font-family="'Onest', 'Inter', sans-serif" font-weight="800" font-size="68" fill="#1A57DB" letter-spacing="-2">while you sleep.</text>
+  <text x="80" y="270" font-family="'Onest', -apple-system, sans-serif" font-weight="700" font-size="68" fill="white" opacity="0.95" letter-spacing="-2">3 things running your</text>
+  <text x="80" y="358" font-family="'Onest', -apple-system, sans-serif" font-weight="700" font-size="68" fill="white" opacity="0.95" letter-spacing="-2">business while you</text>
+  <text x="80" y="446" font-family="'Onest', -apple-system, sans-serif" font-weight="700" font-size="68" fill="#60a5fa" letter-spacing="-2">sleep.</text>
 
   <!-- Feature cards -->
   <!-- Card 1 -->
-  <rect x="80" y="460" width="900" height="140" rx="16" fill="#0D101A" stroke="#161C2E" stroke-width="1"/>
-  <rect x="80" y="460" width="4" height="140" rx="2" fill="#1A57DB"/>
-  <text x="120" y="520" font-family="'Onest', 'Inter', sans-serif" font-weight="700" font-size="28" fill="#F5EDE0">⚡  AI Workflow Automation</text>
-  <text x="120" y="562" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="22" fill="#8892A4">Triggers, logic, actions — running 24/7 without you touching a thing.</text>
+  <rect x="80" y="500" width="900" height="136" rx="14" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect x="80" y="500" width="3" height="136" rx="2" fill="#3b82f6"/>
+  <text x="116" y="558" font-family="'Onest', -apple-system, sans-serif" font-weight="700" font-size="30" fill="white" opacity="0.9">⚡  AI Workflow Automation</text>
+  <text x="116" y="604" font-family="'Onest', -apple-system, sans-serif" font-weight="400" font-size="22" fill="rgba(255,255,255,0.4)">Triggers, logic, actions — running 24/7 without you.</text>
 
   <!-- Card 2 -->
-  <rect x="80" y="620" width="900" height="140" rx="16" fill="#0D101A" stroke="#161C2E" stroke-width="1"/>
-  <rect x="80" y="620" width="4" height="140" rx="2" fill="#6EDCF7"/>
-  <text x="120" y="680" font-family="'Onest', 'Inter', sans-serif" font-weight="700" font-size="28" fill="#F5EDE0">🤖  CRM Intelligence</text>
-  <text x="120" y="722" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="22" fill="#8892A4">Your CRM that learns your pipeline and tells you what to do next.</text>
+  <rect x="80" y="656" width="900" height="136" rx="14" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect x="80" y="656" width="3" height="136" rx="2" fill="rgba(255,255,255,0.45)"/>
+  <text x="116" y="714" font-family="'Onest', -apple-system, sans-serif" font-weight="700" font-size="30" fill="white" opacity="0.9">🤖  CRM Intelligence</text>
+  <text x="116" y="760" font-family="'Onest', -apple-system, sans-serif" font-weight="400" font-size="22" fill="rgba(255,255,255,0.4)">A CRM that learns your pipeline and tells you what's next.</text>
 
   <!-- Card 3 -->
-  <rect x="80" y="780" width="900" height="140" rx="16" fill="#0D101A" stroke="#161C2E" stroke-width="1"/>
-  <rect x="80" y="780" width="4" height="140" rx="2" fill="#1A57DB"/>
-  <text x="120" y="840" font-family="'Onest', 'Inter', sans-serif" font-weight="700" font-size="28" fill="#F5EDE0">📈  Real-Time Dashboards</text>
-  <text x="120" y="882" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="22" fill="#8892A4">Every metric that matters, visible at a glance. No more guessing.</text>
+  <rect x="80" y="812" width="900" height="136" rx="14" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect x="80" y="812" width="3" height="136" rx="2" fill="#3b82f6"/>
+  <text x="116" y="870" font-family="'Onest', -apple-system, sans-serif" font-weight="700" font-size="30" fill="white" opacity="0.9">📈  Real-Time Dashboards</text>
+  <text x="116" y="916" font-family="'Onest', -apple-system, sans-serif" font-weight="400" font-size="22" fill="rgba(255,255,255,0.4)">Every metric that matters, visible at a glance.</text>
 
-  <!-- Bottom brand bar -->
-  <rect x="0" y="980" width="1080" height="100" fill="#0D101A"/>
-  <line x1="0" y1="980" x2="1080" y2="980" stroke="#1A57DB" stroke-width="1" opacity="0.4"/>
-
-  <g transform="translate(80, 1030)">
-    <ellipse cx="0" cy="0" rx="22" ry="7" fill="none" stroke="#1A57DB" stroke-width="1.5"/>
-    <ellipse cx="0" cy="0" rx="22" ry="7" fill="none" stroke="#6EDCF7" stroke-width="1" transform="rotate(60)"/>
-    <ellipse cx="0" cy="0" rx="22" ry="7" fill="none" stroke="#6EDCF7" stroke-width="1" transform="rotate(-60)"/>
-    <circle cx="0" cy="0" r="4" fill="#1A57DB"/>
-    <circle cx="0" cy="0" r="2" fill="#6EDCF7"/>
-  </g>
-  <text x="120" y="1023" font-family="'Onest', 'Inter', sans-serif" font-weight="700" font-size="22" fill="#F5EDE0">Momentum</text>
-  <text x="120" y="1048" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="14" letter-spacing="3" fill="#6EDCF7">.OS</text>
-  <text x="1000" y="1038" text-anchor="end" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="18" fill="#8892A4">os-momentum.com</text>
+  <!-- Bottom -->
+  <line x1="0" y1="990" x2="1080" y2="990" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <text x="80" y="1042" font-family="'Onest', -apple-system, sans-serif" font-size="18" fill="rgba(255,255,255,0.2)">os-momentum.com</text>
+  <text x="1000" y="1042" text-anchor="end" font-family="'Onest', -apple-system, sans-serif" font-size="18" fill="rgba(255,255,255,0.2)">Trusted by 500+ operators</text>
 </svg>

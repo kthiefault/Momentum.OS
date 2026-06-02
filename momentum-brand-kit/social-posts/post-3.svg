@@ -1,66 +1,60 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
   <defs>
-    <radialGradient id="bg3" cx="50%" cy="50%" r="70%">
-      <stop offset="0%" stop-color="#0C1220"/>
-      <stop offset="100%" stop-color="#08090C"/>
+    <radialGradient id="bg3" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#0e0e18"/>
+      <stop offset="100%" stop-color="#09090e"/>
     </radialGradient>
-    <filter id="blur4"><feGaussianBlur stdDeviation="80"/></filter>
-    <filter id="blur5"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <linearGradient id="b3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <filter id="blur3"><feGaussianBlur stdDeviation="80"/></filter>
+    <filter id="glow3"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="glow3e"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
 
   <rect width="1080" height="1080" fill="url(#bg3)"/>
-  <circle cx="540" cy="400" r="500" fill="#1A57DB" opacity="0.11" filter="url(#blur4)"/>
+  <circle cx="540" cy="300" r="500" fill="#3b82f6" opacity="0.07" filter="url(#blur3)"/>
 
-  <!-- Large atom icon centered top -->
-  <g transform="translate(540, 220)">
-    <ellipse cx="0" cy="0" rx="100" ry="34" fill="none" stroke="#1A57DB" stroke-width="2.5" opacity="0.7"/>
-    <ellipse cx="0" cy="0" rx="100" ry="34" fill="none" stroke="#6EDCF7" stroke-width="1.8" opacity="0.5" transform="rotate(60)"/>
-    <ellipse cx="0" cy="0" rx="100" ry="34" fill="none" stroke="#6EDCF7" stroke-width="1.8" opacity="0.5" transform="rotate(-60)"/>
-    <circle cx="100" cy="0" r="9" fill="#1A57DB" filter="url(#blur5)"/>
-    <circle cx="-50" cy="-86.6" r="7" fill="#6EDCF7" filter="url(#blur5)"/>
-    <circle cx="-50" cy="86.6" r="7" fill="#6EDCF7" filter="url(#blur5)"/>
-    <circle cx="0" cy="0" r="18" fill="#1A57DB" opacity="0.9"/>
-    <circle cx="0" cy="0" r="9" fill="#6EDCF7"/>
-    <circle cx="0" cy="0" r="4" fill="#FFFFFF"/>
+  <!-- Large centered atom (matching OG image exactly) -->
+  <g transform="translate(540, 320)">
+    <ellipse cx="0" cy="0" rx="200" ry="72" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+    <ellipse cx="0" cy="0" rx="200" ry="72" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" transform="rotate(60)"/>
+    <ellipse cx="0" cy="0" rx="200" ry="72" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.5" transform="rotate(-60)"/>
+    <!-- Electrons -->
+    <circle cx="173" cy="-36" r="12" fill="white" opacity="0.9" filter="url(#glow3e)"/>
+    <g transform="rotate(60)"><circle cx="-200" cy="0" r="12" fill="white" opacity="0.9" filter="url(#glow3e)"/></g>
+    <g transform="rotate(-60)"><circle cx="0" cy="72" r="12" fill="white" opacity="0.9" filter="url(#glow3e)"/></g>
+    <!-- Nucleus -->
+    <circle cx="0" cy="0" r="38" fill="white" opacity="0.97"/>
+    <circle cx="0" cy="0" r="20" fill="#09090e" opacity="0.45"/>
   </g>
+
+  <!-- Top logo badge -->
+  <rect x="80" y="80" width="56" height="56" rx="13" fill="url(#b3)"/>
+  <rect x="84" y="84" width="48" height="48" rx="10" fill="#09090e"/>
+  <circle cx="108" cy="108" r="8" fill="#3b82f6" filter="url(#glow3)" opacity="0.9"/>
+  <circle cx="108" cy="108" r="5" fill="#60a5fa"/>
+  <text x="154" y="116" font-family="'Onest', -apple-system, sans-serif" font-weight="600" font-size="22" letter-spacing="2" fill="rgba(255,255,255,0.45)">MOMENTUM.OS</text>
+  <line x1="80" y1="164" x2="620" y2="164" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
 
   <!-- Social proof number -->
-  <text x="540" y="430" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="800" font-size="110" fill="#1A57DB" opacity="0.12">500+</text>
-  <text x="540" y="430" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="800" font-size="100" fill="#F5EDE0" letter-spacing="-4">500+</text>
-  <text x="540" y="475" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="22" fill="#6EDCF7" letter-spacing="4">OPERATORS AUTOMATED</text>
+  <text x="540" y="590" text-anchor="middle" font-family="'Onest', -apple-system, sans-serif" font-weight="700" font-size="110" fill="white" opacity="0.9" letter-spacing="-4">500+</text>
+  <text x="540" y="638" text-anchor="middle" font-family="'Onest', -apple-system, sans-serif" font-weight="400" font-size="22" fill="rgba(255,255,255,0.45)" letter-spacing="4">OPERATORS AUTOMATED</text>
 
-  <!-- Divider line -->
-  <rect x="340" y="510" width="400" height="1" fill="#1A57DB" opacity="0.35"/>
-  <circle cx="340" cy="510" r="3" fill="#1A57DB"/>
-  <circle cx="740" cy="510" r="3" fill="#6EDCF7"/>
+  <!-- Divider -->
+  <line x1="280" y1="672" x2="800" y2="672" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
 
-  <!-- Testimonial quote -->
-  <text x="540" y="590" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="300" font-size="21" fill="#8892A4">"</text>
-  <text x="540" y="630" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="600" font-size="36" fill="#F5EDE0">We got back 30 hours a week</text>
-  <text x="540" y="680" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="600" font-size="36" fill="#F5EDE0">in the first month.</text>
+  <!-- Testimonial -->
+  <text x="540" y="740" text-anchor="middle" font-family="'Onest', -apple-system, sans-serif" font-weight="600" font-size="36" fill="white" opacity="0.9">"We got back 30 hours a week</text>
+  <text x="540" y="790" text-anchor="middle" font-family="'Onest', -apple-system, sans-serif" font-weight="600" font-size="36" fill="white" opacity="0.9">in the first month."</text>
+  <text x="540" y="840" text-anchor="middle" font-family="'Onest', -apple-system, sans-serif" font-weight="400" font-size="20" fill="rgba(255,255,255,0.3)">— Momentum.OS customer</text>
 
-  <!-- CTA button-style element -->
-  <rect x="290" y="740" width="500" height="72" rx="36" fill="#1A57DB"/>
-  <text x="540" y="784" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="700" font-size="26" fill="#F5EDE0">Book a free 30-min demo →</text>
+  <!-- CTA -->
+  <rect x="290" y="890" width="500" height="70" rx="35" fill="#3b82f6"/>
+  <text x="540" y="933" text-anchor="middle" font-family="'Onest', -apple-system, sans-serif" font-weight="600" font-size="26" fill="white">Book a free 30-min demo →</text>
 
-  <!-- URL below CTA -->
-  <text x="540" y="850" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="20" fill="#8892A4">os-momentum.com</text>
-
-  <!-- Trust badges row -->
-  <text x="540" y="920" text-anchor="middle" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="17" fill="#8892A4">No contracts  ·  Setup in 48 hours  ·  ROI in 30 days</text>
-
-  <!-- Bottom brand bar -->
-  <rect x="0" y="980" width="1080" height="100" fill="#0D101A"/>
-  <line x1="0" y1="980" x2="1080" y2="980" stroke="#1A57DB" stroke-width="1" opacity="0.4"/>
-
-  <g transform="translate(80, 1030)">
-    <ellipse cx="0" cy="0" rx="22" ry="7" fill="none" stroke="#1A57DB" stroke-width="1.5"/>
-    <ellipse cx="0" cy="0" rx="22" ry="7" fill="none" stroke="#6EDCF7" stroke-width="1" transform="rotate(60)"/>
-    <ellipse cx="0" cy="0" rx="22" ry="7" fill="none" stroke="#6EDCF7" stroke-width="1" transform="rotate(-60)"/>
-    <circle cx="0" cy="0" r="4" fill="#1A57DB"/>
-    <circle cx="0" cy="0" r="2" fill="#6EDCF7"/>
-  </g>
-  <text x="120" y="1023" font-family="'Onest', 'Inter', sans-serif" font-weight="700" font-size="22" fill="#F5EDE0">Momentum</text>
-  <text x="120" y="1048" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="14" letter-spacing="3" fill="#6EDCF7">.OS</text>
-  <text x="1000" y="1038" text-anchor="end" font-family="'Onest', 'Inter', sans-serif" font-weight="400" font-size="18" fill="#8892A4">os-momentum.com</text>
+  <!-- Bottom -->
+  <line x1="0" y1="1000" x2="1080" y2="1000" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <text x="540" y="1048" text-anchor="middle" font-family="'Onest', -apple-system, sans-serif" font-size="18" fill="rgba(255,255,255,0.2)">No contracts · Setup in 48 hours · ROI in 30 days · os-momentum.com</text>
 </svg>
