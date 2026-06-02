@@ -5,6 +5,7 @@ import { TestimonialsSection } from "@/components/funnel/TestimonialsSection";
 import { WhatYouGetSection } from "@/components/funnel/WhatYouGetSection";
 import { StatsBar } from "@/components/funnel/StatsBar";
 import { BottomCTA } from "@/components/funnel/BottomCTA";
+import { BookingSection } from "@/components/funnel/BookingSection";
 
 export default function Funnel() {
   return (
@@ -15,6 +16,7 @@ export default function Funnel() {
         <StatsBar />
         <TestimonialsSection />
         <WhatYouGetSection />
+        <BookingSection />
         <BottomCTA />
       </main>
     </div>

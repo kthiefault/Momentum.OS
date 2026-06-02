@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -21,41 +21,44 @@ interface LeadResponse {
   success: boolean;
 }
 
-function SuccessState() {
+interface SuccessStateProps {
+  name: string;
+  email: string;
+}
+
+function SuccessState({ name, email }: SuccessStateProps) {
+  const calendlyUrl =
+    `https://calendly.com/krthiefaulti/30min` +
+    `?hide_landing_page_details=1&hide_gdpr_banner=1` +
+    `&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
-      className="flex flex-col items-center gap-5 py-6 text-center"
+      className="flex flex-col gap-5"
     >
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-ember/15 ring-2 ring-ember/30">
-        <CheckCircle2 className="h-8 w-8 text-ember" />
+      <div className="flex flex-col items-center gap-3 text-center">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-ember/15 ring-2 ring-ember/30">
+          <CheckCircle2 className="h-6 w-6 text-ember" />
+        </div>
+        <div className="space-y-1">
+          <h3 className="text-xl font-bold text-foreground">You're all set!</h3>
+          <p className="text-sm text-muted-foreground">
+            Now pick a time for your 30-minute demo
+          </p>
+        </div>
       </div>
-      <div className="space-y-2">
-        <h3 className="text-2xl font-bold text-foreground">You're booked!</h3>
-        <p className="text-sm leading-relaxed text-muted-foreground">
-          We'll reach out within 24 hours to confirm your demo time. Check your email for a
-          calendar invite.
-        </p>
-      </div>
-      <div className="w-full rounded-xl border border-border bg-card p-5 text-left">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          In the meantime, explore what's possible:
-        </p>
-        <ul className="space-y-3">
-          {[
-            { icon: "⚡", text: "Workflow automation that runs 24/7 without you" },
-            { icon: "🤖", text: "AI tools that learn your business and adapt" },
-            { icon: "📈", text: "Real-time dashboards tracking every metric that matters" },
-          ].map((item) => (
-            <li key={item.text} className="flex items-start gap-3">
-              <span className="mt-0.5 text-base">{item.icon}</span>
-              <span className="text-sm text-foreground/80">{item.text}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <iframe
+        src={calendlyUrl}
+        width="100%"
+        height="650"
+        frameBorder="0"
+        scrolling="no"
+        className="rounded-xl h-[500px] sm:h-[650px]"
+        title="Schedule your demo"
+      />
     </motion.div>
   );
 }
@@ -65,6 +68,8 @@ interface LeadFormProps {
 }
 
 export function LeadForm({ compact = false }: LeadFormProps) {
+  const [submittedData, setSubmittedData] = useState<{ name: string; email: string } | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -77,6 +82,9 @@ export function LeadForm({ compact = false }: LeadFormProps) {
         ...data,
         source: "social-media-funnel",
       }),
+    onSuccess: (_result, variables) => {
+      setSubmittedData({ name: variables.name, email: variables.email });
+    },
   });
 
   const inputClass = (hasError: boolean) =>
@@ -96,8 +104,8 @@ export function LeadForm({ compact = false }: LeadFormProps) {
       )}
     >
       <AnimatePresence mode="wait">
-        {mutation.isSuccess ? (
-          <SuccessState key="success" />
+        {submittedData !== null ? (
+          <SuccessState key="success" name={submittedData.name} email={submittedData.email} />
         ) : (
           <motion.div
             key="form"
