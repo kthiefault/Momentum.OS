@@ -120,6 +120,11 @@
 
 /* ─── Custom cursor ─────────────────────────────────────────────────────────── */
 @media (hover: hover) {
+  html.custom-cursor-active,
+  html.custom-cursor-active * {
+    cursor: none !important;
+  }
+
   .cursor-dot {
     position: fixed;
     top: 0;

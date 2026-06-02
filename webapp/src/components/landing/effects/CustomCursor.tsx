@@ -1,15 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 
 const CustomCursor = () => {
-  const [isCoarse] = useState(() => window.matchMedia("(pointer: coarse)").matches);
+  const [canUseCustomCursor] = useState(
+    () => window.matchMedia("(pointer: fine)").matches && window.matchMedia("(hover: hover)").matches
+  );
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isCoarse) return;
-
-    const isTouchDevice = window.matchMedia("(hover: none)").matches;
-    if (isTouchDevice) return;
+    if (!canUseCustomCursor) return;
 
     const dot = dotRef.current;
     const ring = ringRef.current;
@@ -23,7 +22,7 @@ const CustomCursor = () => {
     let isHovering = false;
     const LERP = 0.13;
 
-    document.body.style.cursor = "none";
+    document.documentElement.classList.add("custom-cursor-active");
 
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -31,8 +30,8 @@ const CustomCursor = () => {
       ringX = lerp(ringX, mouseX, LERP);
       ringY = lerp(ringY, mouseY, LERP);
 
-      dot.style.transform = `translate(${mouseX - 3}px, ${mouseY - 3}px)`;
-      ring.style.transform = `translate(${ringX - 20}px, ${ringY - 20}px)`;
+      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
 
       // Magnetic: check elements in range each frame
       const magnetics = document.querySelectorAll<HTMLElement>("[data-magnetic]");
@@ -101,7 +100,7 @@ const CustomCursor = () => {
 
     return () => {
       cancelAnimationFrame(raf);
-      document.body.style.cursor = "";
+      document.documentElement.classList.remove("custom-cursor-active");
       document.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseover", onOver);
       document.removeEventListener("mouseout", onOut);
@@ -111,9 +110,9 @@ const CustomCursor = () => {
         el.style.transform = "";
       });
     };
-  }, [isCoarse]);
+  }, [canUseCustomCursor]);
 
-  if (isCoarse) return null;
+  if (!canUseCustomCursor) return null;
 
   return (
     <>
