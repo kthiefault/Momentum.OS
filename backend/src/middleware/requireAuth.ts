@@ -1,4 +1,4 @@
-import { Context, Next } from "hono";
+import type { Context, Next } from "hono";
 import { auth, prisma } from "../auth";
 
 export async function requireAuth(c: Context, next: Next) {
