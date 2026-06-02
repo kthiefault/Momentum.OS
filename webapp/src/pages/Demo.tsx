@@ -1035,11 +1035,24 @@ function AgentsTab() {
   const [agents, setAgents] = useState<AgentEntry[]>(AGENTS);
   const [log, setLog] = useState<LogEntry[]>(INITIAL_LOG);
   const [running, setRunning] = useState<string | null>(null);
+  const runTimeout = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (runTimeout.current) {
+        window.clearTimeout(runTimeout.current);
+      }
+    };
+  }, []);
 
   function handleRunNow(agent: AgentEntry) {
+    if (runTimeout.current) {
+      window.clearTimeout(runTimeout.current);
+    }
     setRunning(agent.id);
     toast.loading(`Running ${agent.name}...`, { id: `run-${agent.id}` });
-    setTimeout(() => {
+    runTimeout.current = window.setTimeout(() => {
+      runTimeout.current = null;
       setRunning(null);
       const newEntry: LogEntry = {
         id: `l-${Date.now()}`,
@@ -1285,7 +1298,9 @@ export default function Demo() {
 
   // Live activity feed updates
   useEffect(() => {
-    const interval = setInterval(() => {
+    const interval = window.setInterval(() => {
+      if (document.hidden) return;
+
       const rand = RANDOM_ACTIVITIES[Math.floor(Math.random() * RANDOM_ACTIVITIES.length)];
       const newItem: ActivityItem = {
         id: `a-${Date.now()}`,
@@ -1304,7 +1319,7 @@ export default function Demo() {
         return [newItem, ...updated.slice(0, 5)];
       });
     }, 8000);
-    return () => clearInterval(interval);
+    return () => window.clearInterval(interval);
   }, []);
 
   return (

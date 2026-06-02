@@ -27,6 +27,7 @@ const AutomationEngine = () => {
   const [activeNode, setActiveNode] = useState<number>(-1);
   const [visibleLogs, setVisibleLogs] = useState<number>(0);
   const triggered = useRef(false);
+  const timeouts = useRef<number[]>([]);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -35,6 +36,11 @@ const AutomationEngine = () => {
       setVisibleLogs(logLines.length);
       return;
     }
+
+    const schedule = (callback: () => void, delay: number) => {
+      const id = window.setTimeout(callback, delay);
+      timeouts.current.push(id);
+    };
 
     const ctx = gsap.context(() => {
       gsap.from(".automation-header", {
@@ -51,18 +57,22 @@ const AutomationEngine = () => {
             triggered.current = true;
             // Animate nodes one by one
             nodes.forEach((_, i) => {
-              setTimeout(() => setActiveNode(i), i * 250);
+              schedule(() => setActiveNode(i), i * 250);
             });
             // Animate log lines after nodes
             logLines.forEach((_, i) => {
-              setTimeout(() => setVisibleLogs(i + 1), 900 + i * 180);
+              schedule(() => setVisibleLogs(i + 1), 900 + i * 180);
             });
           },
         },
         opacity: 0, y: 36, duration: 0.8, ease: "power2.out",
       });
     }, sectionRef);
-    return () => ctx.revert();
+    return () => {
+      timeouts.current.forEach(window.clearTimeout);
+      timeouts.current = [];
+      ctx.revert();
+    };
   }, []);
 
   return (

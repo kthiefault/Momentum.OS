@@ -1,9 +1,13 @@
+import { Suspense, lazy } from "react";
 import PageLayout from "@/components/landing/PageLayout";
 import Hero from "@/components/landing/Hero";
-import Problem from "@/components/landing/Problem";
-import Outcomes from "@/components/landing/Outcomes";
-import FinalCTA from "@/components/landing/FinalCTA";
 import { SEO } from "@/components/SEO";
+
+const Problem = lazy(() => import("@/components/landing/Problem"));
+const Outcomes = lazy(() => import("@/components/landing/Outcomes"));
+const FinalCTA = lazy(() => import("@/components/landing/FinalCTA"));
+
+const SectionFallback = () => <div className="min-h-64" aria-hidden />;
 
 const Index = () => (
   <PageLayout>
@@ -14,9 +18,11 @@ const Index = () => (
       canonical="/"
     />
     <Hero />
-    <Problem />
-    <Outcomes />
-    <FinalCTA />
+    <Suspense fallback={<SectionFallback />}>
+      <Problem />
+      <Outcomes />
+      <FinalCTA />
+    </Suspense>
   </PageLayout>
 );
 

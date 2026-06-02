@@ -20,10 +20,23 @@ const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    let frame = 0;
+    const updateScrolled = () => {
+      frame = 0;
+      const next = window.scrollY > 24;
+      setScrolled((current) => (current === next ? current : next));
+    };
+    const onScroll = () => {
+      if (!frame) {
+        frame = window.requestAnimationFrame(updateScrolled);
+      }
+    };
+    updateScrolled();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   // Close menu on route change

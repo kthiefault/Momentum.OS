@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import { prisma } from "../auth";
+import { env } from "../env";
 import { requireAdmin } from "../middleware/requireAuth";
 import type { Context, Next } from "hono";
 
@@ -11,7 +12,7 @@ function generateSlug(title: string): string {
 
 async function requireJarvisKey(c: Context, next: Next) {
   const authHeader = c.req.header("Authorization");
-  const expectedKey = process.env.BLOG_API_KEY;
+  const expectedKey = env.BLOG_API_KEY;
   if (!authHeader || !expectedKey || authHeader !== `Bearer ${expectedKey}`) {
     return c.json({ error: { message: "Unauthorized", code: "UNAUTHORIZED" } }, 401);
   }
@@ -27,6 +28,19 @@ blogRouter.get("/", async (c) => {
     where: { status: "published" },
     orderBy: { publishedAt: "desc" },
     take: 50,
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      excerpt: true,
+      coverImage: true,
+      author: true,
+      tags: true,
+      status: true,
+      publishedAt: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
   const serialized = posts.map((p) => ({
     ...p,
@@ -61,6 +75,7 @@ blogRouter.get("/:slug", async (c) => {
 blogRouter.get("/admin/all", requireAdmin, async (c) => {
   const posts = await prisma.blogPost.findMany({
     orderBy: { createdAt: "desc" },
+    take: 100,
   });
   const serialized = posts.map((p) => ({
     ...p,
@@ -78,8 +93,8 @@ const createPostSchema = z.object({
   coverImage: z.string().optional(),
   author: z.string().optional(),
   tags: z.string().optional(),
-  status: z.string().optional(),
-  publishedAt: z.string().optional(),
+  status: z.enum(["draft", "published"]).optional(),
+  publishedAt: z.string().datetime().optional(),
 });
 
 blogRouter.post(
@@ -126,8 +141,8 @@ const updatePostSchema = z.object({
   coverImage: z.string().nullable().optional(),
   author: z.string().optional(),
   tags: z.string().optional(),
-  status: z.string().optional(),
-  publishedAt: z.string().nullable().optional(),
+  status: z.enum(["draft", "published"]).optional(),
+  publishedAt: z.string().datetime().nullable().optional(),
 });
 
 blogRouter.put(
