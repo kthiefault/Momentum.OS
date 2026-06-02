@@ -2,23 +2,33 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, ArrowLeft, Zap } from "lucide-react";
+import { api } from "@/lib/api";
 
 export default function SignIn() {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username.trim() || !password.trim()) return;
     setIsLoading(true);
-    await new Promise(r => setTimeout(r, 800));
-    localStorage.setItem("admin_token", "demo-token");
-    localStorage.setItem("theme-chosen", "true");
-    setIsLoading(false);
-    window.location.href = "/admin";
+    setError("");
+
+    try {
+      const result = await api.post<{ token: string; user: unknown }>("/api/admin/login", {
+        email: username.trim(),
+        password,
+      });
+      localStorage.setItem("admin_token", result.token);
+      localStorage.setItem("theme-chosen", "true");
+      window.location.href = "/admin";
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to sign in");
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -91,13 +101,13 @@ export default function SignIn() {
             {/* Email */}
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-gray-400 uppercase tracking-wide">
-                Username
+                Email
               </label>
               <input
-                type="text"
+                type="email"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="admin"
+                placeholder="admin@example.com"
                 required
                 className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all"
               />

@@ -1,5 +1,5 @@
 import { Context, Next } from "hono";
-import { auth } from "../auth";
+import { auth, prisma } from "../auth";
 
 export async function requireAuth(c: Context, next: Next) {
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
@@ -16,10 +16,14 @@ export async function requireAdmin(c: Context, next: Next) {
   if (!session) {
     return c.json({ error: { message: "Unauthorized", code: "UNAUTHORIZED" } }, 401);
   }
-  if ((session.user as any).role !== "admin") {
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { role: true },
+  });
+  if (!user || user.role !== "admin") {
     return c.json({ error: { message: "Forbidden", code: "FORBIDDEN" } }, 403);
   }
   c.set("session", session);
-  c.set("user", session.user);
+  c.set("user", { ...session.user, role: user.role });
   await next();
 }

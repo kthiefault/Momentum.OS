@@ -30,6 +30,7 @@ const AIAssistant = () => {
   const [visibleMessages, setVisibleMessages] = useState<number>(0);
   const [showTyping, setShowTyping] = useState<boolean>(false);
   const triggered = useRef(false);
+  const timeouts = useRef<number[]>([]);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -37,6 +38,11 @@ const AIAssistant = () => {
       setVisibleMessages(conversation.length);
       return;
     }
+
+    const schedule = (callback: () => void, delay: number) => {
+      const id = window.setTimeout(callback, delay);
+      timeouts.current.push(id);
+    };
 
     const ctx = gsap.context(() => {
       gsap.from(".ai-header", {
@@ -57,14 +63,14 @@ const AIAssistant = () => {
             conversation.forEach((msg, i) => {
               if (msg.who === "ai" && i > 0) {
                 // Show typing indicator before AI message
-                setTimeout(() => setShowTyping(true), delay);
+                schedule(() => setShowTyping(true), delay);
                 delay += 700;
-                setTimeout(() => {
+                schedule(() => {
                   setShowTyping(false);
                   setVisibleMessages(i + 1);
                 }, delay);
               } else {
-                setTimeout(() => setVisibleMessages(i + 1), delay);
+                schedule(() => setVisibleMessages(i + 1), delay);
               }
               delay += msg.who === "ai" ? 400 : 300;
             });
@@ -73,7 +79,11 @@ const AIAssistant = () => {
         opacity: 0, y: 36, duration: 0.8, ease: "power2.out",
       });
     }, sectionRef);
-    return () => ctx.revert();
+    return () => {
+      timeouts.current.forEach(window.clearTimeout);
+      timeouts.current = [];
+      ctx.revert();
+    };
   }, []);
 
   return (

@@ -1,7 +1,7 @@
 import "@vibecodeapp/proxy"; // DO NOT REMOVE OTHERWISE VIBECODE PROXY WILL NOT WORK
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import "./env";
+import { env } from "./env";
 import { sampleRouter } from "./routes/sample";
 import { notificationsRouter } from "./routes/notifications";
 import { logger } from "hono/logger";
@@ -49,7 +49,19 @@ app.route("/api/leads", leadsRouter);
 app.route("/api/admin", adminRouter);
 app.route("/api/blog", blogRouter); // blog system
 
-const port = Number(process.env.PORT) || 3000;
+app.onError((err, c) => {
+  console.error(err);
+  const code = (err as { code?: string }).code;
+  if (code === "P2025") {
+    return c.json({ error: { message: "Resource not found", code: "NOT_FOUND" } }, 404);
+  }
+  if (code === "P2002") {
+    return c.json({ error: { message: "Resource already exists", code: "CONFLICT" } }, 409);
+  }
+  return c.json({ error: { message: "Internal server error", code: "INTERNAL_SERVER_ERROR" } }, 500);
+});
+
+const port = Number(env.PORT) || 3000;
 
 export default {
   port,

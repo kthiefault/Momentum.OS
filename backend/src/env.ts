@@ -1,22 +1,40 @@
 import { z } from "zod";
 
+const DEV_AUTH_SECRET = "momentum-admin-secret-key-2024-secure";
+
 /**
  * Environment variable schema using Zod
  * This ensures all required environment variables are present and valid
  */
-const envSchema = z.object({
-  // Server Configuration
-  PORT: z.string().optional().default("3000"),
-  NODE_ENV: z.string().optional(),
-  // Email notifications (optional — feature fails gracefully if unset)
-  RESEND_API_KEY: z.string().optional(),
-  NOTIFICATION_EMAIL: z.string().optional(),
-  // Database
-  DATABASE_URL: z.string().optional().default("file:./dev.db"),
-  // Better Auth
-  BETTER_AUTH_SECRET: z.string().optional().default("momentum-admin-secret-key-2024-secure"),
-  BETTER_AUTH_URL: z.string().optional().default("http://localhost:3000"),
-});
+const envSchema = z
+  .object({
+    // Server Configuration
+    PORT: z.string().optional().default("3000"),
+    NODE_ENV: z.string().optional(),
+    // Email notifications (optional — feature fails gracefully if unset)
+    RESEND_API_KEY: z.string().optional(),
+    NOTIFICATION_EMAIL: z.string().optional(),
+    // Database
+    DATABASE_URL: z.string().optional().default("file:./dev.db"),
+    // Better Auth
+    BETTER_AUTH_SECRET: z.string().optional(),
+    BETTER_AUTH_URL: z.string().optional().default("http://localhost:3000"),
+    // Optional integration key for the Jarvis publishing route
+    BLOG_API_KEY: z.string().optional(),
+  })
+  .superRefine((env, ctx) => {
+    if (env.NODE_ENV === "production" && (!env.BETTER_AUTH_SECRET || env.BETTER_AUTH_SECRET === DEV_AUTH_SECRET)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["BETTER_AUTH_SECRET"],
+        message: "BETTER_AUTH_SECRET must be set to a unique value in production",
+      });
+    }
+  })
+  .transform((env) => ({
+    ...env,
+    BETTER_AUTH_SECRET: env.BETTER_AUTH_SECRET ?? DEV_AUTH_SECRET,
+  }));
 
 /**
  * Validate and parse environment variables

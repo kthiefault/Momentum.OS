@@ -1,13 +1,19 @@
 import { Hono } from "hono";
+import { zValidator } from "@hono/zod-validator";
+import { z } from "zod";
 import { auth, prisma } from "../auth";
 import { requireAdmin } from "../middleware/requireAuth";
 
 const router = new Hono();
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+});
 
 // Custom login — bypasses Better Auth's HTTP-level origin check
-router.post("/login", async (c) => {
+router.post("/login", zValidator("json", loginSchema), async (c) => {
   try {
-    const { email, password } = await c.req.json();
+    const { email, password } = c.req.valid("json");
     const result = await auth.api.signInEmail({
       body: { email, password },
     });
@@ -31,7 +37,22 @@ router.get("/stats", requireAdmin, async (c) => {
       prisma.workflow.count({ where: { status: "active" } }),
       prisma.lead.count(),
       prisma.lead.count({ where: { status: "new" } }),
-      prisma.workflow.findMany({ take: 5, orderBy: { updatedAt: "desc" } }),
+      prisma.workflow.findMany({
+        take: 5,
+        orderBy: { updatedAt: "desc" },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          status: true,
+          trigger: true,
+          category: true,
+          runCount: true,
+          lastRun: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      }),
       prisma.lead.findMany({ take: 5, orderBy: { createdAt: "desc" } }),
     ]);
 

@@ -1,11 +1,13 @@
 import { Suspense, lazy } from "react";
 import PageLayout from "@/components/landing/PageLayout";
-import Solution from "@/components/landing/Solution";
-import Phases from "@/components/landing/Phases";
-import FinalCTA from "@/components/landing/FinalCTA";
 import { SEO } from "@/components/SEO";
 
+const Solution = lazy(() => import("@/components/landing/Solution"));
+const Phases = lazy(() => import("@/components/landing/Phases"));
 const DashboardPreview = lazy(() => import("../components/landing/DashboardPreview"));
+const FinalCTA = lazy(() => import("@/components/landing/FinalCTA"));
+
+const SectionFallback = () => <div className="min-h-64" aria-hidden />;
 
 const Platform = () => (
   <PageLayout>
@@ -16,12 +18,12 @@ const Platform = () => (
       canonical="/platform"
     />
     <div className="pt-20">
-      <Solution />
-      <Phases />
-      <Suspense fallback={<div className="h-64 animate-pulse bg-gray-900/50 rounded-xl" />}>
+      <Suspense fallback={<SectionFallback />}>
+        <Solution />
+        <Phases />
         <DashboardPreview />
+        <FinalCTA />
       </Suspense>
-      <FinalCTA />
     </div>
   </PageLayout>
 );
