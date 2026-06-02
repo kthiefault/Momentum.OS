@@ -26,6 +26,7 @@ blogRouter.get("/", async (c) => {
   const posts = await prisma.blogPost.findMany({
     where: { status: "published" },
     orderBy: { publishedAt: "desc" },
+    take: 50,
   });
   const serialized = posts.map((p) => ({
     ...p,
@@ -33,6 +34,7 @@ blogRouter.get("/", async (c) => {
     createdAt: p.createdAt.toISOString(),
     updatedAt: p.updatedAt.toISOString(),
   }));
+  c.header("Cache-Control", "public, max-age=300, stale-while-revalidate=3600");
   return c.json({ data: serialized });
 });
 
@@ -50,6 +52,7 @@ blogRouter.get("/:slug", async (c) => {
     createdAt: post.createdAt.toISOString(),
     updatedAt: post.updatedAt.toISOString(),
   };
+  c.header("Cache-Control", "public, max-age=300, stale-while-revalidate=3600");
   return c.json({ data: serialized });
 });
 

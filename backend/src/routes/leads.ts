@@ -37,27 +37,24 @@ router.post("/public", zValidator("json", publicLeadSchema), async (c) => {
     data: { name, email, phone, source, status: "new", notes },
   });
 
+  // Fire email without blocking the response — user gets 201 immediately
   if (env.RESEND_API_KEY && env.NOTIFICATION_EMAIL) {
-    try {
-      const resend = new Resend(env.RESEND_API_KEY);
-      await resend.emails.send({
-        from: "onboarding@resend.dev",
-        to: env.NOTIFICATION_EMAIL,
-        subject: `New funnel lead: ${name}`,
-        html: `
-          <h2>New lead from the Social Media Funnel</h2>
-          <table>
-            <tr><td><strong>Name:</strong></td><td>${name}</td></tr>
-            <tr><td><strong>Email:</strong></td><td>${email}</td></tr>
-            <tr><td><strong>Phone:</strong></td><td>${phone || "—"}</td></tr>
-            <tr><td><strong>Company:</strong></td><td>${company || "—"}</td></tr>
-            <tr><td><strong>Source:</strong></td><td>${source}</td></tr>
-          </table>
-        `,
-      });
-    } catch (err) {
-      console.error("Funnel lead email notification failed:", err);
-    }
+    const resend = new Resend(env.RESEND_API_KEY);
+    resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: env.NOTIFICATION_EMAIL,
+      subject: `New funnel lead: ${name}`,
+      html: `
+        <h2>New lead from the Social Media Funnel</h2>
+        <table>
+          <tr><td><strong>Name:</strong></td><td>${name}</td></tr>
+          <tr><td><strong>Email:</strong></td><td>${email}</td></tr>
+          <tr><td><strong>Phone:</strong></td><td>${phone || "—"}</td></tr>
+          <tr><td><strong>Company:</strong></td><td>${company || "—"}</td></tr>
+          <tr><td><strong>Source:</strong></td><td>${source}</td></tr>
+        </table>
+      `,
+    }).catch((err: unknown) => console.error("Funnel lead email notification failed:", err));
   }
 
   return c.json({ data: { success: true } }, 201);

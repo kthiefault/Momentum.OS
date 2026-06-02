@@ -54,6 +54,7 @@ const DashboardPreview = () => {
   const [phase, setPhase] = useState<number>(0);
   const sectionRef = useRef<HTMLDivElement>(null);
   const dashRef = useRef<HTMLDivElement>(null);
+  const phaseTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   const trend = [12, 18, 15, 22, 28, 24, 35, 32, 40, 38, 47, 52, 49, 58, 64];
   const trendPath = sparklinePath(trend, 220, 60);
@@ -75,14 +76,18 @@ const DashboardPreview = () => {
 
         const delays = [0, 180, 350, 550, 750, 950];
         delays.forEach((d, i) => {
-          setTimeout(() => setPhase(i + 1), d);
+          phaseTimers.current.push(setTimeout(() => setPhase(i + 1), d));
         });
       },
       { threshold: 0.18 }
     );
     obs.observe(el);
 
-    return () => obs.disconnect();
+    return () => {
+      obs.disconnect();
+      phaseTimers.current.forEach(clearTimeout);
+      phaseTimers.current = [];
+    };
   }, []);
 
   useEffect(() => {

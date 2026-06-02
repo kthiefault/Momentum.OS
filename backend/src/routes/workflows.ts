@@ -15,9 +15,23 @@ const workflowSchema = z.object({
   steps: z.array(z.any()).default([]),
 });
 
-// GET all workflows
+// GET all workflows — exclude large steps blob from list view
 router.get("/", requireAdmin, async (c) => {
-  const workflows = await prisma.workflow.findMany({ orderBy: { createdAt: "desc" } });
+  const workflows = await prisma.workflow.findMany({
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      status: true,
+      trigger: true,
+      category: true,
+      runCount: true,
+      lastRun: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
   return c.json({ data: workflows });
 });
 
