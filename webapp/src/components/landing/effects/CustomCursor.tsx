@@ -1,17 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 
 const CustomCursor = () => {
-  const [disabled] = useState(
-    () =>
-      window.matchMedia("(pointer: coarse)").matches ||
-      window.matchMedia("(hover: none)").matches ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
+  const [isCoarse] = useState(() => window.matchMedia("(pointer: coarse)").matches);
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (disabled) return;
+    if (isCoarse) return;
+
+    const isTouchDevice = window.matchMedia("(hover: none)").matches;
+    if (isTouchDevice) return;
 
     const dot = dotRef.current;
     const ring = ringRef.current;
@@ -23,16 +21,11 @@ const CustomCursor = () => {
     let ringY = 0;
     let raf = 0;
     let isHovering = false;
-    let magnetics: HTMLElement[] = [];
     const LERP = 0.13;
-    const previousCursor = document.body.style.cursor;
 
     document.body.style.cursor = "none";
 
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-    const updateMagnetics = () => {
-      magnetics = Array.from(document.querySelectorAll<HTMLElement>("[data-magnetic]"));
-    };
 
     const loop = () => {
       ringX = lerp(ringX, mouseX, LERP);
@@ -41,6 +34,8 @@ const CustomCursor = () => {
       dot.style.transform = `translate(${mouseX - 3}px, ${mouseY - 3}px)`;
       ring.style.transform = `translate(${ringX - 20}px, ${ringY - 20}px)`;
 
+      // Magnetic: check elements in range each frame
+      const magnetics = document.querySelectorAll<HTMLElement>("[data-magnetic]");
       magnetics.forEach((el) => {
         const rect = el.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
@@ -97,10 +92,6 @@ const CustomCursor = () => {
       ring.style.opacity = "1";
     };
 
-    updateMagnetics();
-    const observer = new MutationObserver(updateMagnetics);
-    observer.observe(document.body, { childList: true, subtree: true });
-
     raf = requestAnimationFrame(loop);
     document.addEventListener("mousemove", onMove, { passive: true });
     document.addEventListener("mouseover", onOver, { passive: true });
@@ -110,8 +101,7 @@ const CustomCursor = () => {
 
     return () => {
       cancelAnimationFrame(raf);
-      observer.disconnect();
-      document.body.style.cursor = previousCursor;
+      document.body.style.cursor = "";
       document.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseover", onOver);
       document.removeEventListener("mouseout", onOut);
@@ -121,9 +111,9 @@ const CustomCursor = () => {
         el.style.transform = "";
       });
     };
-  }, [disabled]);
+  }, [isCoarse]);
 
-  if (disabled) return null;
+  if (isCoarse) return null;
 
   return (
     <>
