@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <defs>
+    <filter id="glow-w">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Transparent background — for use on dark surfaces -->
+
+  <!-- Orbit ring 1 -->
+  <ellipse cx="44" cy="40" rx="32" ry="11" fill="none" stroke="#FFFFFF" stroke-width="1.4" opacity="0.9"/>
+  <!-- Orbit ring 2 -->
+  <ellipse cx="44" cy="40" rx="32" ry="11" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.55" transform="rotate(60 44 40)"/>
+  <!-- Orbit ring 3 -->
+  <ellipse cx="44" cy="40" rx="32" ry="11" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.55" transform="rotate(-60 44 40)"/>
+
+  <!-- Electrons -->
+  <circle cx="76" cy="40" r="2.8" fill="#FFFFFF" filter="url(#glow-w)"/>
+  <circle cx="28.5" cy="20.5" r="2.2" fill="#FFFFFF" opacity="0.7" filter="url(#glow-w)"/>
+  <circle cx="28.5" cy="59.5" r="2.2" fill="#FFFFFF" opacity="0.7" filter="url(#glow-w)"/>
+
+  <!-- Nucleus -->
+  <circle cx="44" cy="40" r="5.5" fill="#FFFFFF" opacity="0.9" filter="url(#glow-w)"/>
+  <circle cx="44" cy="40" r="2.5" fill="#FFFFFF"/>
+
+  <!-- Wordmark -->
+  <text x="98" y="34" font-family="'Onest', 'Inter', -apple-system, sans-serif" font-weight="700" font-size="19" letter-spacing="-0.5" fill="#FFFFFF">Momentum</text>
+  <text x="98" y="56" font-family="'Onest', 'Inter', -apple-system, sans-serif" font-weight="400" font-size="13" letter-spacing="3" fill="#FFFFFF" opacity="0.6">.OS</text>
+</svg>

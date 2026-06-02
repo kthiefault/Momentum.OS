@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Momentum.OS — Brand Guidelines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ember:    #1A57DB;
+    --ember-deep: #1348B8;
+    --ice:      #6EDCF7;
+    --ice-deep: #22AACC;
+    --bg:       #08090C;
+    --bg2:      #0D101A;
+    --border:   #161C2E;
+    --fg:       #F5EDE0;
+    --muted:    #8892A4;
+  }
+  body {
+    font-family: 'Onest', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+  }
+  .page { max-width: 900px; margin: 0 auto; padding: 60px 32px; }
+
+  /* Cover */
+  .cover {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 80px 0 100px; border-bottom: 1px solid var(--border);
+    margin-bottom: 80px;
+  }
+  .cover-badge {
+    display: inline-block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--ice); border: 1px solid var(--ice); padding: 6px 16px; border-radius: 999px;
+    margin-bottom: 32px;
+  }
+  .cover h1 {
+    font-size: 52px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1;
+    background: linear-gradient(135deg, var(--fg) 0%, var(--ice) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 16px;
+  }
+  .cover p { font-size: 16px; color: var(--muted); }
+
+  /* Sections */
+  section { margin-bottom: 80px; }
+  h2 {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--ember); margin-bottom: 32px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  p { color: var(--muted); font-size: 15px; margin-bottom: 16px; }
+
+  /* Logo showcase */
+  .logo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .logo-card {
+    border: 1px solid var(--border); border-radius: 12px; padding: 32px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  }
+  .logo-card.dark-bg { background: var(--bg2); }
+  .logo-card.light-bg { background: #F8F8F8; }
+  .logo-card img { max-width: 100%; height: auto; }
+  .logo-card-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .logo-card.light-bg .logo-card-label { color: #666; }
+
+  /* Colors */
+  .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .color-card { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+  .color-swatch { height: 80px; }
+  .color-info { padding: 12px 14px; background: var(--bg2); }
+  .color-name { font-size: 13px; font-weight: 600; color: var(--fg); margin-bottom: 4px; }
+  .color-hex { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
+  .color-hsl { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  /* Typography */
+  .type-row { border: 1px solid var(--border); border-radius: 12px; padding: 28px 24px; margin-bottom: 16px; }
+  .type-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .type-sample-display { font-family: 'Instrument Serif', serif; font-size: 42px; color: var(--fg); line-height: 1; }
+  .type-sample-body { font-family: 'Onest', sans-serif; font-size: 18px; color: var(--fg); }
+  .type-sample-mono { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--ice); }
+  .type-meta { font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+  /* Voice */
+  .voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .voice-card { border: 1px solid var(--border); border-radius: 12px; padding: 24px; background: var(--bg2); }
+  .voice-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .voice-card h4.do { color: #22C55E; }
+  .voice-card h4.dont { color: #EF4444; }
+  .voice-card ul { padding-left: 16px; }
+  .voice-card ul li { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+
+  /* Spacing */
+  .space-row { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+  .space-block { background: var(--ember); border-radius: 4px; flex-shrink: 0; }
+  .space-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
+
+  /* Usage rules */
+  .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .rule-card { border-radius: 12px; padding: 20px; border: 1px solid var(--border); }
+  .rule-card.ok { border-color: #16A34A33; background: #16A34A0A; }
+  .rule-card.no { border-color: #DC262633; background: #DC26260A; }
+  .rule-card .tag { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .rule-card.ok .tag { color: #22C55E; }
+  .rule-card.no .tag { color: #EF4444; }
+  .rule-card p { font-size: 13px; color: var(--muted); margin: 0; }
+
+  /* Footer */
+  .footer { text-align: center; padding-top: 60px; border-top: 1px solid var(--border); }
+  .footer p { font-size: 13px; color: var(--muted); }
+  .footer a { color: var(--ice); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Cover -->
+  <div class="cover">
+    <span class="cover-badge">Brand Guidelines v1.0</span>
+    <h1>Momentum.OS</h1>
+    <p>Visual identity, voice, and usage guidelines for Momentum Labs, Inc.</p>
+  </div>
+
+  <!-- 1. Logo -->
+  <section>
+    <h2>01 — Logo</h2>
+    <p>The Momentum.OS logo consists of the atomic nucleus mark and the wordmark. Use the primary (color) version whenever possible. Reserve white or dark versions for contexts where the color version lacks contrast.</p>
+    <div class="logo-grid">
+      <div class="logo-card dark-bg">
+        <img src="logos/momentum-logo-color.svg" alt="Momentum.OS color logo" style="height:60px"/>
+        <span class="logo-card-label">Primary — Color (on dark)</span>
+      </div>
+      <div class="logo-card dark-bg">
+        <img src="logos/momentum-logo-white.svg" alt="Momentum.OS white logo" style="height:60px"/>
+        <span class="logo-card-label">Reversed — White (on dark)</span>
+      </div>
+      <div class="logo-card light-bg">
+        <img src="logos/momentum-logo-dark.svg" alt="Momentum.OS dark logo" style="height:60px"/>
+        <span class="logo-card-label">Dark — On light backgrounds</span>
+      </div>
+      <div class="logo-card dark-bg">
+        <img src="logos/momentum-icon.svg" alt="Momentum.OS icon" style="height:60px; width:60px"/>
+        <span class="logo-card-label">Icon only — App icons, favicons</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logo Do/Don't -->
+  <section>
+    <h2>02 — Logo Usage Rules</h2>
+    <div class="rule-grid">
+      <div class="rule-card ok">
+        <div class="tag">✓ Do</div>
+        <p>Use the color logo on dark backgrounds (#08090C or similar).</p>
+      </div>
+      <div class="rule-card no">
+        <div class="tag">✗ Don't</div>
+        <p>Never stretch, distort, or rotate the logo.</p>
+      </div>
+      <div class="rule-card ok">
+        <div class="tag">✓ Do</div>
+        <p>Maintain clear space equal to the height of the ".OS" text on all sides.</p>
+      </div>
+      <div class="rule-card no">
+        <div class="tag">✗ Don't</div>
+        <p>Never place the color logo on a busy photo or pattern without a semi-transparent background overlay.</p>
+      </div>
+      <div class="rule-card ok">
+        <div class="tag">✓ Do</div>
+        <p>Use the icon-only mark for app icons, favicons, and small social profile images.</p>
+      </div>
+      <div class="rule-card no">
+        <div class="tag">✗ Don't</div>
+        <p>Never recolor the logo in non-brand colors or apply drop shadows to the wordmark.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Colors -->
+  <section>
+    <h2>03 — Color Palette</h2>
+    <p>The Momentum.OS palette is built around deep space-inspired backgrounds with Ember blue as the primary brand color and Ice cyan as the accent. These colors should always be used together to maintain brand cohesion.</p>
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background:#1A57DB;"></div>
+        <div class="color-info">
+          <div class="color-name">Ember</div>
+          <div class="color-hex">#1A57DB</div>
+          <div class="color-hsl">hsl(221, 79%, 48%)</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#1348B8;"></div>
+        <div class="color-info">
+          <div class="color-name">Ember Deep</div>
+          <div class="color-hex">#1348B8</div>
+          <div class="color-hsl">hsl(214, 85%, 40%)</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#6EDCF7;"></div>
+        <div class="color-info">
+          <div class="color-name">Ice</div>
+          <div class="color-hex">#6EDCF7</div>
+          <div class="color-hsl">hsl(192, 90%, 70%)</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#22AACC;"></div>
+        <div class="color-info">
+          <div class="color-name">Ice Deep</div>
+          <div class="color-hex">#22AACC</div>
+          <div class="color-hsl">hsl(192, 71%, 46%)</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#08090C; border-top: 1px solid #1A1A2E;"></div>
+        <div class="color-info">
+          <div class="color-name">Void (Background)</div>
+          <div class="color-hex">#08090C</div>
+          <div class="color-hsl">hsl(230, 20%, 4%)</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#0D101A; border-top: 1px solid #1A1A2E;"></div>
+        <div class="color-info">
+          <div class="color-name">Surface</div>
+          <div class="color-hex">#0D101A</div>
+          <div class="color-hsl">hsl(230, 16%, 8%)</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#F5EDE0;"></div>
+        <div class="color-info">
+          <div class="color-name">Warm White (Text)</div>
+          <div class="color-hex">#F5EDE0</div>
+          <div class="color-hsl">hsl(30, 30%, 96%)</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#8892A4;"></div>
+        <div class="color-info">
+          <div class="color-name">Muted (Secondary Text)</div>
+          <div class="color-hex">#8892A4</div>
+          <div class="color-hsl">hsl(220, 12%, 60%)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section>
+    <h2>04 — Typography</h2>
+    <div class="type-row">
+      <div class="type-label">Display — Instrument Serif</div>
+      <div class="type-sample-display">Your business on autopilot.</div>
+      <div class="type-meta">Used for: hero headlines, pull quotes, large display text. Use italic sparingly for emphasis.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Body / UI — Onest</div>
+      <div class="type-sample-body">Automate workflows, eliminate busywork, and integrate AI into every corner of your business.</div>
+      <div class="type-meta">Used for: all body copy, navigation, buttons, forms, labels. Weights: 300 (light), 400 (regular), 600 (semibold), 700 (bold), 800 (extrabold).</div>
+    </div>
+    <div class="type-row">
+      <div class="type-label">Monospace — JetBrains Mono</div>
+      <div class="type-sample-mono">ROI_IN_30_DAYS · SETUP_48H · AI_WORKFLOWS</div>
+      <div class="type-meta">Used for: code, data labels, technical stats, badge text. Weights: 400, 500.</div>
+    </div>
+  </section>
+
+  <!-- Voice & Tone -->
+  <section>
+    <h2>05 — Voice &amp; Tone</h2>
+    <p>Momentum.OS speaks like a high-performing operator who's figured it out — not a tech company trying to impress. We're direct, confident, and focused on real outcomes. No fluff.</p>
+    <div class="voice-grid">
+      <div class="voice-card">
+        <h4 class="do">✓ Write like this</h4>
+        <ul>
+          <li>Direct and outcome-focused</li>
+          <li>"Stop losing 41 hours a week" — specific, urgent</li>
+          <li>Plain English over jargon</li>
+          <li>Bold claims backed by real numbers</li>
+          <li>Short sentences. High energy.</li>
+          <li>Speak to the reader's pain first</li>
+        </ul>
+      </div>
+      <div class="voice-card">
+        <h4 class="dont">✗ Avoid this</h4>
+        <ul>
+          <li>Overly technical / buzzword-heavy</li>
+          <li>"Leverage synergistic AI paradigms"</li>
+          <li>Passive voice ("it can be configured to...")</li>
+          <li>Vague promises ("transform your business")</li>
+          <li>Corporate language / hedging</li>
+          <li>More than 2 exclamation points per page</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Taglines -->
+  <section>
+    <h2>06 — Core Messaging</h2>
+    <div style="border:1px solid var(--border);border-radius:12px;padding:28px;background:var(--bg2);">
+      <table style="width:100%;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 0;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);width:160px;">Primary Tagline</td>
+          <td style="padding:12px 0;font-size:16px;font-weight:700;color:var(--fg);">Your business on autopilot.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 0;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Hero Headline</td>
+          <td style="padding:12px 0;font-size:16px;font-weight:700;color:var(--fg);">Stop Wasting 41+ Hours a Week on Manual Work</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 0;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Sub-headline</td>
+          <td style="padding:12px 0;font-size:14px;color:var(--muted);">Automate your workflows, eliminate busywork, and integrate AI into every corner of your business — so you can scale without burning out.</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 0;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Feature Line</td>
+          <td style="padding:12px 0;font-size:14px;color:var(--ice);">AI workflows · CRM intelligence · Execution engine</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:12px 0;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Trust Badges</td>
+          <td style="padding:12px 0;font-size:14px;color:var(--muted);">No contracts · Setup in 48 hours · ROI in 30 days</td>
+        </tr>
+        <tr>
+          <td style="padding:12px 0;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);">Social Proof</td>
+          <td style="padding:12px 0;font-size:14px;color:var(--muted);">Trusted by 500+ operators</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <div class="footer">
+    <p>Momentum Labs, Inc. &nbsp;·&nbsp; Coeur d'Alene, ID &nbsp;·&nbsp; <a href="https://os-momentum.com">os-momentum.com</a></p>
+    <p style="margin-top:8px;">Questions about brand usage? Reach out before adapting these guidelines.</p>
+  </div>
+
+</div>
+</body>
+</html>
